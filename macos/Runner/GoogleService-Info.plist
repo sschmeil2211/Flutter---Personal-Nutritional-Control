@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDuJlx5mVww3QKpbtW5omV1o_Eqd6KuHa0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>797970486297</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.personalNutritionControl.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>personal-nutrition-control</string>
+	<key>STORAGE_BUCKET</key>
+	<string>personal-nutrition-control.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:797970486297:ios:affb91f4e49d1d8c298688</string>
+</dict>
+</plist>

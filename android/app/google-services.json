@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "797970486297",
+    "project_id": "personal-nutrition-control",
+    "storage_bucket": "personal-nutrition-control.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797970486297:android:594f4fe9c0e21472298688",
+        "android_client_info": {
+          "package_name": "com.example.personal_nutrition_control"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsZfzVITMuLp5n7Z98ea7t50taGmYyhEE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
