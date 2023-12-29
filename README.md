@@ -1,16 +1,27 @@
-# personal_nutrition_control
+# **Personal Nutritional Control**
 
-A new Flutter project.
+![Badge Succesfull](https://img.shields.io/badge/STATUS-DEVELOPING-orange)
 
-## Getting Started
+# Contact
+* [LinkedIn](https://www.linkedin.com/in/sebastian-schmeil/)
 
-This project is a starting point for a Flutter application.
+* schmeil.sebastian97@gmail.com
 
-A few resources to get you started if this is your first Flutter project:
+## Index
+- [Description](#description)
+- [Demo](#demo)
+- [Technologies Used](#technologies-used)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Description
+An application for the user to keep track of the calories consumed during the day and the exercise performed.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Demo
+Explore the application's functionalities by watching the demo video here.
+
+## Technologies Used
++ Firebase
++ Dart
++ Flutter
+
+## Developers
+Sebastian Schmeil
