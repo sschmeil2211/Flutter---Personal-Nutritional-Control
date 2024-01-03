@@ -34,4 +34,12 @@ class FoodProvider with ChangeNotifier {
     _foods = await _foodRepository.getFoods();
     notifyListeners();
   }
+
+  FoodModel? getFood(String foodID) {
+    try{
+      return _foods.firstWhere((food) => food.id.contains(foodID));
+    } catch(e) {
+      return null;
+    }
+  }
 }

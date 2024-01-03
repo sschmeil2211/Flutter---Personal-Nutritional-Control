@@ -4,6 +4,7 @@ import 'package:personal_nutrition_control/providers/DayProvider.dart';
 import 'package:personal_nutrition_control/providers/FoodProvider.dart';
 import 'package:personal_nutrition_control/providers/SplashScreenProvider.dart';
 import 'package:personal_nutrition_control/providers/UserProvider.dart';
+import 'package:personal_nutrition_control/screens/CalendarScreen.dart';
 import 'package:personal_nutrition_control/screens/FoodListScreen.dart';
 import 'package:personal_nutrition_control/screens/HomeScreen.dart';
 import 'package:personal_nutrition_control/screens/OnBoardingScreen.dart';
@@ -49,6 +50,7 @@ class _MyAppState extends State<MyApp> {
             initialRoute: 'splashScreen',
             routes: {
               'splashScreen': (_) => const SplashScreen(),
+              'calendarScreen': (_) => const CalendarScreen(),
               'signScreen': (_) => const SignScreen(),
               'foodListScreen': (_) => const FoodListScreen(),
               'onBoardingScreen': (_) => const OnBoardingScreen(),

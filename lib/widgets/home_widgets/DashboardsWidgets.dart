@@ -37,22 +37,61 @@ class _DiaryIndicatorsState extends State<DiaryIndicators> {
         if(user == null || actualDay == null)
           return Container();
 
+        DateTime now = DateTime.now();
+        final DayModel? day = dayProvider.days.firstWhere((d) => d!.date.contains('${now.year}-${now.month}-${now.day}'));
+
+        if (day == null)
+          return Text('Día no encontrado');
+        // Actualiza tu interfaz de usuario con los datos del día específico
         return Row(
           children: [
             CaloriesIndicator(
               tooltipBehavior: _proteinsTooltipBehavior,
-              actualValue: actualDay.caloriesConsumed.toInt(),
+              actualValue: day.caloriesConsumed.toInt(),
               maximumValue: user.targetCalories,
               size: 200,
             ),
             MacronutrientsIndicator(
               tooltipBehavior: _macrosTooltipBehavior,
-              totalProteins: actualDay.proteinsConsumed,
-              totalCarbs: actualDay.carbsConsumed,
-              totalFats: actualDay.fatsConsumed,
+              totalProteins: day.proteinsConsumed,
+              totalCarbs: day.carbsConsumed,
+              totalFats: day.fatsConsumed,
             )
           ],
         );
+
+        /*return StreamBuilder<DayModel?>(
+          stream: dayProvider.getSpecificDayStream(actualDay.id),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return CircularProgressIndicator();
+            else if (snapshot.hasError)
+              return Container();
+            else {
+              final DayModel? day = snapshot.data;
+
+              if (day == null)
+                return Text('Día no encontrado');
+              // Actualiza tu interfaz de usuario con los datos del día específico
+              return Row(
+                children: [
+                  CaloriesIndicator(
+                    tooltipBehavior: _proteinsTooltipBehavior,
+                    actualValue: day.caloriesConsumed.toInt(),
+                    maximumValue: user.targetCalories,
+                    size: 200,
+                  ),
+                  MacronutrientsIndicator(
+                    tooltipBehavior: _macrosTooltipBehavior,
+                    totalProteins: day.proteinsConsumed,
+                    totalCarbs: day.carbsConsumed,
+                    totalFats: day.fatsConsumed,
+                  )
+                ],
+              ); 
+            }
+          },
+        );*/
       },
     );
   }
