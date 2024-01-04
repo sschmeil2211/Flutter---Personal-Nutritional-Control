@@ -13,8 +13,8 @@ class HomeScreen extends StatelessWidget {
         distance: 112,
         children: [
           ActionButton(
-            onPressed: () => print("s"),
-            icon: const Icon(Icons.dashboard),
+            icon: const Icon(Icons.calendar_today),
+            onPressed: () => Navigator.pushNamed(context, 'calendarScreen'),
           ),
           ActionButton(
             icon: const Icon(Icons.list),
