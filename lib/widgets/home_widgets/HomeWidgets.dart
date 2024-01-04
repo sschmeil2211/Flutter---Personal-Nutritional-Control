@@ -130,7 +130,7 @@ class FoodList extends StatelessWidget {
                   child: FoodCardModal(
                     onChangeMealTime: (value) => mealType = value,
                     onPressed: () async {
-                      await dayProvider.handleDayUpdate(mealType, food, portions);
+                      await dayProvider.handleDay(mealType, food, portions);
                       Navigator.pop(context);
                     },
                     onCounterChanged: (value) => portions = value,

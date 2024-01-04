@@ -34,19 +34,11 @@ class DayProvider with ChangeNotifier {
     try{
       DateTime now = DateTime.now();
       _actualDay = await _dayRepository.getSpecificDay(userID, '${now.year}-${now.month}-${now.day}');
-     /*_dayRepository
-         .getSpecificDayStream(userID, '${now.year}-${now.month}-${now.day}')
-         .listen((day) => _actualDay = day);*/
       notifyListeners();
     }catch(e){
-      print(e);
-      return null;
+      return;
     }
   }
-
-  Future<DayModel?> getSpecificDay(String specificDate) async => await _dayRepository.getSpecificDay(userID, specificDate);
-  Stream<DayModel?> getSpecificDayStream(String dayID) => _dayRepository.getSpecificDayStream(userID, dayID);
-  //Stream<List<DayModel?>> get getDaysStream => _dayRepository.getDaysStream(userID);
 
   Future<void> updateDay(DayModel day, FoodModel food, int portions) async {
     DayModel updatedDay = day.copyFrom(
@@ -56,19 +48,12 @@ class DayProvider with ChangeNotifier {
       fatsConsumed: day.fatsConsumed + (portions * food.fats)
     );
     await _dayRepository.updateDay(userID, updatedDay);
-    //_days = await _dayRepository.getDays(userID);
     notifyListeners();
   }
 
-  Future<void> deleteDay(String dayId) async {
-    await _dayRepository.deleteDay(userID, dayId);
-    //_days = await _dayRepository.getDays(userID);
-    notifyListeners();
-  }
-
-  Future<void> handleDayUpdate(String mealType, FoodModel food, int portions) async {
+  Future<void> handleDay(String mealType, FoodModel food, int portions) async {
     DateTime now = DateTime.now();
-    DayModel? day = _actualDay;//await getSpecificDay('${now.year}-${now.month}-${now.day}');
+    DayModel? day = _actualDay;
     Map<String, int> mealMap = day?.meals[mealType] ?? {};
 
     mealMap.containsKey(food.id) ? mealMap[food.id] = (mealMap[food.id] ?? 0) + portions : mealMap[food.id] = portions;
