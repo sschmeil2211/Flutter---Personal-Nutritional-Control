@@ -1,7 +1,15 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
+import 'package:personal_nutrition_control/models/DayModel.dart';
+import 'package:personal_nutrition_control/models/UserModel.dart';
+import 'package:personal_nutrition_control/providers/DayProvider.dart';
+import 'package:personal_nutrition_control/providers/UserProvider.dart';
 import 'package:personal_nutrition_control/widgets/common_widgets/ExpandableFloatinButtonWidgets.dart';
 import 'package:personal_nutrition_control/widgets/home_widgets/DashboardsWidgets.dart';
 import 'package:personal_nutrition_control/widgets/home_widgets/HomeWidgets.dart';
+import 'package:personal_nutrition_control/widgets/home_widgets/Searcher.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,37 +36,29 @@ class HomeScreen extends StatelessWidget {
             child: ListView(
               shrinkWrap: true,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                  child: InkWell(
-                    onTap: (){},
-                    child: Container(
-                      height: 35,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.orange, width: 1.4),
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: const Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Icon(Icons.search, color: Colors.grey),
-                          ),
-                          Text('Find Food to add', style: TextStyle(color: Colors.grey)),
-                        ],
-                      ),
-                    ),
-                  ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  child: Searcher(),
                 ),
-                const DiaryIndicators(),
+                Consumer<DayProvider>(
+                  builder: (context, dayProvider, child){
+
+                    UserModel? user = Provider.of<UserProvider>(context, listen: false).user;
+                    DayModel? actualDay = dayProvider.actualDay;
+                    if(user == null || actualDay == null)
+                      return Container();
+
+                    final DayModel? day = dayProvider.getSpecificDay(DateTime.now());
+                    if(day == null)
+                      return Container();
+
+                    return DiaryIndicators(dayToView: day);
+                  }
+                ),
                 const AddTodayFood(),
               ],
             ),
-          ),/*
-          const Align(
-            alignment: Alignment.bottomCenter,
-            child: BottomBar()
-          )*/
+          ),
         ],
       ),
     );

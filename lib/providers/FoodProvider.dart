@@ -42,4 +42,6 @@ class FoodProvider with ChangeNotifier {
       return null;
     }
   }
+
+  List<FoodModel> getFoodsByType(FoodType foodType) => _foods.where((e) => e.foodType == foodType).toList();
 }

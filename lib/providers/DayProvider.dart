@@ -3,6 +3,7 @@ import 'package:personal_nutrition_control/models/DayModel.dart';
 import 'package:personal_nutrition_control/models/FoodModel.dart';
 import 'package:personal_nutrition_control/repositories/DayRepository.dart';
 import 'package:personal_nutrition_control/services/AuthService.dart';
+import 'package:personal_nutrition_control/utils/Fortmatter.dart';
 import 'package:uuid/uuid.dart';
 
 class DayProvider with ChangeNotifier {
@@ -37,6 +38,20 @@ class DayProvider with ChangeNotifier {
       notifyListeners();
     }catch(e){
       return;
+    }
+  }
+
+  DayModel? getSpecificDay(DateTime selectedDate){
+    try{
+      return _days.firstWhere((day) {
+        if(day == null) return false;
+        DateTime dateTime = getFormattedDateTime(day.date);
+        return dateTime.year == selectedDate.year
+            && dateTime.month == selectedDate.month
+            && dateTime.day == selectedDate.day;
+      });
+    } catch(e) {
+      return null;
     }
   }
 
