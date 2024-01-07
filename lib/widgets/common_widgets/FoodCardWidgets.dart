@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:personal_nutrition_control/models/FoodModel.dart';
 
 class FoodCard extends StatelessWidget {
-
-  final Widget child;
+  final int? portions;
+  final bool editable;
+  final Widget? child;
   final FoodModel foodModel;
 
   const FoodCard({
-    required this.child,
+    this.editable = false,
+    this.child,
     required this.foodModel,
+    this.portions,
     super.key
   });
 
@@ -19,7 +22,7 @@ class FoodCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.all(15),
       child: InkWell(
-        onTap: () => showModalBottomSheet(
+        onTap: editable ? () => showModalBottomSheet(
           enableDrag: true,
           context: context,
           shape: const RoundedRectangleBorder(
@@ -27,16 +30,23 @@ class FoodCard extends StatelessWidget {
               top: Radius.circular(15)
             )
           ),
-          builder: (context) => this.child
-        ),
+          builder: (context) => this.child == null ? Container() : this.child!
+        ) : null,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             children: [
-              Text(
-                this.foodModel.name,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.w800,fontSize: 18)
+              Row(
+                mainAxisAlignment: this.portions == null ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    this.foodModel.name,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontWeight: FontWeight.w800,fontSize: 18)
+                  ),
+                  if(this.portions != null)
+                    Text('x${this.portions}')
+                ],
               ),
               Column(
                 children: [
@@ -106,139 +116,6 @@ class CardBody extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: color)
         ),
       ],
-    );
-  }
-}
-
-class FoodCardModal extends StatefulWidget {
-
-  final String buttonLabel;
-  final Function() onPressed;
-  final Function(String) onChangeMealTime;
-  final Function(int) onCounterChanged;
-
-  const FoodCardModal({
-    required this.buttonLabel,
-    required this.onPressed,
-    required this.onCounterChanged,
-    required this.onChangeMealTime,
-    super.key
-  });
-
-  @override
-  State<FoodCardModal> createState() => _FoodCardModalState();
-}
-
-class _FoodCardModalState extends State<FoodCardModal> {
-  String? mealTimeType;
-  int _counter = 1;
-
-  void onChanged(dynamic mealTime){
-    if(mealTime is String)
-      setState(() {
-        mealTimeType = mealTime;
-        widget.onChangeMealTime(mealTime);
-      });
-  }
-
-  void updateCounter(bool add) => setState(() {
-    if(add)
-      _counter++;
-    else
-      if(_counter > 1)
-        _counter--;
-    widget.onCounterChanged(_counter);
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          DropdownButton(
-            dropdownColor: Colors.black87,
-            borderRadius: BorderRadius.circular(10),
-            hint: Text("Meal time"),
-            isExpanded: true,
-            value: mealTimeType,
-            onChanged: onChanged,
-            items: const [
-              DropdownMenuItem(value: 'breakfast', child: Text("Breakfast")),
-              DropdownMenuItem(value: 'lunch', child: Text("Lunch")),
-              DropdownMenuItem(value: 'snack', child: Text("Snack")),
-              DropdownMenuItem(value: 'dinner', child: Text("Dinner")),
-              DropdownMenuItem(value: 'appetizer', child: Text("Appetizer")),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("Porciones"),
-              Counter(
-                counter: _counter,
-                add: () => updateCounter(true),
-                remove: () => updateCounter(false)
-              )
-            ],
-          ),
-          MaterialButton(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5)
-            ),
-            color: Colors.deepPurple,
-            onPressed: widget.onPressed,
-            child: Text(widget.buttonLabel),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class Counter extends StatelessWidget {
-  final int counter;
-  final Function() add;
-  final Function() remove;
-
-  const Counter({
-    required this.counter,
-    required this.add,
-    required this.remove,
-    super.key
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Text("Porciones"),
-        Row(
-          children: [
-            button(this.remove, Icons.remove),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(this.counter.toString()),
-            ),
-            button(this.add, Icons.add)
-          ],
-        )
-      ],
-    );
-  }
-
-  Widget button(Function() onPressed, IconData iconData) {
-    return MaterialButton(
-      padding: EdgeInsets.zero,
-      color: Colors.white24,
-      elevation: 0,
-      minWidth: 30,
-      height: 30,
-      onPressed: onPressed,
-      child: Icon(iconData)
     );
   }
 }

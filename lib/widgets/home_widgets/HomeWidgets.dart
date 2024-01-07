@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:personal_nutrition_control/widgets/home_widgets/HomeModalFoodCard.dart';
 import 'package:provider/provider.dart';
 import 'package:personal_nutrition_control/models/FoodModel.dart';
 import 'package:personal_nutrition_control/providers/DayProvider.dart';
@@ -117,25 +118,27 @@ class FoodList extends StatelessWidget {
         ),
         Consumer<FoodProvider>(
           builder: (context, foodProvider, child){
-            List<FoodModel> filteredFoods = foodProvider.foods.where((e) => e.foodType == this.selectedFoodType).toList();
+
+            List<FoodModel> filteredFoods = foodProvider.getFoodsByType(this.selectedFoodType);
             if(filteredFoods.isEmpty)
               return Container();
+
             return Column(
               children: List.generate(filteredFoods.length, (index) {
                 DayProvider dayProvider = Provider.of<DayProvider>(context, listen: false);
                 FoodModel food = filteredFoods[index];
 
                 return FoodCard(
+                  editable: true,
                   foodModel: food,
                   child: FoodCardModal(
+                    buttonLabel: "Guardar",
                     onChangeMealTime: (value) => mealType = value,
+                    onCounterChanged: (value) => portions = value,
                     onPressed: () async {
                       await dayProvider.handleDay(mealType, food, portions);
                       Navigator.pop(context);
                     },
-                    onCounterChanged: (value) => portions = value,
-                    buttonLabel: "Guardar",
-                    //onChangeMealTime: (mealTime) => mealTimeType = mealTime,
                   ),
                 );
               }),

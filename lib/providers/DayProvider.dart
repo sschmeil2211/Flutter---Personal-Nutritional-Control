@@ -3,6 +3,7 @@ import 'package:personal_nutrition_control/models/DayModel.dart';
 import 'package:personal_nutrition_control/models/FoodModel.dart';
 import 'package:personal_nutrition_control/repositories/DayRepository.dart';
 import 'package:personal_nutrition_control/services/AuthService.dart';
+import 'package:personal_nutrition_control/utils/Fortmatter.dart';
 import 'package:uuid/uuid.dart';
 
 class DayProvider with ChangeNotifier {
@@ -40,6 +41,20 @@ class DayProvider with ChangeNotifier {
     }
   }
 
+  DayModel? getSpecificDay(DateTime selectedDate){
+    try{
+      return _days.firstWhere((day) {
+        if(day == null) return false;
+        DateTime dateTime = getFormattedDateTime(day.date);
+        return dateTime.year == selectedDate.year
+            && dateTime.month == selectedDate.month
+            && dateTime.day == selectedDate.day;
+      });
+    } catch(e) {
+      return null;
+    }
+  }
+
   Future<void> updateDay(DayModel day, FoodModel food, int portions) async {
     DayModel updatedDay = day.copyFrom(
       caloriesConsumed: day.caloriesConsumed + (portions * food.calories),
@@ -53,7 +68,7 @@ class DayProvider with ChangeNotifier {
 
   Future<void> handleDay(String mealType, FoodModel food, int portions) async {
     DateTime now = DateTime.now();
-    DayModel? day = _actualDay;
+    DayModel? day = await _dayRepository.getSpecificDay(userID, '${now.year}-${now.month}-${now.day}');//_actualDay;
     Map<String, int> mealMap = day?.meals[mealType] ?? {};
 
     mealMap.containsKey(food.id) ? mealMap[food.id] = (mealMap[food.id] ?? 0) + portions : mealMap[food.id] = portions;
