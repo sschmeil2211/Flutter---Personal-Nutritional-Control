@@ -23,7 +23,7 @@ class DayRepository {
         .where('date', isEqualTo: specificDate)
         .limit(1) // Limitar a un solo documento
         .get();
-    return DayModel.fromSnapshot(snapshot.docs.first);
+    return snapshot.docs.isNotEmpty ? DayModel.fromSnapshot(snapshot.docs.first) : null;
   }
 
   Future<void> updateDay(String userId, DayModel day) async => await _firestore

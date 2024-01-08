@@ -32,19 +32,37 @@ class _DiaryIndicatorsState extends State<DiaryIndicators> {
     super.initState();
   }
 
+  Color statusColor(int targetCalories, int actualValue){
+    Color statusColor = Colors.orangeAccent;
+    int upperRange = targetCalories + 100;
+    int lowerRange = targetCalories - 100;
+
+    setState(() => statusColor = actualValue >= lowerRange && actualValue <= upperRange
+        ? Colors.deepOrangeAccent
+        : actualValue < lowerRange
+        ? Colors.orangeAccent
+        : Colors.red
+    );
+    return statusColor;
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    int targetCalories = Provider.of<UserProvider>(context, listen: false).user?.targetCalories ?? 2000;
     double size = MediaQuery.of(context).size.height;
+
+    int targetCalories = Provider.of<UserProvider>(context, listen: false).user?.targetCalories ?? 2000;
+    int actualValue = widget.dayToView.caloriesConsumed.toInt();
+    int limit = targetCalories + 500;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         CaloriesIndicator(
+          color: statusColor(targetCalories, actualValue),
           tooltipBehavior: _proteinsTooltipBehavior,
-          actualValue: widget.dayToView.caloriesConsumed.toInt(),
-          maximumValue: targetCalories,
+          actualValue: actualValue,
+          maximumValue: limit,
           size: size * 0.2,
         ),
         MacronutrientsIndicator(
@@ -64,6 +82,7 @@ class CaloriesIndicator extends StatelessWidget {
   final double size;
   final int maximumValue;
   final int actualValue;
+  final Color color;
   final TooltipBehavior tooltipBehavior;
 
   const CaloriesIndicator({
@@ -71,6 +90,7 @@ class CaloriesIndicator extends StatelessWidget {
     required this.maximumValue,
     required this.actualValue,
     required this.tooltipBehavior,
+    required this.color,
     super.key
   });
 
@@ -86,7 +106,7 @@ class CaloriesIndicator extends StatelessWidget {
           RadialBarSeries<ArcProgressIndicatorData, String>(
             xValueMapper: (data, _) => data.x,
             yValueMapper: (data, _) => data.y,
-            pointColorMapper: (data, _) => Colors.deepOrangeAccent,
+            pointColorMapper: (data, _) => this.color,
             innerRadius: '65%',
             trackOpacity: 0.1,
             cornerStyle: CornerStyle.bothCurve,
@@ -99,7 +119,7 @@ class CaloriesIndicator extends StatelessWidget {
         tooltipBehavior: this.tooltipBehavior,
         annotations: [
           CircularChartAnnotation(
-            widget: const Text('Proteins')
+            widget: const Text('Calories')
           )
         ],
       ),
@@ -142,13 +162,12 @@ class MacronutrientsIndicator extends StatelessWidget {
       height: this.size,
       width: this.size,
       child: SfCircularChart(
-
         margin: EdgeInsets.all(0),
         tooltipBehavior: this.tooltipBehavior,
         series: <PieSeries<MacronutrientsIndicatorData, String>>[
           PieSeries<MacronutrientsIndicatorData, String>(
             pointColorMapper:(data,  _) => data.color,
-            xValueMapper: (data, _) => data.x,
+            xValueMapper: (data, _) => '${data.x} (%)',
             yValueMapper: (data, _) => data.y,
             dataLabelMapper: (data, _) => data.x,
             dataSource: chartData,
