@@ -137,6 +137,7 @@ class FoodList extends StatelessWidget {
                     onCounterChanged: (value) => portions = value,
                     onPressed: () async {
                       await dayProvider.handleDay(mealType, food, portions);
+                      portions = 1;
                       Navigator.pop(context);
                     },
                   ),
