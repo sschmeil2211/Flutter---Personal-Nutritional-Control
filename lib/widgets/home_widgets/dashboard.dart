@@ -1,9 +1,9 @@
 // ignore_for_file: unnecessary_this, curly_braces_in_flow_control_structures
 
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/DashboardModels.dart';
-import 'package:personal_nutrition_control/models/DayModel.dart';
-import 'package:personal_nutrition_control/providers/UserProvider.dart';
+import 'package:personal_nutrition_control/models/dashboard_models.dart';
+import 'package:personal_nutrition_control/models/day_model.dart';
+import 'package:personal_nutrition_control/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';

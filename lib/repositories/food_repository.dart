@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:personal_nutrition_control/models/FoodModel.dart';
+import 'package:personal_nutrition_control/models/food_model.dart';
 
 class FoodRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

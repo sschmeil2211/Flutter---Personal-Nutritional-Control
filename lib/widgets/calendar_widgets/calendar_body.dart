@@ -2,19 +2,19 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/DayModel.dart';
-import 'package:personal_nutrition_control/models/FoodModel.dart';
-import 'package:personal_nutrition_control/providers/FoodProvider.dart';
-import 'package:personal_nutrition_control/utils/Extensions.dart';
-import 'package:personal_nutrition_control/utils/Fortmatter.dart';
-import 'package:personal_nutrition_control/widgets/calendar_widgets/CalendarPicker.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/FoodCardWidgets.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/NoDataWidgets.dart';
+import 'package:personal_nutrition_control/models/day_model.dart';
+import 'package:personal_nutrition_control/models/food_model.dart';
+import 'package:personal_nutrition_control/providers/food_provider.dart';
+import 'package:personal_nutrition_control/extensions/extensions.dart';
+import 'package:personal_nutrition_control/utils/fortmatter.dart';
+import 'package:personal_nutrition_control/widgets/calendar_widgets/calendar_picker.dart';
+import 'package:personal_nutrition_control/widgets/common_widgets/food_card.dart';
+import 'package:personal_nutrition_control/widgets/common_widgets/no_data.dart';
 import 'package:provider/provider.dart';
-import 'package:personal_nutrition_control/providers/DayProvider.dart';
-import 'package:personal_nutrition_control/providers/UserProvider.dart';
+import 'package:personal_nutrition_control/providers/day_provider.dart';
+import 'package:personal_nutrition_control/providers/user_provider.dart';
 
-import 'package:personal_nutrition_control/widgets/home_widgets/DashboardsWidgets.dart';
+import 'package:personal_nutrition_control/widgets/home_widgets/dashboard.dart';
 
 class CalendarBody extends StatefulWidget {
   const CalendarBody({super.key});

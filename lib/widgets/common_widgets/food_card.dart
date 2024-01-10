@@ -1,7 +1,7 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/FoodModel.dart';
+import 'package:personal_nutrition_control/models/food_model.dart';
 
 class FoodCard extends StatelessWidget {
   final int? portions;

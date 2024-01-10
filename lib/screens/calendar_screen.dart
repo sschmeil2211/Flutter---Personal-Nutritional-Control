@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/widgets/calendar_widgets/CalendarBody.dart';
+import 'package:personal_nutrition_control/widgets/calendar_widgets/calendar_body.dart';
 
 class CalendarScreen extends StatelessWidget {
   const CalendarScreen({super.key});

@@ -1,14 +1,14 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/DayModel.dart';
-import 'package:personal_nutrition_control/models/UserModel.dart';
-import 'package:personal_nutrition_control/providers/DayProvider.dart';
-import 'package:personal_nutrition_control/providers/UserProvider.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/ExpandableFloatinButtonWidgets.dart';
-import 'package:personal_nutrition_control/widgets/home_widgets/DashboardsWidgets.dart';
-import 'package:personal_nutrition_control/widgets/home_widgets/HomeWidgets.dart';
-import 'package:personal_nutrition_control/widgets/home_widgets/Searcher.dart';
+import 'package:personal_nutrition_control/models/day_model.dart';
+import 'package:personal_nutrition_control/models/user_model.dart';
+import 'package:personal_nutrition_control/providers/day_provider.dart';
+import 'package:personal_nutrition_control/providers/user_provider.dart';
+import 'package:personal_nutrition_control/widgets/common_widgets/expandable_floating_button.dart';
+import 'package:personal_nutrition_control/widgets/home_widgets/dashboard.dart';
+import 'package:personal_nutrition_control/widgets/home_widgets/home_body.dart';
+import 'package:personal_nutrition_control/widgets/home_widgets/searcher.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {

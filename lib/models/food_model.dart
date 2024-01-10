@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_this
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:personal_nutrition_control/utils/EnumUtils.dart';
+import 'package:personal_nutrition_control/utils/enum_utils.dart';
 
 class FoodModel {
   final String id;
