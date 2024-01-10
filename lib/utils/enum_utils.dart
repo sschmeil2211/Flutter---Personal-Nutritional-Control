@@ -1,5 +1,5 @@
-import 'package:personal_nutrition_control/models/FoodModel.dart';
-import 'package:personal_nutrition_control/models/UserModel.dart';
+import 'package:personal_nutrition_control/models/food_model.dart';
+import 'package:personal_nutrition_control/models/user_model.dart';
 
 GenreType getGenreType(String? genreTypeString) {
   switch (genreTypeString) {

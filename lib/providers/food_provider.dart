@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:personal_nutrition_control/models/FoodModel.dart';
-import 'package:personal_nutrition_control/repositories/FoodRepository.dart';
+import 'package:personal_nutrition_control/models/food_model.dart';
+import 'package:personal_nutrition_control/repositories/food_repository.dart';
 
 class FoodProvider with ChangeNotifier {
   final FoodRepository _foodRepository = FoodRepository();

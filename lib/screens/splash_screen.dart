@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:personal_nutrition_control/providers/SplashScreenProvider.dart';
+import 'package:personal_nutrition_control/providers/splash_screen_provider.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatelessWidget {

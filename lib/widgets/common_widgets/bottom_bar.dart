@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/MenuModel.dart';
+import 'package:personal_nutrition_control/models/menu_model.dart';
 import 'package:rive/rive.dart';
 
 class BottomBar extends StatefulWidget {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/widgets/home_widgets/HomeModalFoodCard.dart';
+import 'package:personal_nutrition_control/widgets/home_widgets/home_modal_food_card.dart';
 import 'package:provider/provider.dart';
-import 'package:personal_nutrition_control/models/FoodModel.dart';
-import 'package:personal_nutrition_control/providers/DayProvider.dart';
-import 'package:personal_nutrition_control/providers/FoodProvider.dart';
-import 'package:personal_nutrition_control/utils/ImagePaths.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/AnimationsWidgets.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/FoodCardWidgets.dart';
+import 'package:personal_nutrition_control/models/food_model.dart';
+import 'package:personal_nutrition_control/providers/day_provider.dart';
+import 'package:personal_nutrition_control/providers/food_provider.dart';
+import 'package:personal_nutrition_control/utils/image_paths.dart';
+import 'package:personal_nutrition_control/widgets/common_widgets/animations.dart';
+import 'package:personal_nutrition_control/widgets/common_widgets/food_card.dart';
 
 class AddTodayFood extends StatefulWidget {
   const AddTodayFood({super.key});

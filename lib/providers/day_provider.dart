@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:personal_nutrition_control/models/DayModel.dart';
-import 'package:personal_nutrition_control/models/FoodModel.dart';
-import 'package:personal_nutrition_control/repositories/DayRepository.dart';
-import 'package:personal_nutrition_control/services/AuthService.dart';
-import 'package:personal_nutrition_control/utils/Fortmatter.dart';
+import 'package:personal_nutrition_control/models/day_model.dart';
+import 'package:personal_nutrition_control/models/food_model.dart';
+import 'package:personal_nutrition_control/repositories/day_repository.dart';
+import 'package:personal_nutrition_control/services/auth_service.dart';
+import 'package:personal_nutrition_control/utils/fortmatter.dart';
 import 'package:uuid/uuid.dart';
 
 class DayProvider with ChangeNotifier {

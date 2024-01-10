@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/UserModel.dart';
-import 'package:personal_nutrition_control/providers/UserProvider.dart';
+import 'package:personal_nutrition_control/models/user_model.dart';
+import 'package:personal_nutrition_control/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class OnBoardingScreen extends StatelessWidget {
@@ -17,8 +17,8 @@ class OnBoardingScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                      "On Boarding",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                    "On Boarding",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
                   ),
                   SignInForm(),
                 ],

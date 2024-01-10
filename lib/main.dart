@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:personal_nutrition_control/providers/DayProvider.dart';
-import 'package:personal_nutrition_control/providers/FoodProvider.dart';
-import 'package:personal_nutrition_control/providers/SplashScreenProvider.dart';
-import 'package:personal_nutrition_control/providers/UserProvider.dart';
-import 'package:personal_nutrition_control/screens/CalendarScreen.dart';
-import 'package:personal_nutrition_control/screens/FoodListScreen.dart';
-import 'package:personal_nutrition_control/screens/HomeScreen.dart';
-import 'package:personal_nutrition_control/screens/OnBoardingScreen.dart';
-import 'package:personal_nutrition_control/screens/SignScreen.dart';
-import 'package:personal_nutrition_control/screens/SplashScreen.dart';
+import 'package:personal_nutrition_control/providers/day_provider.dart';
+import 'package:personal_nutrition_control/providers/food_provider.dart';
+import 'package:personal_nutrition_control/providers/splash_screen_provider.dart';
+import 'package:personal_nutrition_control/providers/user_provider.dart';
+import 'package:personal_nutrition_control/screens/calendar_screen.dart';
+import 'package:personal_nutrition_control/screens/food_list_screen.dart';
+import 'package:personal_nutrition_control/screens/home_screen.dart';
+import 'package:personal_nutrition_control/screens/onboarding_screen.dart';
+import 'package:personal_nutrition_control/screens/sign_screen.dart';
+import 'package:personal_nutrition_control/screens/splash_screen.dart';
 
 import 'package:provider/provider.dart';
 
