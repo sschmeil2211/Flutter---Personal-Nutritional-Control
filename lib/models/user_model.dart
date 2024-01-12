@@ -7,32 +7,33 @@ class UserModel {
   final String username;
   final String email;
   final GenreType genreType;
-  final OnBoardingStatus onBoardingStatus;
-  final int targetCalories;
   final String birthdate;
   final String createdAt;
   final String updatedAt;
+  final PhysicalActivity weeklyPhysicalActivity;
   final double weight;
   final int height;
   final int waist;
   final int wrist;
-  final int weeklyPhysicalActivity;
+  final OnBoardingStatus onBoardingStatus;
+  final int targetCalories;
 
   const UserModel({
     required this.id,
     required this.username,
     required this.email,
-    required this.genreType,
-    required this.onBoardingStatus,
-    required this.birthdate,
     required this.targetCalories,
     required this.createdAt,
     required this.updatedAt,
-    required this.weight,
-    required this.height,
+    required this.onBoardingStatus,
+    required this.genreType,
+    required this.birthdate,
+    required this.weeklyPhysicalActivity,
+
     required this.waist,
     required this.wrist,
-    required this.weeklyPhysicalActivity,
+    required this.height,
+    required this.weight,
   });
 
   Map<String, dynamic> toJson() => {
@@ -49,7 +50,7 @@ class UserModel {
     'height': this.height,
     'waist': this.waist,
     'wrist': this.wrist,
-    'weeklyPhysicalActivity': this.weeklyPhysicalActivity,
+    'weeklyPhysicalActivity': this.weeklyPhysicalActivity.toString(),
   };
 
   factory UserModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
@@ -59,7 +60,7 @@ class UserModel {
       id: data?['id'],
       username: data?['username'],
       email: data?['email'],
-      genreType: getGenreType(data?['genreType']),
+      genreType: getGenderType(data?['genreType']),
       onBoardingStatus: getOnBoardingStatus(data?['onBoardingStatus']),
       birthdate: data?['birthdate'],
       targetCalories: data?['targetCalories'],
@@ -69,9 +70,30 @@ class UserModel {
       height: data?['height'],
       waist: data?['waist'],
       wrist: data?['wrist'],
-      weeklyPhysicalActivity: data?['weeklyPhysicalActivity']
+      weeklyPhysicalActivity: getPhysicalActivityType(data?['weeklyPhysicalActivity'])
     );
   }
+
+  factory UserModel.newUser({
+    required String id,
+    required String username,
+    required String email,
+  }) => UserModel(
+    id: id,
+    username: username,
+    email: email,
+    createdAt: DateTime.now().toString(),
+    updatedAt: DateTime.now().toString(),
+    onBoardingStatus: OnBoardingStatus.finalized,
+    targetCalories: 0,
+    genreType: GenreType.male,
+    birthdate: DateTime.now().toString(),
+    weeklyPhysicalActivity: PhysicalActivity.lessThanHour,
+    waist: 0,
+    wrist: 0,
+    height: 0,
+    weight: 0
+  );
 
   UserModel copyFrom({
     String? username,
@@ -84,7 +106,7 @@ class UserModel {
     int? height,
     int? waist,
     int? wrist,
-    int? weeklyPhysicalActivity
+    PhysicalActivity? weeklyPhysicalActivity
   }) => UserModel(
     id: this.id,
     email: this.email,
@@ -108,7 +130,16 @@ enum GenreType {
   female,
 }
 
+enum PhysicalActivity {
+  lessThanHour,
+  twoToFive,
+  sixToNine,
+  tenToTwenty,
+  moreThanTwenty
+}
+
 enum OnBoardingStatus {
-  onboarding,
+  personal,
+  body,
   finalized
 }
