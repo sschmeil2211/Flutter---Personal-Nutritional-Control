@@ -1,7 +1,7 @@
 import 'package:personal_nutrition_control/models/food_model.dart';
 import 'package:personal_nutrition_control/models/user_model.dart';
 
-GenreType getGenreType(String? genreTypeString) {
+GenreType getGenderType(String? genreTypeString) {
   switch (genreTypeString) {
     case 'GenreType.male':
       return GenreType.male;
@@ -14,8 +14,10 @@ GenreType getGenreType(String? genreTypeString) {
 
 OnBoardingStatus getOnBoardingStatus(String? onBoardingStatusString) {
   switch (onBoardingStatusString) {
-    case 'OnBoardingStatus.onboarding':
-      return OnBoardingStatus.onboarding;
+    case 'OnBoardingStatus.personal':
+      return OnBoardingStatus.personal;
+    case 'OnBoardingStatus.body':
+      return OnBoardingStatus.body;
     case 'OnBoardingStatus.finalized':
       return OnBoardingStatus.finalized;
     default:
@@ -49,5 +51,42 @@ FoodType getFoodType(String? foodTypeString) {
       return FoodType.other;
     default:
       return FoodType.other;
+  }
+}
+
+String getGenderString(GenreType gender) {
+  String enumString = gender.toString().split('.').last;
+  return enumString[0].toUpperCase() + enumString.substring(1);
+}
+
+String getPhysicalActivityString(PhysicalActivity physicalActivity) {
+  switch(physicalActivity){
+    case PhysicalActivity.lessThanHour:
+      return 'Less than 1 hs';
+    case PhysicalActivity.twoToFive:
+      return '2 to 5 hs';
+    case PhysicalActivity.sixToNine:
+      return '6 to 9 hs';
+    case PhysicalActivity.tenToTwenty:
+      return '10 to 20 hs';
+    case PhysicalActivity.moreThanTwenty:
+      return 'More than 20 hs';
+  }
+}
+
+PhysicalActivity getPhysicalActivityType(String? physicalActivity){
+  switch(physicalActivity){
+    case 'PhysicalActivity.lessThanHour':
+      return PhysicalActivity.lessThanHour;
+    case 'PhysicalActivity.twoToFive':
+      return PhysicalActivity.twoToFive;
+    case 'PhysicalActivity.sixToNine':
+      return PhysicalActivity.sixToNine;
+    case 'PhysicalActivity.tenToTwenty':
+      return PhysicalActivity.tenToTwenty;
+    case 'PhysicalActivity.moreThanTwenty':
+      return PhysicalActivity.moreThanTwenty;
+    default:
+      return PhysicalActivity.lessThanHour;
   }
 }

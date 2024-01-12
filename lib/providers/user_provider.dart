@@ -25,38 +25,19 @@ class UserProvider with ChangeNotifier {
   Future<String?> signUp(String email, String password, String username) async {
     String? signUpMessage = await _authService.signUpWithEmailAndPassword(email, password);
     if(signUpMessage != null) return signUpMessage;
-
     final User? currentUser = _authService.currentUser;
     if (currentUser != null) {
-      _user = UserModel(
-        id: currentUser.uid,
-        email: email,
-        username: username,
-        targetCalories: 0, // Aquí puedes poner valores predeterminados
-        weight: 0,
-        height: 0,
-        birthdate: DateTime(1997, 4, 4).toString(),
-        createdAt: DateTime.now().toString(),
-        updatedAt: DateTime.now().toString(),
-        waist: 0,
-        wrist: 0,
-        weeklyPhysicalActivity: 0,
-        genreType: GenreType.male,
-        onBoardingStatus: OnBoardingStatus.onboarding,
-      );
+      _user = UserModel.newUser( id: currentUser.uid, username: username, email: email);
       await _userRepository.createUser(_user!);
     }
     return null;
   }
 
-  Future<void> updateUser(UserModel user) async {
-    try {
-      if(AuthService().currentUser == null) return;
-      await _userRepository.updateUser(_authService.currentUser!.uid, user);
-      notifyListeners();
-    } catch (e) {
-      print('Error en updateUser: $e');
-    }
+  Future<bool> updateUser(UserModel user) async {
+    if(AuthService().currentUser == null) return false;
+    bool successful = await _userRepository.updateUser(_authService.currentUser!.uid, user);
+    notifyListeners();
+    return successful;
   }
 
   // Obtener información completa del usuario por ID

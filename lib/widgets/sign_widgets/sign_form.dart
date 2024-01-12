@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:personal_nutrition_control/providers/user_provider.dart';
 import 'package:personal_nutrition_control/widgets/common_widgets/snack_bars.dart';
 import 'package:provider/provider.dart';
+import 'package:personal_nutrition_control/widgets/common_widgets/text_input.dart';
 
 class SignInForm extends StatefulWidget {
 
@@ -36,7 +37,7 @@ class _SignInFormState extends State<SignInForm> {
     if(email.text.isEmpty || password.text.isEmpty || username.text.isEmpty) return;
     setState(() => loading = true);
     String? message = await userProvider.signUp(email.text, password.text, username.text);
-    signStatusAction(message, 'onBoardingScreen');
+    signStatusAction(message, 'personalOnboardingScreen');
   }
 
   Future<void> singIn(UserProvider userProvider) async {
@@ -63,22 +64,21 @@ class _SignInFormState extends State<SignInForm> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if(signView)
-                  TextInput(
+                  InputField(
                     prefixIcon: Icons.person_outline_outlined,
                     labelText: "Username",
                     textEditingController: username
                   ),
-                TextInput(
+                InputField(
                   prefixIcon: Icons.mail_outline,
                   labelText: "Email",
                   textEditingController: email
                 ),
-                TextInput(
+                InputField(
                   prefixIcon: Icons.fingerprint,
                   labelText: "Password",
-                  passwordVisibleSwitch: true,
                   obscureText: passwordVisible,
-                  onPressed: () => setState(() => passwordVisible = !passwordVisible),
+                  onPressedIcon: () => setState(() => passwordVisible = !passwordVisible),
                   textEditingController: password
                 ),
               ],
@@ -107,45 +107,4 @@ class _SignInFormState extends State<SignInForm> {
           ? await singUp(userProvider)
           : await singIn(userProvider),
   );
-}
-
-class TextInput extends StatelessWidget {
-
-  final bool obscureText;
-  final bool passwordVisibleSwitch;
-  final Function()? onPressed;
-  final IconData prefixIcon;
-  final String labelText;
-  final TextEditingController textEditingController;
-
-  const TextInput({
-    this.obscureText = false,
-    this.passwordVisibleSwitch = false,
-    this.onPressed,
-    required this.prefixIcon,
-    required this.labelText,
-    required this.textEditingController,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: TextFormField(
-        controller: this.textEditingController,
-        obscureText: this.obscureText,
-        decoration: InputDecoration(
-          prefixIcon: Icon(this.prefixIcon),
-          labelText: this.labelText,
-          border: const OutlineInputBorder(),
-          suffixIcon: suffixIcon()
-        ),
-      ),
-    );
-  }
-
-  Widget? suffixIcon() => this.passwordVisibleSwitch
-      ? IconButton(onPressed: onPressed, icon: const Icon(Icons.remove_red_eye_sharp))
-      : null;
 }

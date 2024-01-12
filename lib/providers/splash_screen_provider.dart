@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:personal_nutrition_control/models/user_model.dart';
+import 'package:personal_nutrition_control/providers/user_provider.dart';
 import 'package:personal_nutrition_control/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreenController extends ChangeNotifier {
   bool _isLoading = true;

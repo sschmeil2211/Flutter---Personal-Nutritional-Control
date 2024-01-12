@@ -12,11 +12,12 @@ class UserRepository {
     }
   }
 
-  Future<void> updateUser(String userId, UserModel updatedUser) async {
+  Future<bool> updateUser(String userId, UserModel updatedUser) async {
     try {
       await _firestore.collection('users').doc(userId).update(updatedUser.toJson());
+      return true;
     } catch (e) {
-      throw e;
+      return false;
     }
   }
 

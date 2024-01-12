@@ -7,7 +7,8 @@ import 'package:personal_nutrition_control/providers/user_provider.dart';
 import 'package:personal_nutrition_control/screens/calendar_screen.dart';
 import 'package:personal_nutrition_control/screens/food_list_screen.dart';
 import 'package:personal_nutrition_control/screens/home_screen.dart';
-import 'package:personal_nutrition_control/screens/onboarding_screen.dart';
+import 'package:personal_nutrition_control/screens/onboarding/body_onboarding_screen.dart';
+import 'package:personal_nutrition_control/screens/onboarding/personal_onboarding_screen.dart';
 import 'package:personal_nutrition_control/screens/sign_screen.dart';
 import 'package:personal_nutrition_control/screens/splash_screen.dart';
 
@@ -53,7 +54,8 @@ class _MyAppState extends State<MyApp> {
               'calendarScreen': (_) => const CalendarScreen(),
               'signScreen': (_) => const SignScreen(),
               'foodListScreen': (_) => const FoodListScreen(),
-              'onBoardingScreen': (_) => const OnBoardingScreen(),
+              'personalOnboardingScreen': (_) => const PersonalOnBoardingScreen(),
+              'bodyOnboardingScreen': (_) => const BodyOnBoardingScreen(),
               'homeScreen': (_) => const HomeScreen(),
             },
           );

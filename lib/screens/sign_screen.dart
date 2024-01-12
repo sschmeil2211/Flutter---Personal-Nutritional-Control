@@ -10,7 +10,7 @@ class SignScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final height = MediaQuery.of(context).size.height;
+    final double height = MediaQuery.of(context).size.height;
 
     return SafeArea(
         child: Scaffold(
