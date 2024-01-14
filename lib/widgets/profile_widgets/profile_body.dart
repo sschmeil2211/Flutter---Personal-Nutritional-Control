@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:personal_nutrition_control/providers/user_provider.dart';
+import 'package:personal_nutrition_control/widgets/common_widgets/snack_bars.dart';
 import 'package:personal_nutrition_control/widgets/common_widgets/user_profile.dart';
 import 'package:provider/provider.dart';
 import 'package:personal_nutrition_control/utils/image_paths.dart';
@@ -15,8 +16,24 @@ class ProfileBody extends StatefulWidget {
 
 class _ProfileBodyState extends State<ProfileBody> {
 
+  bool loading = false;
+
+  Future<void> signOut(UserProvider userProvider) async {
+    setState(() => loading = true);
+    String? message = await userProvider.signOut();
+    if(message == null)
+      Navigator.of(context).pushNamedAndRemoveUntil('signScreen', (route) => false);
+    else{
+      setState(() => loading = false);
+      ScaffoldMessenger.of(context).showSnackBar(customSnackBar(message, Colors.deepOrange));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+
     return Column(
       children: [
         ProfileCard(
@@ -29,14 +46,18 @@ class _ProfileBodyState extends State<ProfileBody> {
           label: 'Body Information',
           onTap: () => Navigator.pushNamed(context, 'informationScreen', arguments: 1),
         ),
-        ProfileCard(
-          icon: Icons.logout,
-          label: 'Sign Out',
-          onTap: (){},
-        ),
+        signOutWidget(userProvider)
       ],
     );
   }
+
+  Widget signOutWidget(UserProvider userProvider) => loading
+      ? const CircularProgressIndicator()
+      : ProfileCard(
+          icon: Icons.logout,
+          label: 'Sign Out',
+          onTap: () async => await signOut(userProvider),
+        );
 }
 
 class ProfileCard extends StatelessWidget {

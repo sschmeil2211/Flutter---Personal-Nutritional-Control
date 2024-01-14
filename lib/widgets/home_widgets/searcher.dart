@@ -9,22 +9,24 @@ class Searcher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: (){},
+    return Expanded(
       child: Container(
         height: 35,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.orange, width: 1.4),
           borderRadius: BorderRadius.circular(25),
         ),
-        child: const Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Icon(Icons.search, color: Colors.grey),
-            ),
-            Text('Find Food to add', style: TextStyle(color: Colors.grey)),
-          ],
+        child: InkWell(
+          onTap: (){},
+          child: const Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Icon(Icons.search, color: Colors.grey),
+              ),
+              Text('Find Food to add', style: TextStyle(color: Colors.grey)),
+            ],
+          ),
         ),
       ),
     );
