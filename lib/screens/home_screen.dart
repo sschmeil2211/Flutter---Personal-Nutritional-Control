@@ -16,29 +16,42 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: ExpandableFab(
-        distance: 112,
-        children: [
-          ActionButton(
-            icon: const Icon(Icons.calendar_today),
-            onPressed: () => Navigator.pushNamed(context, 'calendarScreen'),
-          ),
-          ActionButton(
-            icon: const Icon(Icons.list),
-            onPressed: () => Navigator.pushNamed(context, 'foodListScreen'),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          SafeArea(
-            child: ListView(
+    return SafeArea(
+      child: Scaffold(
+        floatingActionButton: ExpandableFab(
+          distance: 112,
+          children: [
+            ActionButton(
+              icon: const Icon(Icons.calendar_today),
+              onPressed: () => Navigator.pushNamed(context, 'calendarScreen'),
+            ),
+            ActionButton(
+              icon: const Icon(Icons.list),
+              onPressed: () => Navigator.pushNamed(context, 'foodListScreen'),
+            ),
+          ],
+        ),
+        body: Stack(
+          children: [
+            ListView(
               shrinkWrap: true,
               children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                  child: Searcher(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, bottom: 15, left: 30, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Searcher(),
+                      MaterialButton(
+                        shape: const CircleBorder(),
+                        color: Colors.white24,
+                        elevation: 2,
+                        onPressed: () => Navigator.pushNamed(context, 'profileScreen'),
+                        padding: const EdgeInsets.all(10),
+                        child: const Icon(Icons.person)
+                      ),
+                    ],
+                  ),
                 ),
                 Consumer<DayProvider>(
                   builder: (context, dayProvider, child){
@@ -58,8 +71,8 @@ class HomeScreen extends StatelessWidget {
                 const AddTodayFood(),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

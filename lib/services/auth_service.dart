@@ -38,7 +38,16 @@ class AuthService {
   }
 
   // Cerrar sesión
-  Future<void> signOut() async => await _authInstance.signOut();
+  Future<String?> signOut() async {
+    try{
+      await _authInstance.signOut();
+      return null;
+    } on auth.FirebaseAuthException catch (e) {
+      return e.message;
+    } catch(e) {
+      return e.toString();
+    }
+  }
 
   // Obtener el usuario actual
   auth.User? get currentUser => _authInstance.currentUser;

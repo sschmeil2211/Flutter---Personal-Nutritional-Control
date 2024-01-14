@@ -28,7 +28,7 @@ class _BodyFormFormState extends State<BodyForm> {
     if(heightController.text.isEmpty || weightController.text.isEmpty || wristController.text.isEmpty || waistController.text.isEmpty) return;
     UserModel? newUser = userProvider.user?.copyFrom(
       height: int.parse(heightController.text),
-      weight: double.parse(weightController.text),
+      weight: int.parse(weightController.text),
       wrist: int.parse(wristController.text),
       waist: int.parse(waistController.text),
       onBoardingStatus: OnBoardingStatus.finalized
