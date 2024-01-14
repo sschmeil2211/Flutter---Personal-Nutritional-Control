@@ -6,17 +6,17 @@ class UserModel {
   final String id;
   final String username;
   final String email;
-  final GenreType genreType;
   final String birthdate;
   final String createdAt;
   final String updatedAt;
-  final PhysicalActivity weeklyPhysicalActivity;
-  final double weight;
+  final int weight;
   final int height;
   final int waist;
   final int wrist;
-  final OnBoardingStatus onBoardingStatus;
   final int targetCalories;
+  final OnBoardingStatus onBoardingStatus;
+  final PhysicalActivity weeklyPhysicalActivity;
+  final GenreType genreType;
 
   const UserModel({
     required this.id,
@@ -29,7 +29,6 @@ class UserModel {
     required this.genreType,
     required this.birthdate,
     required this.weeklyPhysicalActivity,
-
     required this.waist,
     required this.wrist,
     required this.height,
@@ -55,7 +54,6 @@ class UserModel {
 
   factory UserModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
     final Map<String, dynamic>? data = document.data();
-
     return UserModel(
       id: data?['id'],
       username: data?['username'],
@@ -102,7 +100,7 @@ class UserModel {
     int? targetCalories,
     String? birthdate,
     String? updatedAt,
-    double? weight,
+    int? weight,
     int? height,
     int? waist,
     int? wrist,
