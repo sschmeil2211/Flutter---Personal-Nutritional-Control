@@ -75,7 +75,7 @@ class _TargetCaloriesModalState extends State<TargetCaloriesModal> {
 
   Future<void> onPressed(UserProvider userProvider) async {
     UserModel? newUser = userProvider.user?.copyFrom(
-      targetCalories: int.parse(this.widget.controllersProvider.targetCalories.text),
+      targetCalories: double.parse(this.widget.controllersProvider.targetCalories.text),
     );
     setState(() => loading = true);
     if(newUser == null) return;

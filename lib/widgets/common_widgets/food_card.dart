@@ -1,4 +1,4 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_this
 
 import 'package:flutter/material.dart';
 import 'package:personal_nutrition_control/models/food_model.dart';
@@ -76,6 +76,11 @@ class CardBody extends StatelessWidget {
   Widget build(BuildContext context) {
     String imagePath = 'assets/images/food_types/${this.food.foodType.toString().split('.').last}.png';
 
+    String foodCalories = this.food.calories % 1 == 0 ? this.food.calories.toInt().toString() : this.food.calories.toString();
+    String foodCarbs = this.food.carbs % 1 == 0 ? this.food.carbs.toInt().toString() : this.food.carbs.toString();
+    String foodProteins = this.food.proteins % 1 == 0 ? this.food.proteins.toInt().toString() : this.food.proteins.toString();
+    String foodFats = this.food.fats % 1 == 0 ? this.food.fats.toInt().toString() : this.food.fats.toString();
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: Row(
@@ -86,11 +91,11 @@ class CardBody extends StatelessWidget {
           Column(
             children: [
               const Text(
-                'Calorías',
+                'Calories',
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)
               ),
               Text(
-                '${this.food.calories}',
+                foodCalories,
                 style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 38, color: Colors.deepOrangeAccent)
               ),
             ],
@@ -98,21 +103,21 @@ class CardBody extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              macronutrientInfo(Colors.lightGreen, "Carbs", this.food.carbs),
-              macronutrientInfo(Colors.lightBlue, "Proteins", this.food.proteins),
-              macronutrientInfo(Colors.yellowAccent, "Fats", this.food.fats),
+              macronutrientInfo(Colors.lightGreen, "Carbs", foodCarbs),
+              macronutrientInfo(Colors.lightBlue, "Proteins", foodProteins),
+              macronutrientInfo(Colors.yellowAccent, "Fats", foodFats),
             ],
           )
         ],
       ),
     );
   }
-  Widget macronutrientInfo(Color color, String label, double value){
+  Widget macronutrientInfo(Color color, String label, String value){
     return Row(
       children: [
         Text('$label: '),
         Text(
-          '$value',
+          value,
           style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: color)
         ),
       ],

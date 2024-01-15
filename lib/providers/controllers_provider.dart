@@ -40,7 +40,11 @@ class ControllersProvider with ChangeNotifier {
 
   void setControllers(UserModel? user) {
     if (user == null) return;
-    _targetCalories.text = user.targetCalories.toString();
+    String targetCalories = user.targetCalories % 1 == 0
+        ? user.targetCalories.toString()
+        : user.targetCalories.toStringAsFixed(2);
+
+    _targetCalories.text = targetCalories;
     _heightController.text = user.height.toString();
     _weightController.text = user.weight.toString();
     _wristController.text = user.wrist.toString();

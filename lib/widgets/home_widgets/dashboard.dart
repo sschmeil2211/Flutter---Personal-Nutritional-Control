@@ -32,10 +32,10 @@ class _DiaryIndicatorsState extends State<DiaryIndicators> {
     super.initState();
   }
 
-  Color statusColor(int targetCalories, int actualValue){
+  Color statusColor(double targetCalories, double actualValue){
     Color statusColor = Colors.orangeAccent;
-    int upperRange = targetCalories + 100;
-    int lowerRange = targetCalories - 100;
+    double upperRange = targetCalories + 100;
+    double lowerRange = targetCalories - 100;
 
     setState(() => statusColor = actualValue >= lowerRange && actualValue <= upperRange
         ? Colors.deepOrangeAccent
@@ -51,9 +51,9 @@ class _DiaryIndicatorsState extends State<DiaryIndicators> {
 
     double size = MediaQuery.of(context).size.height;
 
-    int targetCalories = Provider.of<UserProvider>(context, listen: false).user?.targetCalories ?? 2000;
-    int actualValue = widget.dayToView.caloriesConsumed.toInt();
-    int limit = targetCalories + 500;
+    double targetCalories = Provider.of<UserProvider>(context, listen: false).user?.targetCalories ?? 2000;
+    double actualValue = widget.dayToView.caloriesConsumed;
+    double limit = targetCalories + 500;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -80,8 +80,8 @@ class _DiaryIndicatorsState extends State<DiaryIndicators> {
 class CaloriesIndicator extends StatelessWidget {
 
   final double size;
-  final int maximumValue;
-  final int actualValue;
+  final double maximumValue;
+  final double actualValue;
   final Color color;
   final TooltipBehavior tooltipBehavior;
 

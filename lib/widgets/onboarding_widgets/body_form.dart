@@ -31,13 +31,13 @@ class _BodyFormFormState extends State<BodyForm> {
       weight: int.parse(weightController.text),
       wrist: int.parse(wristController.text),
       waist: int.parse(waistController.text),
-      onBoardingStatus: OnBoardingStatus.finalized
+      onBoardingStatus: OnBoardingStatus.finalized,
     );
     setState(() => loading = true);
     if(newUser == null) return;
     bool successful = await userProvider.updateUser(newUser);
     if(successful)
-      Navigator.pushReplacementNamed(context, 'homeScreen');
+      Navigator.pushReplacementNamed(context, 'creationUserLoadingScreen');
     setState(() => loading = false);
   }
 

@@ -41,10 +41,10 @@ class FoodModel {
       name: data?['name'],
       addedBy: data?['addedBy'],
       foodType: getFoodType(data?['foodType']),
-      calories: data?['calories'],
-      proteins: data?['proteins'],
-      carbs: data?['carbs'],
-      fats: data?['fats'],
+      calories: (data?['calories'] as num).toDouble(),  // Conversión explícita a double
+      proteins: (data?['proteins'] as num).toDouble(),
+      carbs: (data?['carbs'] as num).toDouble(),
+      fats: (data?['fats'] as num).toDouble(),
     );
   }
 }

@@ -41,10 +41,10 @@ class DayModel {
 
     return DayModel(
       id: data?['id'],
-      caloriesConsumed: (data?['caloriesConsumed'] ?? 0).toDouble(),
-      carbsConsumed: (data?['carbsConsumed'] ?? 0).toDouble(),
-      proteinsConsumed: (data?['proteinsConsumed'] ?? 0).toDouble(),
-      fatsConsumed: (data?['fatsConsumed'] ?? 0).toDouble(),
+      caloriesConsumed: (data?['caloriesConsumed'] as num).toDouble(),
+      carbsConsumed: (data?['carbsConsumed'] as num).toDouble(),
+      proteinsConsumed: (data?['proteinsConsumed'] as num).toDouble(),
+      fatsConsumed: (data?['fatsConsumed'] as num).toDouble(),
       date: data?['date'] ?? "",
       meals: mealsMap,
     );
