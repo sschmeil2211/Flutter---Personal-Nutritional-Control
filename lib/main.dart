@@ -14,6 +14,7 @@ import 'package:personal_nutrition_control/screens/onboarding/body_onboarding_sc
 import 'package:personal_nutrition_control/screens/onboarding/personal_onboarding_screen.dart';
 import 'package:personal_nutrition_control/screens/profile_screens/information_screen.dart';
 import 'package:personal_nutrition_control/screens/profile_screens/profile_screen.dart';
+import 'package:personal_nutrition_control/screens/profile_screens/target_calories_screen.dart';
 import 'package:personal_nutrition_control/screens/sign_screen.dart';
 import 'package:personal_nutrition_control/screens/splash_screen.dart';
 
@@ -63,7 +64,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             darkTheme: ThemeData(brightness: Brightness.dark),
             themeMode: ThemeMode.dark,
-            initialRoute: 'splashScreen',
+            initialRoute: 'targetCaloriesScreen',
             routes: {
               'splashScreen': (_) => const SplashScreen(),
               'signScreen': (_) => const SignScreen(),
@@ -71,6 +72,7 @@ class _MyAppState extends State<MyApp> {
               'bodyOnboardingScreen': (_) => const BodyOnBoardingScreen(),
               'homeScreen': (_) => const HomeScreen(),
               'profileScreen': (_) => const ProfileScreen(),
+              'targetCaloriesScreen': (_) => const TargetCaloriesScreen(),
               'informationScreen': (_) => const InformationScreen(),
               'calendarScreen': (_) => const CalendarScreen(),
               'foodListScreen': (_) => const FoodListScreen(),

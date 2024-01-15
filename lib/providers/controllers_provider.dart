@@ -7,6 +7,7 @@ import 'package:personal_nutrition_control/utils/form_utils.dart';
 import 'package:personal_nutrition_control/utils/fortmatter.dart';
 
 class ControllersProvider with ChangeNotifier {
+  final TextEditingController _targetCalories = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _wristController = TextEditingController();
@@ -19,6 +20,7 @@ class ControllersProvider with ChangeNotifier {
   PhysicalActivity? _selectedPhysicalActivity;
   GenreType? _selectedGenderType;
 
+  TextEditingController get targetCalories => _targetCalories;
   TextEditingController get heightController => _heightController;
   TextEditingController get weightController => _weightController;
   TextEditingController get wristController => _wristController;
@@ -38,6 +40,7 @@ class ControllersProvider with ChangeNotifier {
 
   void setControllers(UserModel? user) {
     if (user == null) return;
+    _targetCalories.text = user.targetCalories.toString();
     _heightController.text = user.height.toString();
     _weightController.text = user.weight.toString();
     _wristController.text = user.wrist.toString();
