@@ -36,8 +36,7 @@ class _PersonalFormFormState extends State<PersonalForm> {
       birthdate: '${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}',
       onBoardingStatus: OnBoardingStatus.body
     );
-    setState(() => loading = true);
-    if(userProvider.user == null) return;
+    setState(() async => loading = true);
     bool successful = await userProvider.updateUser(newUser!);
     if(successful)
       Navigator.pushReplacementNamed(context, 'bodyOnboardingScreen');

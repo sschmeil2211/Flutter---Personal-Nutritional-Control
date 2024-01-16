@@ -8,8 +8,6 @@ import 'package:personal_nutrition_control/models/user_model.dart';
 import 'package:personal_nutrition_control/providers/controllers_provider.dart';
 import 'package:personal_nutrition_control/providers/user_provider.dart';
 import 'package:personal_nutrition_control/utils/calculations.dart';
-import 'package:personal_nutrition_control/utils/enum_utils.dart';
-import 'package:personal_nutrition_control/utils/form_utils.dart';
 import 'package:personal_nutrition_control/widgets/common_widgets/text_input.dart';
 import 'package:provider/provider.dart';
 

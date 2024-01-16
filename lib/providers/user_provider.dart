@@ -40,9 +40,9 @@ class UserProvider with ChangeNotifier {
 
   Future<String?> signOut() async => await _authService.signOut();
 
-  Future<bool> updateUser(UserModel newUser) async {
+  Future<bool> updateUser(UserModel? newUser) async {
+    if(AuthService().currentUser == null || newUser == null) return false;
     _user = newUser;
-    if(AuthService().currentUser == null || _user == null) return false;
     bool successful = await _userRepository.updateUser(_authService.currentUser!.uid, _user!);
     notifyListeners();
     return successful;

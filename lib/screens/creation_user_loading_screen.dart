@@ -12,7 +12,7 @@ class CreationUserLoadingScreen extends StatelessWidget {
   const CreationUserLoadingScreen({super.key});
 
   Future<void> updateUser(UserProvider userProvider, BuildContext context) async { 
-    UserModel newUser = userProvider.user!.copyFrom(
+    UserModel? newUser = userProvider.user?.copyFrom(
       targetCalories: Calculations(userProvider.user!).getRecommendedCalories()
     );
     bool successful = await userProvider.updateUser(newUser);
