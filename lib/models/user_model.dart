@@ -13,7 +13,7 @@ class UserModel {
   final int height;
   final int waist;
   final int wrist;
-  final int targetCalories;
+  final double targetCalories;
   final OnBoardingStatus onBoardingStatus;
   final PhysicalActivity weeklyPhysicalActivity;
   final GenreType genreType;
@@ -61,7 +61,7 @@ class UserModel {
       genreType: getGenderType(data?['genreType']),
       onBoardingStatus: getOnBoardingStatus(data?['onBoardingStatus']),
       birthdate: data?['birthdate'],
-      targetCalories: data?['targetCalories'],
+      targetCalories: (data?['targetCalories'] as num).toDouble(),
       createdAt: data?['createdAt'],
       updatedAt: data?['updatedAt'],
       weight: data?['weight'],
@@ -97,7 +97,7 @@ class UserModel {
     String? username,
     GenreType? genreType,
     OnBoardingStatus? onBoardingStatus,
-    int? targetCalories,
+    double? targetCalories,
     String? birthdate,
     String? updatedAt,
     int? weight,

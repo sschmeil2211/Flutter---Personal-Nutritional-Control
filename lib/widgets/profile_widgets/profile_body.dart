@@ -46,6 +46,11 @@ class _ProfileBodyState extends State<ProfileBody> {
           label: 'Body Information',
           onTap: () => Navigator.pushNamed(context, 'informationScreen', arguments: 1),
         ),
+        ProfileCard(
+          icon: Icons.calculate_outlined,
+          label: 'Target Calories',
+          onTap: () => Navigator.pushNamed(context, 'targetCaloriesScreen'),
+        ),
         signOutWidget(userProvider)
       ],
     );

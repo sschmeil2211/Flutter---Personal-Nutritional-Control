@@ -4,7 +4,7 @@ class ArcProgressIndicatorData {
   ArcProgressIndicatorData(this.x, this.y);
 
   final String? x;
-  final int? y;
+  final double? y;
 }
 
 class MacronutrientsIndicatorData {
