@@ -78,8 +78,8 @@ class _TargetCaloriesModalState extends State<TargetCaloriesModal> {
       targetCalories: double.parse(this.widget.controllersProvider.targetCalories.text),
     );
     setState(() => loading = true);
-    if(newUser == null) return;
-    bool successful = await userProvider.updateUser(newUser);
+    if(userProvider.user == null) return;
+    bool successful = await userProvider.updateUser(newUser!);
     if(successful)
       Navigator.of(context).pushNamedAndRemoveUntil('profileScreen', (route) => false);
     setState(() => loading = false);

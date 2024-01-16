@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:personal_nutrition_control/models/user_model.dart';
 import 'package:personal_nutrition_control/providers/controllers_provider.dart';
 import 'package:personal_nutrition_control/providers/user_provider.dart';
+import 'package:personal_nutrition_control/utils/calculations.dart';
 import 'package:personal_nutrition_control/utils/enum_utils.dart';
 import 'package:personal_nutrition_control/utils/form_utils.dart';
 import 'package:personal_nutrition_control/widgets/common_widgets/text_input.dart';
@@ -35,8 +36,8 @@ class _UserInformationFormState extends State<UserInformation> {
       birthdate: '${controllersProvider.selectedDate?.year}-${controllersProvider.selectedDate?.month}-${controllersProvider.selectedDate?.day}',
     );
     setState(() => loading = true);
-    if(newUser == null) return;
-    bool successful = await userProvider.updateUser(newUser);
+    if(userProvider.user == null) return;
+    bool successful = await userProvider.updateUser(newUser!);
     if(successful)
       Navigator.of(context).pushNamedAndRemoveUntil('profileScreen', (route) => false);
     setState(() => loading = false);
@@ -115,8 +116,8 @@ class _UserBodyState extends State<UserBody> {
       waist: int.parse(controllersProvider.waistController.text),
     );
     setState(() => loading = true);
-    if(newUser == null) return;
-    bool successful = await userProvider.updateUser(newUser);
+    if(userProvider.user == null) return;
+    bool successful = await userProvider.updateUser(newUser!);
     if(successful)
       showCupertinoModalPopup(
         context: context,
@@ -198,7 +199,10 @@ class _UpdateTargetCaloriesState extends State<UpdateTargetCalories> {
 
   Future<void> onPressed() async {
     setState(() => loading = true);
-    bool successful = await widget.userProvider.updateTargetCalories();
+    UserModel? newUser = widget.userProvider.user!.copyFrom(
+      targetCalories: Calculations(widget.userProvider.user!).getRecommendedCalories()
+    );
+    bool successful = await widget.userProvider.updateUser(newUser);
     if(successful)
       Navigator.of(context).pushNamedAndRemoveUntil('profileScreen', (route) => false);
     setState(() => loading = false);

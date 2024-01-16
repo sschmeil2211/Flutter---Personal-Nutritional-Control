@@ -37,8 +37,8 @@ class _PersonalFormFormState extends State<PersonalForm> {
       onBoardingStatus: OnBoardingStatus.body
     );
     setState(() => loading = true);
-    if(newUser == null) return;
-    bool successful = await userProvider.updateUser(newUser);
+    if(userProvider.user == null) return;
+    bool successful = await userProvider.updateUser(newUser!);
     if(successful)
       Navigator.pushReplacementNamed(context, 'bodyOnboardingScreen');
     setState(() => loading = false);

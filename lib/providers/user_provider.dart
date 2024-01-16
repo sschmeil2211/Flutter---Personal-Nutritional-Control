@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:personal_nutrition_control/models/user_model.dart';
 import 'package:personal_nutrition_control/repositories/user_repository.dart';
 import 'package:personal_nutrition_control/services/auth_service.dart';
-import 'package:personal_nutrition_control/utils/calcularions.dart';
+import 'package:personal_nutrition_control/utils/calculations.dart';
 
 class UserProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
@@ -33,15 +33,17 @@ class UserProvider with ChangeNotifier {
     if (currentUser != null) {
       _user = UserModel.newUser( id: currentUser.uid, username: username, email: email);
       await _userRepository.createUser(_user!);
+      notifyListeners();
     }
     return null;
   }
 
   Future<String?> signOut() async => await _authService.signOut();
 
-  Future<bool> updateUser(UserModel user) async {
-    if(AuthService().currentUser == null) return false;
-    bool successful = await _userRepository.updateUser(_authService.currentUser!.uid, user);
+  Future<bool> updateUser(UserModel newUser) async {
+    _user = newUser;
+    if(AuthService().currentUser == null || _user == null) return false;
+    bool successful = await _userRepository.updateUser(_authService.currentUser!.uid, _user!);
     notifyListeners();
     return successful;
   }
@@ -51,13 +53,5 @@ class UserProvider with ChangeNotifier {
     if(AuthService().currentUser == null) return;
     _user = await _userRepository.getUser(_authService.currentUser!.uid);
     if(_user == null) return;
-  }
-
-  Future<bool> updateTargetCalories() async {
-    if(_user == null) return false;
-    UserModel newUser = _user!.copyFrom(
-      targetCalories: Calculations(user!).getRecommendedCalories()
-    );
-    return await updateUser(newUser);
   }
 }

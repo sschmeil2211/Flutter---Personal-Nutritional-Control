@@ -34,8 +34,8 @@ class _BodyFormFormState extends State<BodyForm> {
       onBoardingStatus: OnBoardingStatus.finalized,
     );
     setState(() => loading = true);
-    if(newUser == null) return;
-    bool successful = await userProvider.updateUser(newUser);
+    if(userProvider.user == null) return;
+    bool successful = await userProvider.updateUser(newUser!);
     if(successful)
       Navigator.pushReplacementNamed(context, 'creationUserLoadingScreen');
     setState(() => loading = false);
