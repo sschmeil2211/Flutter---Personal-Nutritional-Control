@@ -45,7 +45,7 @@ class DayProvider with ChangeNotifier {
     try{
       return _days.firstWhere((day) {
         if(day == null) return false;
-        DateTime dateTime = getFormattedDateTime(day.date);
+        DateTime dateTime = stringToDateTime(day.date);
         return dateTime.year == selectedDate.year
             && dateTime.month == selectedDate.month
             && dateTime.day == selectedDate.day;

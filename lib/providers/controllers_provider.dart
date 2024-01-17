@@ -59,8 +59,8 @@ class ControllersProvider with ChangeNotifier {
     _waistController.text = user.waist.toString();
     _genderController.text = getGenderString(user.genderType);
     _physicalActivityController.text = getPhysicalActivityString(user.weeklyPhysicalActivity);
-    _birthdateController.text = DateFormat('d MMM y').format(getFormattedDateTime(user.birthdate));
-    _selectedDate = getFormattedDateTime(user.birthdate);
+    _birthdateController.text = DateFormat('d MMM y').format(stringToDateTime(user.birthdate));
+    _selectedDate = stringToDateTime(user.birthdate);
   }
 
   //Modal to fill Aux and save data to TextEditingControllers

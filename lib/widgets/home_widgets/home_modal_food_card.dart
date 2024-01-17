@@ -66,7 +66,7 @@ class _FoodCardModalState extends State<FoodCardModal> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Porciones"),
+              const Text("Portions"),
               Counter(
                 counter: _counter,
                 add: () => updateCounter(true),
@@ -104,19 +104,13 @@ class Counter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text("Portions"),
-        Row(
-          children: [
-            button(this.remove, Icons.remove),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(this.counter.toString()),
-            ),
-            button(this.add, Icons.add)
-          ],
-        )
+        button(this.remove, Icons.remove),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Text(this.counter.toString()),
+        ),
+        button(this.add, Icons.add)
       ],
     );
   }

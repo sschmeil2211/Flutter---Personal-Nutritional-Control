@@ -41,9 +41,7 @@ class HomeScreen extends StatelessWidget {
                       MaterialButton(
                         shape: const CircleBorder(),
                         color: Colors.white24,
-                        elevation: 2,
                         onPressed: () => Navigator.pushNamed(context, 'profileScreen'),
-                        padding: const EdgeInsets.all(10),
                         child: const Icon(Icons.person)
                       ),
                     ],

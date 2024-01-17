@@ -2,36 +2,25 @@ import 'package:intl/intl.dart';
 
 import 'package:personal_nutrition_control/models/models.dart';
 
-DateTime getFormattedDateTime(String dateString){
+DateTime stringToDateTime(String dateString){
 
   // Divide la cadena en partes usando el carácter '-'
   List<String> dateParts = dateString.split('-');
 
-  // Convierte las partes a enteros
   int year = int.parse(dateParts[0]);
   int month = int.parse(dateParts[1]);
+
+  if(dateParts[2].contains(' ')){
+    List<String> dayParts = dateParts[2].split(' ');
+    dateParts[2] = dayParts[0];
+  }
+
   int day = int.parse(dateParts[2]);
-
-  // Crea un objeto DateTime
   DateTime dateTime = DateTime(year, month, day);
-
-  // Obtiene el número del día
   return dateTime;
 }
 
-String getFormattedDay(String dateString){
-  List<String> dateParts = dateString.split('-');
-
-  // Convertir las partes a enteros
-  int year = int.parse(dateParts[0]);
-  int month = int.parse(dateParts[1]);
-  int day = int.parse(dateParts[2]);
-
-  // Crear un objeto DateTime
-  DateTime dateTime = DateTime(year, month, day);
-  // Formatear la fecha en el formato deseado
-  return DateFormat.yMMMMd().format(dateTime);
-}
+String getFormattedDateTime(DateTime dateTime) => DateFormat.yMMMMd().format(dateTime);
 
 GenderType getGenderType(String? genderTypeString) {
   switch (genderTypeString) {

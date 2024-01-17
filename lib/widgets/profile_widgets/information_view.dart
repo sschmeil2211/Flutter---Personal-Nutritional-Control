@@ -45,38 +45,36 @@ class _UserInformationFormState extends State<UserInformation> {
     UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
     return Consumer<ControllersProvider>(
-      builder: (context, controllersProvider, child){
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            inputField(
-              Icons.person,
-              'Gender',
-              controllersProvider.genderController,
-              () async => await controllersProvider.onPressedGenderModal(context)
+      builder: (context, controllersProvider, child) => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          inputField(
+            Icons.person,
+            'Gender',
+            controllersProvider.genderController,
+            () async => await controllersProvider.onPressedGenderModal(context)
+          ),
+          inputField(
+            Icons.calendar_month,
+            'Birthdate',
+            controllersProvider.birthdateController,
+            () async => await controllersProvider.onPressedCalendarModal(context)
+          ),
+          inputField(
+            Icons.timer,
+            'Physical activity per week (hs)',
+            controllersProvider.physicalActivityController,
+            () async => await controllersProvider.onPressedPhysicalModal(context)
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: Indicator(
+              isLoading: loading,
+              onPressed: () async => await updateUser(userProvider, controllersProvider),
             ),
-            inputField(
-              Icons.calendar_month,
-              'Birthdate',
-              controllersProvider.birthdateController,
-              () async => await controllersProvider.onPressedCalendarModal(context)
-            ),
-            inputField(
-              Icons.timer,
-              'Physical activity per week (hs)',
-              controllersProvider.physicalActivityController,
-              () async => await controllersProvider.onPressedPhysicalModal(context)
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              child: Indicator(
-                isLoading: loading,
-                onPressed: () async => await updateUser(userProvider, controllersProvider),
-              ),
-            )
-          ],
-        );
-      },
+          )
+        ],
+      )
     );
   }
 

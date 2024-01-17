@@ -16,20 +16,18 @@ class FoodListScreen extends StatelessWidget {
         ),        
       ),
       body: SafeArea(
-        child: Center(
-          child: Consumer<FoodProvider>(
-            builder: (context, foodProvider, child) => ListView.builder(
-                shrinkWrap: true,
-                itemCount: foodProvider.foods.length,
-                itemBuilder: (context, index) => FoodCard(
-                  foodModel: foodProvider.foods[index],
-                  child: const SizedBox(
-                    height: 200,
-                    width: double.infinity,
-                    child: Center(child: Text("Edicion de comidas")),
-                  ),
-                )
-            ),
+        child: Consumer<FoodProvider>(
+          builder: (context, foodProvider, child) => ListView.builder(
+            shrinkWrap: true,
+            itemCount: foodProvider.foods.length,
+            itemBuilder: (context, index) => FoodCard(
+              foodModel: foodProvider.foods[index],
+              child: const SizedBox(
+                height: 200,
+                width: double.infinity,
+                child: Center(child: Text("Edicion de comidas")),
+              ),
+            )
           ),
         ),
       ),

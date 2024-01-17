@@ -19,7 +19,7 @@ class Calculations {
         this.weight = user.weight,
         /*this.wrist = user.wrist,
         this.waist = user.waist,*/
-        this.birthDate = getFormattedDateTime(user.birthdate),
+        this.birthDate = stringToDateTime(user.birthdate),
         this.physicalActivity = user.weeklyPhysicalActivity;
 
   //Body Mass Index
