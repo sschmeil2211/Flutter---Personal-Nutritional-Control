@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:personal_nutrition_control/models/day_model.dart';
+import 'package:personal_nutrition_control/models/models.dart';
 
 class DayRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

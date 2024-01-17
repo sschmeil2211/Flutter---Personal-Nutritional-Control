@@ -1,14 +1,35 @@
-import 'package:personal_nutrition_control/models/food_model.dart';
-import 'package:personal_nutrition_control/models/user_model.dart';
+import 'package:intl/intl.dart';
 
-GenreType getGenderType(String? genreTypeString) {
-  switch (genreTypeString) {
+import 'package:personal_nutrition_control/models/models.dart';
+
+DateTime stringToDateTime(String dateString){
+
+  // Divide la cadena en partes usando el carácter '-'
+  List<String> dateParts = dateString.split('-');
+
+  int year = int.parse(dateParts[0]);
+  int month = int.parse(dateParts[1]);
+
+  if(dateParts[2].contains(' ')){
+    List<String> dayParts = dateParts[2].split(' ');
+    dateParts[2] = dayParts[0];
+  }
+
+  int day = int.parse(dateParts[2]);
+  DateTime dateTime = DateTime(year, month, day);
+  return dateTime;
+}
+
+String getFormattedDateTime(DateTime dateTime) => DateFormat.yMMMMd().format(dateTime);
+
+GenderType getGenderType(String? genderTypeString) {
+  switch (genderTypeString) {
     case 'GenreType.male':
-      return GenreType.male;
+      return GenderType.male;
     case 'GenreType.female':
-      return GenreType.female;
+      return GenderType.female;
     default:
-      return GenreType.male; // Valor predeterminado o manejo de casos inesperados
+      return GenderType.male; // Valor predeterminado o manejo de casos inesperados
   }
 }
 
@@ -54,7 +75,7 @@ FoodType getFoodType(String? foodTypeString) {
   }
 }
 
-String getGenderString(GenreType gender) {
+String getGenderString(GenderType gender) {
   String enumString = gender.toString().split('.').last;
   return enumString[0].toUpperCase() + enumString.substring(1);
 }

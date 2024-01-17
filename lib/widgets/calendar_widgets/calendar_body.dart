@@ -1,20 +1,13 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/day_model.dart';
-import 'package:personal_nutrition_control/models/food_model.dart';
-import 'package:personal_nutrition_control/providers/food_provider.dart';
-import 'package:personal_nutrition_control/extensions/extensions.dart';
-import 'package:personal_nutrition_control/utils/fortmatter.dart';
-import 'package:personal_nutrition_control/widgets/calendar_widgets/calendar_picker.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/food_card.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/no_data.dart';
 import 'package:provider/provider.dart';
-import 'package:personal_nutrition_control/providers/day_provider.dart';
-import 'package:personal_nutrition_control/providers/user_provider.dart';
 
-import 'package:personal_nutrition_control/widgets/home_widgets/dashboard.dart';
+import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/extensions/extensions.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
+import 'package:personal_nutrition_control/widgets/widgets.dart';
 
 class CalendarBody extends StatefulWidget {
   const CalendarBody({super.key});
@@ -34,12 +27,10 @@ class _CalendarBodyState extends State<CalendarBody> {
 
   Future<void> onPressed(DayProvider dayProvider) async {
     DateTime now = DateTime.now();
-
     String? createdAt = Provider.of<UserProvider>(context, listen: false).user?.createdAt;
+    DateTime firstDate = stringToDateTime(createdAt ?? '${now.year}-${now.month}-${now.day}');
 
-    DateTime firstDate = getFormattedDateTime(createdAt ?? '${now.year}-${now.month}-${now.day}');
-
-    final DateTime? picked = await showDatePicker(
+    DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: firstDate,
@@ -56,24 +47,31 @@ class _CalendarBodyState extends State<CalendarBody> {
       builder: (context, dayProvider, child){
         DayModel? selectedDay = dayProvider.getSpecificDay(selectedDate ?? DateTime.now());
 
-        String day = getFormattedDay('${selectedDate?.year}-${selectedDate?.month}-${selectedDate?.day}');
+        String day = getFormattedDateTime(selectedDate ?? DateTime.now());
 
         return Column(
           children: [
-            CalendarPicker(
-              day: day,
-              onPressed: () async => onPressed(dayProvider),
+            MaterialButton(
+              elevation: 0,
+              onPressed: () => onPressed(dayProvider),
+              child: Text(
+                day,
+                style: const TextStyle(fontSize: 20),
+              )
             ),
             if(selectedDay == null)
               const Expanded(
                 child: NoData(label: "You have no consumption this day")
               )
             else
-              Column(
-                children: [
-                  DiaryIndicators(dayToView: selectedDay),
-                  MealTimeCard(dayToView: selectedDay)
-                ]
+              Padding(
+                padding: const EdgeInsets.only(top: 25),
+                child: Column(
+                  children: [
+                    DiaryIndicators(dayToView: selectedDay),
+                    MealTimeCard(dayToView: selectedDay)
+                  ]
+                ),
               )
           ],
         );
@@ -96,7 +94,7 @@ class MealTimeCard extends StatefulWidget {
 
 class _MealTimeCardState extends State<MealTimeCard> {
 
-  final List<String> mealTypes = ['breakfast', 'lunch', 'snack', 'dinner', 'appetizer'];
+  List<String> mealTypes = ['breakfast', 'lunch', 'snack', 'dinner', 'appetizer'];
 
   int currentPage = 0;
 

@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:personal_nutrition_control/models/day_model.dart';
-import 'package:personal_nutrition_control/models/food_model.dart';
-import 'package:personal_nutrition_control/repositories/day_repository.dart';
-import 'package:personal_nutrition_control/services/auth_service.dart';
-import 'package:personal_nutrition_control/utils/fortmatter.dart';
 import 'package:uuid/uuid.dart';
+
+import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/repositories/repositories.dart';
+import 'package:personal_nutrition_control/services/auth_service.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
 
 class DayProvider with ChangeNotifier {
   final DayRepository _dayRepository = DayRepository();
@@ -45,7 +45,7 @@ class DayProvider with ChangeNotifier {
     try{
       return _days.firstWhere((day) {
         if(day == null) return false;
-        DateTime dateTime = getFormattedDateTime(day.date);
+        DateTime dateTime = stringToDateTime(day.date);
         return dateTime.year == selectedDate.year
             && dateTime.month == selectedDate.month
             && dateTime.day == selectedDate.day;

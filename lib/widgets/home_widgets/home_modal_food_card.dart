@@ -1,4 +1,4 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_this
 
 import 'package:flutter/material.dart';
 
@@ -51,7 +51,7 @@ class _FoodCardModalState extends State<FoodCardModal> {
           DropdownButton(
             dropdownColor: Colors.black87,
             borderRadius: BorderRadius.circular(10),
-            hint: Text("Meal time"),
+            hint: const Text("Meal time"),
             isExpanded: true,
             value: mealTimeType,
             onChanged: onChanged,
@@ -66,7 +66,7 @@ class _FoodCardModalState extends State<FoodCardModal> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Porciones"),
+              const Text("Portions"),
               Counter(
                 counter: _counter,
                 add: () => updateCounter(true),
@@ -104,19 +104,13 @@ class Counter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text("Porciones"),
-        Row(
-          children: [
-            button(this.remove, Icons.remove),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(this.counter.toString()),
-            ),
-            button(this.add, Icons.add)
-          ],
-        )
+        button(this.remove, Icons.remove),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Text(this.counter.toString()),
+        ),
+        button(this.add, Icons.add)
       ],
     );
   }

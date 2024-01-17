@@ -1,9 +1,10 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 import 'package:flutter/material.dart';
+
 import 'package:personal_nutrition_control/services/auth_service.dart';
 
-class SplashScreenController extends ChangeNotifier {
+class SplashScreenProvider extends ChangeNotifier {
   late bool _isLoading;
 
   Future<void> startAnimation() async {

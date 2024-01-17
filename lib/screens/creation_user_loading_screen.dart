@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:personal_nutrition_control/models/user_model.dart';
-import 'package:personal_nutrition_control/providers/splash_screen_provider.dart';
-import 'package:personal_nutrition_control/providers/user_provider.dart';
-import 'package:personal_nutrition_control/utils/calculations.dart';
 import 'package:provider/provider.dart';
+
+import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
 
 class CreationUserLoadingScreen extends StatelessWidget {
   const CreationUserLoadingScreen({super.key});
@@ -22,20 +22,20 @@ class CreationUserLoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Center(
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Builder(
                 builder: (context) {
-                  SplashScreenController splashScreenController = Provider.of<SplashScreenController>(context, listen: false);
+                  SplashScreenProvider splashScreenController = Provider.of<SplashScreenProvider>(context, listen: false);
                   UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
-
+            
                   splashScreenController.startAnimation();
                   splashScreenController.endAnimationWhenCreatingUser(() => updateUser(userProvider, context));
-
+            
                   return Lottie.asset('assets/lottie_animations/splash_animation.json');
                 },
               ),
@@ -50,7 +50,7 @@ class CreationUserLoadingScreen extends StatelessWidget {
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }

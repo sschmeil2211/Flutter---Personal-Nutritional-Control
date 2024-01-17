@@ -1,10 +1,10 @@
 // ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_this
 
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/providers/user_provider.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/snack_bars.dart';
 import 'package:provider/provider.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/text_input.dart';
+
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/widgets/widgets.dart';
 
 class SignInForm extends StatefulWidget {
 

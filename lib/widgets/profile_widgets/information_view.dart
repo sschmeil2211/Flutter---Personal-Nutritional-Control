@@ -3,13 +3,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:personal_nutrition_control/models/user_model.dart';
-import 'package:personal_nutrition_control/providers/controllers_provider.dart';
-import 'package:personal_nutrition_control/providers/user_provider.dart';
-import 'package:personal_nutrition_control/utils/calculations.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/text_input.dart';
 import 'package:provider/provider.dart';
+
+import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
+import 'package:personal_nutrition_control/widgets/widgets.dart';
 
 class UserInformation extends StatefulWidget {
   final UserProvider userProvider;
@@ -30,7 +29,7 @@ class _UserInformationFormState extends State<UserInformation> {
   Future<void> updateUser(UserProvider userProvider, ControllersProvider controllersProvider) async {
     UserModel? newUser = userProvider.user?.copyFrom(
       weeklyPhysicalActivity: controllersProvider.selectedPhysicalActivity,
-      genreType: controllersProvider.selectedGenderType,
+      genderType: controllersProvider.selectedGenderType,
       birthdate: '${controllersProvider.selectedDate?.year}-${controllersProvider.selectedDate?.month}-${controllersProvider.selectedDate?.day}',
     );
     setState(() => loading = true);
@@ -46,38 +45,36 @@ class _UserInformationFormState extends State<UserInformation> {
     UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
     return Consumer<ControllersProvider>(
-      builder: (context, controllersProvider, child){
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            inputField(
-              Icons.person,
-              'Gender',
-              controllersProvider.genderController,
-              () async => await controllersProvider.onPressedGenderModal(context)
+      builder: (context, controllersProvider, child) => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          inputField(
+            Icons.person,
+            'Gender',
+            controllersProvider.genderController,
+            () async => await controllersProvider.onPressedGenderModal(context)
+          ),
+          inputField(
+            Icons.calendar_month,
+            'Birthdate',
+            controllersProvider.birthdateController,
+            () async => await controllersProvider.onPressedCalendarModal(context)
+          ),
+          inputField(
+            Icons.timer,
+            'Physical activity per week (hs)',
+            controllersProvider.physicalActivityController,
+            () async => await controllersProvider.onPressedPhysicalModal(context)
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: Indicator(
+              isLoading: loading,
+              onPressed: () async => await updateUser(userProvider, controllersProvider),
             ),
-            inputField(
-              Icons.calendar_month,
-              'Birthdate',
-              controllersProvider.birthdateController,
-              () async => await controllersProvider.onPressedCalendarModal(context)
-            ),
-            inputField(
-              Icons.timer,
-              'Physical activity per week (hs)',
-              controllersProvider.physicalActivityController,
-              () async => await controllersProvider.onPressedPhysicalModal(context)
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              child: Indicator(
-                isLoading: loading,
-                onPressed: () async => await updateUser(userProvider, controllersProvider),
-              ),
-            )
-          ],
-        );
-      },
+          )
+        ],
+      )
     );
   }
 
@@ -220,7 +217,7 @@ class _UpdateTargetCaloriesState extends State<UpdateTargetCalories> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("data"),
+                const Text('Your information has changed, we need to recalculate your target calories.'),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: updateButton(),

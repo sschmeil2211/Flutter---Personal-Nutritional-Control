@@ -1,13 +1,12 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 import 'dart:async';
-import 'dart:math';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:personal_nutrition_control/models/user_model.dart';
-import 'package:personal_nutrition_control/repositories/user_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/repositories/repositories.dart';
 import 'package:personal_nutrition_control/services/auth_service.dart';
-import 'package:personal_nutrition_control/utils/calculations.dart';
 
 class UserProvider with ChangeNotifier {
   final AuthService _authService = AuthService();

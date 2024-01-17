@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:personal_nutrition_control/models/user_model.dart';
-import 'package:personal_nutrition_control/providers/user_provider.dart';
-import 'package:personal_nutrition_control/utils/enum_utils.dart';
-import 'package:personal_nutrition_control/utils/form_utils.dart';
-import 'package:personal_nutrition_control/utils/fortmatter.dart';
+
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
+import 'package:personal_nutrition_control/models/models.dart';
 
 class ControllersProvider with ChangeNotifier {
-  final TextEditingController _targetCalories = TextEditingController();
+  //TextEditingControllers
+  final TextEditingController _targetCaloriesController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _wristController = TextEditingController();
@@ -16,11 +16,13 @@ class ControllersProvider with ChangeNotifier {
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _birthdateController = TextEditingController();
 
+  //Auxiliaries
   DateTime? _selectedDate;
   PhysicalActivity? _selectedPhysicalActivity;
-  GenreType? _selectedGenderType;
+  GenderType? _selectedGenderType;
 
-  TextEditingController get targetCalories => _targetCalories;
+  //Getters
+  TextEditingController get targetCaloriesController => _targetCaloriesController;
   TextEditingController get heightController => _heightController;
   TextEditingController get weightController => _weightController;
   TextEditingController get wristController => _wristController;
@@ -30,30 +32,38 @@ class ControllersProvider with ChangeNotifier {
   TextEditingController get birthdateController => _birthdateController;
 
   DateTime? get selectedDate => _selectedDate;
-  GenreType? get selectedGenderType => _selectedGenderType;
+  GenderType? get selectedGenderType => _selectedGenderType;
   PhysicalActivity? get selectedPhysicalActivity => _selectedPhysicalActivity;
 
-  void setUserProvider(UserProvider userProvider){
-    if(userProvider.user == null) return;
-    setControllers(userProvider.user);
-  }
+  bool get isTargetCaloriesEmpty => _targetCaloriesController.text.isEmpty;
+  bool get isHeightEmpty => _heightController.text.isEmpty;
+  bool get isWeightEmpty => _weightController.text.isEmpty;
+  bool get isWristEmpty => _wristController.text.isEmpty;
+  bool get isWaistEmpty => _waistController.text.isEmpty;
+  bool get isGenderEmpty => _genderController.text.isEmpty;
+  bool get isPhysicalActivityEmpty => _physicalActivityController.text.isEmpty;
+  bool get isBirthdateEmpty => _birthdateController.text.isEmpty;
 
-  void setControllers(UserModel? user) {
-    if (user == null) return;
+
+  void setUserProvider(UserProvider userProvider){
+    UserModel? user = userProvider.user;
+    if(user == null) return;
     String targetCalories = user.targetCalories % 1 == 0
         ? user.targetCalories.toString()
         : user.targetCalories.toStringAsFixed(2);
 
-    _targetCalories.text = targetCalories;
+    _targetCaloriesController.text = targetCalories;
     _heightController.text = user.height.toString();
     _weightController.text = user.weight.toString();
     _wristController.text = user.wrist.toString();
     _waistController.text = user.waist.toString();
-    _genderController.text = getGenderString(user.genreType);
+    _genderController.text = getGenderString(user.genderType);
     _physicalActivityController.text = getPhysicalActivityString(user.weeklyPhysicalActivity);
-    _birthdateController.text = DateFormat('d MMM y').format(getFormattedDateTime(user.birthdate));
-    _selectedDate = getFormattedDateTime(user.birthdate);
+    _birthdateController.text = DateFormat('d MMM y').format(stringToDateTime(user.birthdate));
+    _selectedDate = stringToDateTime(user.birthdate);
   }
+
+  //Modal to fill Aux and save data to TextEditingControllers
 
   Future<void> onPressedCalendarModal(BuildContext context) async {
     DateTime? result = await dateResult(context, selectedDate);
@@ -64,7 +74,7 @@ class ControllersProvider with ChangeNotifier {
   }
 
   Future<void> onPressedGenderModal(BuildContext context) async {
-    GenreType? result = await genderResult(context);
+    GenderType? result = await genderResult(context);
     if(result == null) return;
     _selectedGenderType = result;
     genderController.text = getGenderString(_selectedGenderType!);

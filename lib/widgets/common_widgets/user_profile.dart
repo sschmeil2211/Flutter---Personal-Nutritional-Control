@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/providers/user_provider.dart';
-import 'package:personal_nutrition_control/utils/image_paths.dart';
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class UserProfile extends StatelessWidget {

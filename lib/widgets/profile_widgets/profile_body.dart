@@ -1,11 +1,10 @@
 // ignore_for_file: unnecessary_this, curly_braces_in_flow_control_structures
 
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/providers/user_provider.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/snack_bars.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/user_profile.dart';
 import 'package:provider/provider.dart';
-import 'package:personal_nutrition_control/utils/image_paths.dart';
+
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/widgets/widgets.dart';
 
 class ProfileBody extends StatefulWidget {
   const ProfileBody({super.key});

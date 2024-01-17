@@ -1,7 +1,8 @@
 // ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_this
 
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/food_model.dart';
+
+import 'package:personal_nutrition_control/models/models.dart';
 
 class FoodCard extends StatelessWidget {
   final int? portions;
@@ -41,7 +42,6 @@ class FoodCard extends StatelessWidget {
                 children: [
                   Text(
                     this.foodModel.name,
-                    textAlign: TextAlign.center,
                     style: const TextStyle(fontWeight: FontWeight.w800,fontSize: 18)
                   ),
                   if(this.portions != null)

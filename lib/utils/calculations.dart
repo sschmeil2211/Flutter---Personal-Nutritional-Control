@@ -2,8 +2,8 @@
 
 import 'dart:math';
 
-import 'package:personal_nutrition_control/models/user_model.dart';
-import 'package:personal_nutrition_control/utils/fortmatter.dart';
+import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
 
 class Calculations {
   final UserModel user;
@@ -19,7 +19,7 @@ class Calculations {
         this.weight = user.weight,
         /*this.wrist = user.wrist,
         this.waist = user.waist,*/
-        this.birthDate = getFormattedDateTime(user.birthdate),
+        this.birthDate = stringToDateTime(user.birthdate),
         this.physicalActivity = user.weeklyPhysicalActivity;
 
   //Body Mass Index
@@ -58,12 +58,12 @@ class Calculations {
   }
 
   //Harris-Benedict (basal Metabolism Rate)
-  double get userBMR => user.genreType == GenreType.male
+  double get userBMR => user.genderType == GenderType.male
       ? (66.4730 + (13.7516 * this.weight) + (5.0033 * this.height) - (6.7550 * userAge))
       : (655.0955 + (9.5634 * this.weight) + (1.8496 * this.height) - (4.6756 * userAge));
 
   double getRecommendedCalories() {
-    double recommendedDiaryCalories = user.genreType == GenreType.male
+    double recommendedDiaryCalories = user.genderType == GenderType.male
       ? userBMR * maleTMR
       : userBMR * femaleTMR;
     if(userBMI > 25)

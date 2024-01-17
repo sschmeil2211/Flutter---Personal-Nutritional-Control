@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/user_model.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/text_input.dart';
+
+import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/widgets/widgets.dart';
 
 Future<PhysicalActivity?> physicalActivityResult(BuildContext context) async => await showModalBottomSheet<PhysicalActivity>(
   context: context,
@@ -10,7 +11,7 @@ Future<PhysicalActivity?> physicalActivityResult(BuildContext context) async => 
   ),
 );
 
-Future<GenreType?> genderResult(BuildContext context) async => await showModalBottomSheet<GenreType>(
+Future<GenderType?> genderResult(BuildContext context) async => await showModalBottomSheet<GenderType>(
   context: context,
   builder: (_) => const GenderSelector(),
   shape: RoundedRectangleBorder(

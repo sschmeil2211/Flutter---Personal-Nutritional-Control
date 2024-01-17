@@ -1,12 +1,12 @@
+// ignore_for_file: unnecessary_this, curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/widgets/home_widgets/home_modal_food_card.dart';
 import 'package:provider/provider.dart';
-import 'package:personal_nutrition_control/models/food_model.dart';
-import 'package:personal_nutrition_control/providers/day_provider.dart';
-import 'package:personal_nutrition_control/providers/food_provider.dart';
-import 'package:personal_nutrition_control/utils/image_paths.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/animations.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/food_card.dart';
+
+import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
+import 'package:personal_nutrition_control/widgets/widgets.dart';
 
 class AddTodayFood extends StatefulWidget {
   const AddTodayFood({super.key});
@@ -45,7 +45,6 @@ class _AddTodayFoodState extends State<AddTodayFood>{
   }
 }
 
-///Food Types grid
 class FoodTypeGrid extends StatelessWidget {
 
   final Function(FoodType) onPressed;
@@ -62,7 +61,6 @@ class FoodTypeGrid extends StatelessWidget {
     return Column(
       children: [
         Container(
-          alignment: Alignment.center,
           padding: const EdgeInsets.only(top: 20),
           child: const Text("Add to today's meal"),
         ),
@@ -71,11 +69,11 @@ class FoodTypeGrid extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           crossAxisCount: 3,
           childAspectRatio: 1.3,
-          mainAxisSpacing: 10,
           children: List.generate(10, (index) {
+
             final FoodType foodType = FoodType.values[index];
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
               child: MaterialButton(
                 color: Colors.white10,
                 onPressed: () => this.onPressed(foodType),
@@ -89,7 +87,6 @@ class FoodTypeGrid extends StatelessWidget {
   }
 }
 
-///Foods List
 class FoodList extends StatelessWidget {
 
   final Function() onPressReturnIcon;
@@ -101,51 +98,50 @@ class FoodList extends StatelessWidget {
     super.key
   });
 
+  Future<void> onPressed(BuildContext context, String mealType, FoodModel food, int portions) async {
+    DayProvider dayProvider = Provider.of<DayProvider>(context, listen: false);
+    await dayProvider.handleDay(mealType, food, portions);
+    portions = 1;
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     int portions = 1;
     String mealType = 'appetizer';
 
+    FoodProvider foodProvider = Provider.of<FoodProvider>(context, listen: false);
+    List<FoodModel> filteredFoods = foodProvider.getFoodsByType(this.selectedFoodType);
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
+        Container(
+          alignment: Alignment.centerLeft,
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           child: IconButton(
             onPressed: this.onPressReturnIcon,
             icon: const Icon(Icons.arrow_back_ios),
           ),
         ),
-        Consumer<FoodProvider>(
-          builder: (context, foodProvider, child){
+        if(filteredFoods.isEmpty)
+          NoData(label: 'No food found')
+        else
+          Column(
+            children: List.generate(filteredFoods.length, (index) {
+              FoodModel food = filteredFoods[index];
 
-            List<FoodModel> filteredFoods = foodProvider.getFoodsByType(this.selectedFoodType);
-            if(filteredFoods.isEmpty)
-              return Container();
-
-            return Column(
-              children: List.generate(filteredFoods.length, (index) {
-                DayProvider dayProvider = Provider.of<DayProvider>(context, listen: false);
-                FoodModel food = filteredFoods[index];
-
-                return FoodCard(
-                  editable: true,
-                  foodModel: food,
-                  child: FoodCardModal(
-                    buttonLabel: "Guardar",
-                    onChangeMealTime: (value) => mealType = value,
-                    onCounterChanged: (value) => portions = value,
-                    onPressed: () async {
-                      await dayProvider.handleDay(mealType, food, portions);
-                      portions = 1;
-                      Navigator.pop(context);
-                    },
-                  ),
-                );
-              }),
-            );
-          },
-        ),
+              return FoodCard(
+                editable: true,
+                foodModel: food,
+                child: FoodCardModal(
+                  buttonLabel: "Save",
+                  onChangeMealTime: (value) => mealType = value,
+                  onCounterChanged: (value) => portions = value,
+                  onPressed: () => onPressed(context, mealType, food, portions),
+                ),
+              );
+            }),
+          )
       ],
     );
   }

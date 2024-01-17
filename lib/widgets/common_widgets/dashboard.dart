@@ -1,12 +1,11 @@
 // ignore_for_file: unnecessary_this, curly_braces_in_flow_control_structures
 
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/dashboard_models.dart';
-import 'package:personal_nutrition_control/models/day_model.dart';
-import 'package:personal_nutrition_control/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/providers/providers.dart';
 
 class DiaryIndicators extends StatefulWidget {
   final DayModel dayToView;
@@ -101,7 +100,7 @@ class CaloriesIndicator extends StatelessWidget {
       height: this.size,
       width: this.size,
       child: SfCircularChart(
-        margin: EdgeInsets.all(0),
+        margin: const EdgeInsets.all(0),
         series: <CircularSeries>[
           RadialBarSeries<ArcProgressIndicatorData, String>(
             xValueMapper: (data, _) => data.x,
@@ -162,7 +161,7 @@ class MacronutrientsIndicator extends StatelessWidget {
       height: this.size,
       width: this.size,
       child: SfCircularChart(
-        margin: EdgeInsets.all(0),
+        margin: const EdgeInsets.all(0),
         tooltipBehavior: this.tooltipBehavior,
         series: <PieSeries<MacronutrientsIndicatorData, String>>[
           PieSeries<MacronutrientsIndicatorData, String>(

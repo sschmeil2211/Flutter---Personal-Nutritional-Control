@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:personal_nutrition_control/exceptions/auth_exceptions.dart';
 
 class AuthService {
   final auth.FirebaseAuth _authInstance = auth.FirebaseAuth.instance;
