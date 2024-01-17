@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/providers/food_provider.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/food_card.dart';
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class FoodListScreen extends StatelessWidget {

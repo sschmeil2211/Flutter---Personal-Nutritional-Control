@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:personal_nutrition_control/models/user_model.dart';
+import 'package:personal_nutrition_control/models/models.dart';
 
 class InputField extends StatelessWidget {
 
@@ -67,11 +67,11 @@ class GenderSelector extends StatelessWidget {
         children: [
           ListTile(
             title: const Text('Male'),
-            onTap: () => Navigator.pop(context, GenreType.male) ,
+            onTap: () => Navigator.pop(context, GenderType.male) ,
           ),
           ListTile(
             title: const Text('Female'),
-            onTap: () => Navigator.pop(context, GenreType.female) ,
+            onTap: () => Navigator.pop(context, GenderType.female) ,
           ),
           const Padding(
             padding: EdgeInsets.only(top: 20, bottom: 10),

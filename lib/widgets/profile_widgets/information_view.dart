@@ -3,13 +3,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:personal_nutrition_control/models/user_model.dart';
-import 'package:personal_nutrition_control/providers/controllers_provider.dart';
-import 'package:personal_nutrition_control/providers/user_provider.dart';
-import 'package:personal_nutrition_control/utils/calculations.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/text_input.dart';
 import 'package:provider/provider.dart';
+
+import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
+import 'package:personal_nutrition_control/widgets/widgets.dart';
 
 class UserInformation extends StatefulWidget {
   final UserProvider userProvider;
@@ -30,7 +29,7 @@ class _UserInformationFormState extends State<UserInformation> {
   Future<void> updateUser(UserProvider userProvider, ControllersProvider controllersProvider) async {
     UserModel? newUser = userProvider.user?.copyFrom(
       weeklyPhysicalActivity: controllersProvider.selectedPhysicalActivity,
-      genreType: controllersProvider.selectedGenderType,
+      genderType: controllersProvider.selectedGenderType,
       birthdate: '${controllersProvider.selectedDate?.year}-${controllersProvider.selectedDate?.month}-${controllersProvider.selectedDate?.day}',
     );
     setState(() => loading = true);
@@ -220,7 +219,7 @@ class _UpdateTargetCaloriesState extends State<UpdateTargetCalories> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("data"),
+                const Text('Your information has changed, we need to recalculate your target calories.'),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: updateButton(),

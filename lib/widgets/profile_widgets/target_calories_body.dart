@@ -1,12 +1,12 @@
-// ignore_for_file: unnecessary_this
+// ignore_for_file: unnecessary_this, curly_braces_in_flow_control_structures
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/user_model.dart';
-import 'package:personal_nutrition_control/providers/controllers_provider.dart';
-import 'package:personal_nutrition_control/providers/user_provider.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/text_input.dart';
 import 'package:provider/provider.dart';
+
+import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/widgets/widgets.dart';
 
 class TargetCaloriesBody extends StatelessWidget {
   const TargetCaloriesBody({super.key});
@@ -36,7 +36,7 @@ class TargetCaloriesBody extends StatelessWidget {
           ),
         ),
         TargetCaloriesInput(
-          targetCaloriesController: controllersProvider.targetCalories,
+          targetCaloriesController: controllersProvider.targetCaloriesController,
           readOnly: true,
         ),
         Padding(
@@ -75,7 +75,7 @@ class _TargetCaloriesModalState extends State<TargetCaloriesModal> {
 
   Future<void> onPressed(UserProvider userProvider) async {
     UserModel? newUser = userProvider.user?.copyFrom(
-      targetCalories: double.parse(this.widget.controllersProvider.targetCalories.text),
+      targetCalories: double.parse(this.widget.controllersProvider.targetCaloriesController.text),
     );
     setState(() => loading = true);
     bool successful = await userProvider.updateUser(newUser);
@@ -101,7 +101,7 @@ class _TargetCaloriesModalState extends State<TargetCaloriesModal> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TargetCaloriesInput(
-                  targetCaloriesController: this.widget.controllersProvider.targetCalories,
+                  targetCaloriesController: this.widget.controllersProvider.targetCaloriesController,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),

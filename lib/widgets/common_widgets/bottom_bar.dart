@@ -1,5 +1,7 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/menu_model.dart';
+import 'package:personal_nutrition_control/models/models.dart';
 import 'package:rive/rive.dart';
 
 class BottomBar extends StatefulWidget {

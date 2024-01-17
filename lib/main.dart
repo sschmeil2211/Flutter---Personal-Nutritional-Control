@@ -2,25 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:personal_nutrition_control/providers/controllers_provider.dart';
-import 'package:personal_nutrition_control/providers/day_provider.dart';
-import 'package:personal_nutrition_control/providers/food_provider.dart';
-import 'package:personal_nutrition_control/providers/splash_screen_provider.dart';
-import 'package:personal_nutrition_control/providers/user_provider.dart';
-import 'package:personal_nutrition_control/screens/calendar_screen.dart';
-import 'package:personal_nutrition_control/screens/creation_user_loading_screen.dart';
-import 'package:personal_nutrition_control/screens/food_list_screen.dart';
-import 'package:personal_nutrition_control/screens/home_screen.dart';
-import 'package:personal_nutrition_control/screens/onboarding/body_onboarding_screen.dart';
-import 'package:personal_nutrition_control/screens/onboarding/personal_onboarding_screen.dart';
-import 'package:personal_nutrition_control/screens/profile_screens/information_screen.dart';
-import 'package:personal_nutrition_control/screens/profile_screens/profile_screen.dart';
-import 'package:personal_nutrition_control/screens/profile_screens/target_calories_screen.dart';
-import 'package:personal_nutrition_control/screens/sign_screen.dart';
-import 'package:personal_nutrition_control/screens/splash_screen.dart';
-
 import 'package:provider/provider.dart';
 
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/screens/screens.dart';
 import 'package:personal_nutrition_control/firebase_options.dart';
 
 Future<void> main() async {
@@ -43,7 +28,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => SplashScreenController()),
+        ChangeNotifierProvider(create: (_) => SplashScreenProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => FoodProvider()),
         ChangeNotifierProvider(create: (_) => DayProvider()),

@@ -1,6 +1,6 @@
 // ignore_for_file: unnecessary_this
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:personal_nutrition_control/utils/enum_utils.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
 
 class UserModel {
   final String id;
@@ -16,7 +16,7 @@ class UserModel {
   final double targetCalories;
   final OnBoardingStatus onBoardingStatus;
   final PhysicalActivity weeklyPhysicalActivity;
-  final GenreType genreType;
+  final GenderType genderType;
 
   const UserModel({
     required this.id,
@@ -26,7 +26,7 @@ class UserModel {
     required this.createdAt,
     required this.updatedAt,
     required this.onBoardingStatus,
-    required this.genreType,
+    required this.genderType,
     required this.birthdate,
     required this.weeklyPhysicalActivity,
     required this.waist,
@@ -39,7 +39,7 @@ class UserModel {
     'id': id,
     'username': this.username,
     'email': this.email,
-    'genreType': this.genreType.toString(),
+    'genreType': this.genderType.toString(),
     'onBoardingStatus': this.onBoardingStatus.toString(),
     'birthdate': this.birthdate,
     'targetCalories': this.targetCalories,
@@ -58,7 +58,7 @@ class UserModel {
       id: data?['id'],
       username: data?['username'],
       email: data?['email'],
-      genreType: getGenderType(data?['genreType']),
+      genderType: getGenderType(data?['genderType']),
       onBoardingStatus: getOnBoardingStatus(data?['onBoardingStatus']),
       birthdate: data?['birthdate'],
       targetCalories: (data?['targetCalories'] as num).toDouble(),
@@ -84,7 +84,7 @@ class UserModel {
     updatedAt: DateTime.now().toString(),
     onBoardingStatus: OnBoardingStatus.finalized,
     targetCalories: 0,
-    genreType: GenreType.male,
+    genderType: GenderType.male,
     birthdate: DateTime.now().toString(),
     weeklyPhysicalActivity: PhysicalActivity.lessThanHour,
     waist: 0,
@@ -95,7 +95,7 @@ class UserModel {
 
   UserModel copyFrom({
     String? username,
-    GenreType? genreType,
+    GenderType? genderType,
     OnBoardingStatus? onBoardingStatus,
     double? targetCalories,
     String? birthdate,
@@ -109,7 +109,7 @@ class UserModel {
     id: this.id,
     email: this.email,
     username: username ?? this.username,
-    genreType: genreType ?? this.genreType,
+    genderType: genderType ?? this.genderType,
     onBoardingStatus: onBoardingStatus ?? this.onBoardingStatus,
     targetCalories: targetCalories ?? this.targetCalories,
     birthdate: birthdate ?? this.birthdate,
@@ -123,7 +123,7 @@ class UserModel {
   );
 }
 
-enum GenreType {
+enum GenderType {
   male,
   female,
 }

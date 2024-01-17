@@ -1,12 +1,12 @@
+// ignore_for_file: unnecessary_this, curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/widgets/home_widgets/home_modal_food_card.dart';
 import 'package:provider/provider.dart';
-import 'package:personal_nutrition_control/models/food_model.dart';
-import 'package:personal_nutrition_control/providers/day_provider.dart';
-import 'package:personal_nutrition_control/providers/food_provider.dart';
-import 'package:personal_nutrition_control/utils/image_paths.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/animations.dart';
-import 'package:personal_nutrition_control/widgets/common_widgets/food_card.dart';
+
+import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
+import 'package:personal_nutrition_control/widgets/widgets.dart';
 
 class AddTodayFood extends StatefulWidget {
   const AddTodayFood({super.key});

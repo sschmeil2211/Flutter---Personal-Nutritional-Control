@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_this
+
 import 'package:flutter/material.dart';
 
 class SwitchAnimation extends StatelessWidget {
@@ -19,12 +21,12 @@ class SwitchAnimation extends StatelessWidget {
       duration: const Duration(milliseconds: 500),
       child: isPressed
           ? AnimatedContainer(
-        duration: const Duration(milliseconds: 500),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10)
-        ),
-        child: this.newWidget,
-      )
+                duration: const Duration(milliseconds: 500),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10)
+                ),
+              child: this.newWidget,
+            )
           : this.originalWidget,
     );
   }
