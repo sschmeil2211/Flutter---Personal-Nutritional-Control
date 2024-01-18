@@ -32,7 +32,6 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => FoodProvider()),
         ChangeNotifierProvider(create: (_) => DayProvider()),
-        ChangeNotifierProvider(create: (_) => ControllersProvider()),
         ChangeNotifierProxyProvider<UserProvider, ControllersProvider>(
             create: ( context ) => ControllersProvider(),
             update: ( context, userProvider, controller ) {

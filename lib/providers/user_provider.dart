@@ -14,7 +14,7 @@ class UserProvider with ChangeNotifier {
   UserModel? _user;
 
   UserProvider() {
-    _loadUser();
+    loadUser();
   }
 
   UserModel? get user => _user;
@@ -48,9 +48,10 @@ class UserProvider with ChangeNotifier {
   }
 
   // Obtener información completa del usuario por ID
-  Future<void> _loadUser() async {
+  Future<void> loadUser() async {
     if(AuthService().currentUser == null) return;
     _user = await _userRepository.getUser(_authService.currentUser!.uid);
     if(_user == null) return;
+    notifyListeners();
   }
 }

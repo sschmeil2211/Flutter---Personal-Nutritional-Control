@@ -60,22 +60,3 @@ class AuthService {
       print('User is signed in!');
   }
 }
-
-/*
-class AuthService extends GetxController{
-  static AuthService get instance => Get.find();
-
-  final f_auth.FirebaseAuth _firebaseAuth = f_auth.FirebaseAuth.instance;
-
-  String? get currentID => _firebaseAuth.currentUser?.uid;
-  Future<void> signOut() async {
-    try {
-      await _firebaseAuth.signOut();
-    } on f_auth.FirebaseAuthException catch (e) {
-      throw Exception('Error de firebase al cerrar sesion: $e');
-    } catch(e){
-      throw Exception('Error al cerrar sesion: $e');
-    }
-  }
-}
- */
