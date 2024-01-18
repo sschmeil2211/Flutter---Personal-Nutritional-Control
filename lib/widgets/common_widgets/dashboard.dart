@@ -2,12 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:personal_nutrition_control/models/models.dart';
 import 'package:personal_nutrition_control/providers/providers.dart';
 
-class DiaryIndicators extends StatefulWidget {
+class DiaryIndicators extends StatelessWidget {
   final DayModel dayToView;
 
   const DiaryIndicators({
@@ -16,112 +15,90 @@ class DiaryIndicators extends StatefulWidget {
   });
 
   @override
-  State<DiaryIndicators> createState() => _DiaryIndicatorsState();
-}
-
-class _DiaryIndicatorsState extends State<DiaryIndicators> {
-
-  late TooltipBehavior _macrosTooltipBehavior;
-  late TooltipBehavior _proteinsTooltipBehavior;
-
-  @override
-  void initState(){
-    _macrosTooltipBehavior = TooltipBehavior(enable: true);
-    _proteinsTooltipBehavior = TooltipBehavior(enable: true);
-    super.initState();
-  }
-
-  Color statusColor(double targetCalories, double actualValue){
-    Color statusColor = Colors.orangeAccent;
-    double upperRange = targetCalories + 100;
-    double lowerRange = targetCalories - 100;
-
-    setState(() => statusColor = actualValue >= lowerRange && actualValue <= upperRange
-        ? Colors.deepOrangeAccent
-        : actualValue < lowerRange
-        ? Colors.orangeAccent
-        : Colors.red
-    );
-    return statusColor;
-  }
-
-  @override
   Widget build(BuildContext context) {
-
     double size = MediaQuery.of(context).size.height;
-
     double targetCalories = Provider.of<UserProvider>(context, listen: false).user?.targetCalories ?? 2000;
-    double actualValue = widget.dayToView.caloriesConsumed;
-    double limit = targetCalories + 500;
+    double caloriesConsumed = dayToView.caloriesConsumed;
+    double actualValue = dayToView.caloriesConsumed / targetCalories;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        CaloriesIndicator(
-          color: statusColor(targetCalories, actualValue),
-          tooltipBehavior: _proteinsTooltipBehavior,
-          actualValue: actualValue,
-          maximumValue: limit,
-          size: size * 0.2,
-        ),
-        MacronutrientsIndicator(
-          size: size * 0.2,
-          tooltipBehavior: _macrosTooltipBehavior,
-          totalProteins: widget.dayToView.proteinsConsumed,
-          totalCarbs: widget.dayToView.carbsConsumed,
-          totalFats: widget.dayToView.fatsConsumed,
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: size * 0.15, minWidth: size * 0.15,
+              maxHeight: size * 0.15, minHeight: size * 0.15,
+            ),
+            child: CaloriesIndicator(
+              actualValue: caloriesConsumed,
+              actualValuePercent: actualValue,
+              totalCalories: targetCalories,
+            )
+          ),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: size * 0.15, minWidth: size * 0.15,
+              maxHeight: size * 0.15, minHeight: size * 0.15,
+            ),
+            child: MacronutrientsIndicator(
+              totalProteins: dayToView.proteinsConsumed,
+              totalCarbs: dayToView.carbsConsumed,
+              totalFats: dayToView.fatsConsumed,
+            ),
+          )
+        ],
+      ),
     );
   }
 }
 
 class CaloriesIndicator extends StatelessWidget {
-
-  final double size;
-  final double maximumValue;
+  final double actualValuePercent;
   final double actualValue;
-  final Color color;
-  final TooltipBehavior tooltipBehavior;
+  final double totalCalories;
 
   const CaloriesIndicator({
-    required this.size,
-    required this.maximumValue,
+    required this.totalCalories,
     required this.actualValue,
-    required this.tooltipBehavior,
-    required this.color,
-    super.key
+    required this.actualValuePercent,
+    super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-
-    return SizedBox(
-      height: this.size,
-      width: this.size,
-      child: SfCircularChart(
-        margin: const EdgeInsets.all(0),
-        series: <CircularSeries>[
-          RadialBarSeries<ArcProgressIndicatorData, String>(
-            xValueMapper: (data, _) => data.x,
-            yValueMapper: (data, _) => data.y,
-            pointColorMapper: (data, _) => this.color,
-            innerRadius: '65%',
-            trackOpacity: 0.1,
-            cornerStyle: CornerStyle.bothCurve,
-            maximumValue: this.maximumValue.toDouble(),
-            dataSource: [
-              ArcProgressIndicatorData("Calories", this.actualValue )
-            ],
-          ),
-        ],
-        tooltipBehavior: this.tooltipBehavior,
-        annotations: [
-          CircularChartAnnotation(
-            widget: const Text('Calories')
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '${this.actualValue.toInt()} / ${this.totalCalories.toInt()}',
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 5),
+              child:Text(
+                'kCal',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+              ),
+            )
+          ],
+        ),
+        TweenAnimationBuilder(
+          tween: Tween<double>(begin: 0.0, end: actualValuePercent),
+          duration: const Duration(seconds: 1), // Ajusta según la velocidad deseada
+          builder: (context, double value, child) => CircularProgressIndicator(
+            value: value,
+            backgroundColor: Colors.white12,
+            color: value > 1 ? Colors.red : Colors.orange,
+            strokeWidth: 10,
+            strokeCap: StrokeCap.round,
           )
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -131,52 +108,51 @@ class MacronutrientsIndicator extends StatelessWidget {
   final double totalProteins;
   final double totalFats;
   final double totalCarbs;
-  final double size;
-  final TooltipBehavior tooltipBehavior;
 
   const MacronutrientsIndicator({
     required this.totalProteins,
     required this.totalFats,
     required this.totalCarbs,
-    required this.size,
-    required this.tooltipBehavior,
     super.key
   });
 
   @override
   Widget build(BuildContext context) {
-    final double totalMacros = totalProteins + totalCarbs + totalFats;
+    double totalMacros = totalProteins + totalCarbs + totalFats;
 
-    final double proteinsPercentage = (this.totalProteins.toDouble() * 100 / totalMacros);
-    final double carbsPercentage = (this.totalCarbs.toDouble() * 100 / totalMacros);
-    final double fatsPercentage = (this.totalFats.toDouble() * 100 / totalMacros);
+    double proteinsPercentage = this.totalProteins / totalMacros;
+    double carbsPercentage = this.totalCarbs / totalMacros;
+    double fatsPercentage = this.totalFats / totalMacros;
 
-    final List<MacronutrientsIndicatorData> chartData = [
-      MacronutrientsIndicatorData('Protein', proteinsPercentage, Colors.lightBlue),
-      MacronutrientsIndicatorData('Fats', carbsPercentage, Colors.yellowAccent),
-      MacronutrientsIndicatorData('Carbs', fatsPercentage, Colors.lightGreen),
-    ];
-
-    return SizedBox(
-      height: this.size,
-      width: this.size,
-      child: SfCircularChart(
-        margin: const EdgeInsets.all(0),
-        tooltipBehavior: this.tooltipBehavior,
-        series: <PieSeries<MacronutrientsIndicatorData, String>>[
-          PieSeries<MacronutrientsIndicatorData, String>(
-            pointColorMapper:(data,  _) => data.color,
-            xValueMapper: (data, _) => '${data.x} (%)',
-            yValueMapper: (data, _) => data.y,
-            dataLabelMapper: (data, _) => data.x,
-            dataSource: chartData,
-            dataLabelSettings: const DataLabelSettings(
-              connectorLineSettings: ConnectorLineSettings(length: '15', type: ConnectorType.curve),
-              isVisible: true,
-            ),
-          ),
+    return TweenAnimationBuilder(
+      tween: Tween<double>(begin: 0.0, end: 1.0),
+      duration: const Duration(seconds: 1), // Ajusta según la velocidad deseada
+      builder: (context, double value, child) => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          macroPercentageIndicator(carbsPercentage, 'Carbs', Colors.yellowAccent),
+          macroPercentageIndicator(proteinsPercentage, 'Proteins', Colors.lightBlue),
+          macroPercentageIndicator(fatsPercentage, 'Fats', Colors.lightGreen),
         ],
       )
+    );
+  }
+  Widget macroPercentageIndicator(double value, String label, Color color){
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label),
+          LinearProgressIndicator(
+            minHeight: 10,
+            borderRadius: BorderRadius.circular(10),
+            backgroundColor: Colors.white12,
+            value: value,
+            color: color,
+          ),
+        ],
+      ),
     );
   }
 }
