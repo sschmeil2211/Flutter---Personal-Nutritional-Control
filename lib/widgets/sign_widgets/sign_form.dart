@@ -44,6 +44,7 @@ class _SignInFormState extends State<SignInForm> {
     if(email.text.isEmpty || password.text.isEmpty) return;
     setState(() => loading = true);
     String? message = await userProvider.signIn(email.text, password.text);
+    await userProvider.loadUser();
     signStatusAction(message, 'homeScreen');
   }
 
