@@ -13,37 +13,16 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ExpandableFab(
-        distance: 112,
-        children: [
-          ActionButton(
-            icon: const Icon(Icons.calendar_today),
-            onPressed: () => Navigator.pushNamed(context, 'calendarScreen'),
-          ),
-          ActionButton(
-            icon: const Icon(Icons.list),
-            onPressed: () => Navigator.pushNamed(context, 'foodListScreen'),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        backgroundColor: Colors.white24,
+        onPressed: () => Navigator.pushNamed(context, 'foodListScreen'),
+        child: const Icon(Icons.food_bank),
       ),
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 30, bottom: 15, left: 30, right: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Searcher(),
-                  MaterialButton(
-                    shape: const CircleBorder(),
-                    color: Colors.white24,
-                    onPressed: () => Navigator.pushNamed(context, 'profileScreen'),
-                    child: const Icon(Icons.person)
-                  ),
-                ],
-              ),
-            ),
+            const Header(),
             Consumer<DayProvider>(
               builder: (context, dayProvider, child){
 

@@ -11,7 +11,7 @@ class Searcher extends StatelessWidget {
       child: Container(
         height: 35,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.orange, width: 1.4),
+          border: Border.all(color: Colors.deepOrange, width: 1.4),
           borderRadius: BorderRadius.circular(25),
         ),
         child: InkWell(
