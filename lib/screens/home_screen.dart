@@ -27,44 +27,39 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: [
-            ListView(
-              shrinkWrap: true,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 30, bottom: 15, left: 30, right: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Searcher(),
-                      MaterialButton(
-                        shape: const CircleBorder(),
-                        color: Colors.white24,
-                        onPressed: () => Navigator.pushNamed(context, 'profileScreen'),
-                        child: const Icon(Icons.person)
-                      ),
-                    ],
+            Padding(
+              padding: const EdgeInsets.only(top: 30, bottom: 15, left: 30, right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Searcher(),
+                  MaterialButton(
+                    shape: const CircleBorder(),
+                    color: Colors.white24,
+                    onPressed: () => Navigator.pushNamed(context, 'profileScreen'),
+                    child: const Icon(Icons.person)
                   ),
-                ),
-                Consumer<DayProvider>(
-                  builder: (context, dayProvider, child){
-            
-                    UserModel? user = Provider.of<UserProvider>(context, listen: false).user;
-                    DayModel? actualDay = dayProvider.actualDay;
-                    if(user == null || actualDay == null)
-                      return Container();
-            
-                    final DayModel? day = dayProvider.getSpecificDay(DateTime.now());
-                    if(day == null)
-                      return Container();
-            
-                    return DiaryIndicators(dayToView: day);
-                  }
-                ),
-                const AddTodayFood(),
-              ],
+                ],
+              ),
             ),
+            Consumer<DayProvider>(
+              builder: (context, dayProvider, child){
+
+                UserModel? user = Provider.of<UserProvider>(context, listen: false).user;
+                DayModel? actualDay = dayProvider.actualDay;
+                if(user == null || actualDay == null)
+                  return Container();
+
+                final DayModel? day = dayProvider.getSpecificDay(DateTime.now());
+                if(day == null)
+                  return Container();
+
+                return DiaryIndicators(dayToView: day);
+              }
+            ),
+            const AddTodayFood(),
           ],
         ),
       ),

@@ -64,14 +64,11 @@ class _CalendarBodyState extends State<CalendarBody> {
                 child: NoData(label: "You have no consumption this day")
               )
             else
-              Padding(
-                padding: const EdgeInsets.only(top: 25),
-                child: Column(
-                  children: [
-                    DiaryIndicators(dayToView: selectedDay),
-                    MealTimeCard(dayToView: selectedDay)
-                  ]
-                ),
+              Column(
+                children: [
+                  DiaryIndicators(dayToView: selectedDay),
+                  MealTimeCard(dayToView: selectedDay)
+                ]
               )
           ],
         );
@@ -101,7 +98,7 @@ class _MealTimeCardState extends State<MealTimeCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 15),
+      margin: const EdgeInsets.all(15),
       color: Colors.black26,
       elevation: 0,
       shape: RoundedRectangleBorder(

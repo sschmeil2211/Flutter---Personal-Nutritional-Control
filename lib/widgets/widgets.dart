@@ -12,7 +12,6 @@ export 'package:personal_nutrition_control/widgets/home_widgets/home_modal_food_
 export 'package:personal_nutrition_control/widgets/common_widgets/searcher.dart';
 
 export 'package:personal_nutrition_control/widgets/common_widgets/animations.dart';
-export 'package:personal_nutrition_control/widgets/common_widgets/bottom_bar.dart';
 export 'package:personal_nutrition_control/widgets/common_widgets/expandable_floating_button.dart';
 export 'package:personal_nutrition_control/widgets/common_widgets/food_card.dart';
 export 'package:personal_nutrition_control/widgets/common_widgets/no_data.dart';
