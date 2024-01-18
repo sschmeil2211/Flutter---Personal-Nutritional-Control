@@ -143,7 +143,10 @@ class MacronutrientsIndicator extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
+          ),
           LinearProgressIndicator(
             minHeight: 10,
             borderRadius: BorderRadius.circular(10),
