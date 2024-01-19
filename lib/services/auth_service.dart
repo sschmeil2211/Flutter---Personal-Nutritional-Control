@@ -7,9 +7,6 @@ class AuthService {
   final auth.FirebaseAuth _authInstance = auth.FirebaseAuth.instance;
 
   // Obtener el estado de autenticación del usuario
-  /*StreamSubscription<User?> get authStateChanges => _auth
-      .authStateChanges()
-      .listen((User? user) => authStateChange(user));*/
   Stream<auth.User?> get authStateChanges => _authInstance.authStateChanges();
 
   // Registro con correo electrónico y contraseña

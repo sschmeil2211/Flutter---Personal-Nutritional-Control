@@ -55,21 +55,21 @@ class DayProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateDay(DayModel day, FoodModel food, int portions) async {
+  Future<void> updateDay(DayModel day, FoodModel food, double portions) async {
     DayModel updatedDay = day.copyFrom(
-      caloriesConsumed: day.caloriesConsumed + (portions * food.calories),
-      carbsConsumed: day.carbsConsumed + (portions * food.carbs),
-      proteinsConsumed: day.proteinsConsumed + (portions * food.proteins),
-      fatsConsumed: day.fatsConsumed + (portions * food.fats)
+      caloriesConsumed: day.caloriesConsumed + (portions * food.calories / 100),
+      carbsConsumed: day.carbsConsumed + (portions * food.carbs / 100),
+      proteinsConsumed: day.proteinsConsumed + (portions * food.proteins / 100),
+      fatsConsumed: day.fatsConsumed + (portions * food.fats / 100)
     );
     await _dayRepository.updateDay(userID, updatedDay);
     notifyListeners();
   }
 
-  Future<void> handleDay(String mealType, FoodModel food, int portions) async {
+  Future<void> handleDay(String mealType, FoodModel food, double portions) async {
     DateTime now = DateTime.now();
-    DayModel? day = await _dayRepository.getSpecificDay(userID, '${now.year}-${now.month}-${now.day}');//_actualDay;
-    Map<String, int> mealMap = day?.meals[mealType] ?? {};
+    DayModel? day = await _dayRepository.getSpecificDay(userID, '${now.year}-${now.month}-${now.day}');
+    Map<String, double> mealMap = day?.meals[mealType] ?? {};
 
     mealMap.containsKey(food.id) ? mealMap[food.id] = (mealMap[food.id] ?? 0) + portions : mealMap[food.id] = portions;
 
@@ -84,10 +84,10 @@ class DayProvider with ChangeNotifier {
     else{
       day = DayModel(
         id: const Uuid().v4(),
-        caloriesConsumed: portions * food.calories,
-        carbsConsumed: portions * food.carbs,
-        proteinsConsumed: portions * food.proteins,
-        fatsConsumed: portions * food.fats,
+        caloriesConsumed: portions * food.calories / 100,
+        carbsConsumed: portions * food.carbs / 100,
+        proteinsConsumed: portions * food.proteins / 100,
+        fatsConsumed: portions * food.fats / 100,
         date: '${now.year}-${now.month}-${now.day}',
         meals: {mealType: mealMap},
       );

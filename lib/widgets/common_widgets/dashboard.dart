@@ -93,7 +93,7 @@ class CaloriesIndicator extends StatelessWidget {
           builder: (context, double value, child) => CircularProgressIndicator(
             value: value,
             backgroundColor: Colors.white12,
-            color: value > 1 ? Colors.red : Colors.orange,
+            color: value > 1 ? Colors.red : Colors.deepOrangeAccent,
             strokeWidth: 10,
             strokeCap: StrokeCap.round,
           )

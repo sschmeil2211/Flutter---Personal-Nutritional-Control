@@ -69,7 +69,7 @@ class FoodTypeGrid extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           crossAxisCount: 3,
           childAspectRatio: 1.3,
-          children: List.generate(10, (index) {
+          children: List.generate(11, (index) {
 
             final FoodType foodType = FoodType.values[index];
             return Padding(
@@ -98,33 +98,43 @@ class FoodList extends StatelessWidget {
     super.key
   });
 
-  Future<void> onPressed(BuildContext context, String mealType, FoodModel food, int portions) async {
+  Future<void> onPressed(BuildContext context, String mealType, FoodModel food, double grams) async {
     DayProvider dayProvider = Provider.of<DayProvider>(context, listen: false);
-    await dayProvider.handleDay(mealType, food, portions);
-    portions = 1;
+    await dayProvider.handleDay(mealType, food, grams);
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    int portions = 1;
     String mealType = 'appetizer';
+    String keyboardText = '0';
 
     FoodProvider foodProvider = Provider.of<FoodProvider>(context, listen: false);
-    List<FoodModel> filteredFoods = foodProvider.getFoodsByType(this.selectedFoodType);
+    List<FoodModel> filteredFoods = foodProvider.getFoodsByType(selectedFoodType);
 
     return Column(
       children: [
-        Container(
-          alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-          child: IconButton(
-            onPressed: this.onPressReturnIcon,
-            icon: const Icon(Icons.arrow_back_ios),
-          ),
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              child: IconButton(
+                onPressed: onPressReturnIcon,
+                icon: const Icon(Icons.arrow_back_ios),
+              ),
+            ),
+            Center(
+              child: Text(
+                getFoodTypeString(selectedFoodType),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+              )
+            ),
+          ],
         ),
         if(filteredFoods.isEmpty)
-          NoData(label: 'No food found')
+          const NoData(label: 'No food found')
         else
           Column(
             children: List.generate(filteredFoods.length, (index) {
@@ -135,9 +145,9 @@ class FoodList extends StatelessWidget {
                 foodModel: food,
                 child: FoodCardModal(
                   buttonLabel: "Save",
+                  onKeyboardTap: (text) => keyboardText = text,
                   onChangeMealTime: (value) => mealType = value,
-                  onCounterChanged: (value) => portions = value,
-                  onPressed: () => onPressed(context, mealType, food, portions),
+                  onPressed: () => onPressed(context, mealType, food, double.parse(keyboardText)),
                 ),
               );
             }),
