@@ -79,8 +79,9 @@ class _TargetCaloriesModalState extends State<TargetCaloriesModal> {
     );
     setState(() => loading = true);
     bool successful = await userProvider.updateUser(newUser);
+    if(!context.mounted) return;
     if(successful)
-      Navigator.of(context).pushNamedAndRemoveUntil('profileScreen', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, 'profileScreen', (route) => false);
     setState(() => loading = false);
   }
 

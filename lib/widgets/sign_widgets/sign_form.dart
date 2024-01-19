@@ -24,9 +24,9 @@ class _SignInFormState extends State<SignInForm> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
-  void signStatusAction(String? message, String route){
+  void signStatusAction(String? message, String routeName){
     if(message == null)
-      Navigator.pushReplacementNamed(context, route);
+      Navigator.pushNamedAndRemoveUntil(context, routeName, (route) => false,);
     else{
       setState(() => loading = false);
       ScaffoldMessenger.of(context).showSnackBar(customSnackBar(message, Colors.deepOrange));

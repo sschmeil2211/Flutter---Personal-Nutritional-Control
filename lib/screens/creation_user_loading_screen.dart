@@ -16,8 +16,9 @@ class CreationUserLoadingScreen extends StatelessWidget {
       targetCalories: Calculations(userProvider.user!).getRecommendedCalories()
     );
     bool successful = await userProvider.updateUser(newUser);
+    if(!context.mounted) return;
     if(successful)
-      Navigator.pushReplacementNamed(context, 'homeScreen');
+      Navigator.pushNamedAndRemoveUntil(context, 'homeScreen', (route) => false,);
   }
 
   @override

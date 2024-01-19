@@ -35,8 +35,9 @@ class _UserInformationFormState extends State<UserInformation> {
     setState(() => loading = true);
     if(userProvider.user == null) return;
     bool successful = await userProvider.updateUser(newUser!);
+    if(!context.mounted) return;
     if(successful)
-      Navigator.of(context).pushNamedAndRemoveUntil('profileScreen', (route) => false);
+      Navigator.pop(context);
     setState(() => loading = false);
   }
 
@@ -113,6 +114,7 @@ class _UserBodyState extends State<UserBody> {
     setState(() => loading = true);
     if(userProvider.user == null) return;
     bool successful = await userProvider.updateUser(newUser!);
+    if(!context.mounted) return;
     if(successful)
       showCupertinoModalPopup(
         context: context,
@@ -198,8 +200,9 @@ class _UpdateTargetCaloriesState extends State<UpdateTargetCalories> {
       targetCalories: Calculations(widget.userProvider.user!).getRecommendedCalories()
     );
     bool successful = await widget.userProvider.updateUser(newUser);
+    if(!context.mounted) return;
     if(successful)
-      Navigator.of(context).pushNamedAndRemoveUntil('profileScreen', (route) => false);
+      Navigator.pop(context);
     setState(() => loading = false);
   }
 

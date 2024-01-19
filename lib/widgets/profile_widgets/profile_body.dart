@@ -20,8 +20,9 @@ class _ProfileBodyState extends State<ProfileBody> {
   Future<void> signOut(UserProvider userProvider) async {
     setState(() => loading = true);
     String? message = await userProvider.signOut();
+    if(!context.mounted) return;
     if(message == null)
-      Navigator.of(context).pushNamedAndRemoveUntil('signScreen', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, 'signScreen', (route) => false);
     else{
       setState(() => loading = false);
       ScaffoldMessenger.of(context).showSnackBar(customSnackBar(message, Colors.deepOrange));
@@ -43,7 +44,7 @@ class _ProfileBodyState extends State<ProfileBody> {
         ProfileCard(
           icon: Icons.scale,
           label: 'Body Information',
-          onTap: () => Navigator.pushNamed(context, 'informationScreen', arguments: 1),
+          onTap: () => Navigator.pushNamed(context, 'informationScreen', arguments: 1)
         ),
         ProfileCard(
           icon: Icons.calculate_outlined,
