@@ -133,25 +133,24 @@ class FoodList extends StatelessWidget {
             ),
           ],
         ),
-        if(filteredFoods.isEmpty)
-          const NoData(label: 'No food found')
-        else
-          Column(
-            children: List.generate(filteredFoods.length, (index) {
-              FoodModel food = filteredFoods[index];
+        filteredFoods.isEmpty
+            ? const NoData(label: 'No food found')
+            : Column(
+                children: List.generate(filteredFoods.length, (index) {
+                  FoodModel food = filteredFoods[index];
 
-              return FoodCard(
-                editable: true,
-                foodModel: food,
-                child: FoodCardModal(
-                  buttonLabel: "Save",
-                  onKeyboardTap: (text) => keyboardText = text,
-                  onChangeMealTime: (value) => mealType = value,
-                  onPressed: () => onPressed(context, mealType, food, double.parse(keyboardText)),
-                ),
-              );
-            }),
-          )
+                  return FoodCard(
+                    editable: true,
+                    foodModel: food,
+                    child: FoodCardModal(
+                      buttonLabel: "Save",
+                      onKeyboardTap: (text) => keyboardText = text,
+                      onChangeMealTime: (value) => mealType = value,
+                      onPressed: () => onPressed(context, mealType, food, double.parse(keyboardText)),
+                    ),
+                  );
+                }),
+              )
       ],
     );
   }

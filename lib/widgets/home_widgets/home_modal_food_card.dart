@@ -41,14 +41,11 @@ class _FoodCardModalState extends State<FoodCardModal> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+      padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ButtonGrid(
-            selectedWord: mealTimeType,
-            onPressed: onChanged,
-          ),
+          MealTimeGrid(selectedWord: mealTimeType, onPressed: onChanged),
           Text(
             text.isEmpty ? '0 g' : '$text g',
             style: const TextStyle(fontSize: 18),
@@ -59,13 +56,8 @@ class _FoodCardModalState extends State<FoodCardModal> {
               if (text.isEmpty) return;
               setState(() => text = text.substring(0, text.length - 1));
             },
-            rightButtonLongPressFn: () {
-              if (text.isEmpty) return;
-              setState(() => text = '');
-            },
           ),
           MaterialButton(
-            elevation: 2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5)
             ),
@@ -79,11 +71,11 @@ class _FoodCardModalState extends State<FoodCardModal> {
   }
 }
 
-class ButtonGrid extends StatelessWidget {
+class MealTimeGrid extends StatelessWidget {
   final String selectedWord;
   final Function(String) onPressed;
 
-  const ButtonGrid({
+  const MealTimeGrid({
     required this.selectedWord,
     required this.onPressed,
     super.key
@@ -95,14 +87,13 @@ class ButtonGrid extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.only(bottom: 20),
           child: Text(
             'Select meal time',
             style: TextStyle(fontSize: 16),
           ),
         ),
         GridView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 15),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 10,
@@ -115,6 +106,7 @@ class ButtonGrid extends StatelessWidget {
             String word = getMealTime(index);
             bool isSelected = word == selectedWord;
             return MaterialButton(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
               color: isSelected ? Colors.white24 : Colors.white12,
               onPressed: () => onPressed(word),
               child: Text(word.capitalize()),
@@ -127,69 +119,40 @@ class ButtonGrid extends StatelessWidget {
 }
 
 class NumericKeyboard extends StatelessWidget {
-  final Function()? rightButtonFn;
-  final Function()? rightButtonLongPressFn;
+  final Function() rightButtonFn;
   final Function(String) onKeyboardTap;
 
   const NumericKeyboard({
     required this.onKeyboardTap,
-    this.rightButtonFn,
-    this.rightButtonLongPressFn,
-    super.key
+    required this.rightButtonFn,
+    super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ButtonBar(
-          buttonPadding: const EdgeInsets.symmetric(vertical: 15),
-          alignment: MainAxisAlignment.spaceBetween,
-          children: [
-            calcButton('1'),
-            calcButton('2'),
-            calcButton('3'),
-          ],
-        ),
-        ButtonBar(
-          buttonPadding: const EdgeInsets.symmetric(vertical: 15),
-          alignment: MainAxisAlignment.spaceBetween,
-          children: [
-            calcButton('4'),
-            calcButton('5'),
-            calcButton('6'),
-          ],
-        ),
-        ButtonBar(
-          buttonPadding: const EdgeInsets.symmetric(vertical: 15),
-          alignment: MainAxisAlignment.spaceBetween,
-          children: [
-            calcButton('7'),
-            calcButton('8'),
-            calcButton('9'),
-          ],
-        ),
-        ButtonBar(
-          buttonPadding: const EdgeInsets.symmetric(vertical: 15),
-          alignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const MaterialButton(onPressed: null),
-            calcButton('0'),
-            MaterialButton(
-              onPressed: rightButtonFn,
-              child: const Icon(Icons.backspace)
-            ),
-          ],
-        ),
+        for (var row in [
+          ['1', '2', '3'],
+          ['4', '5', '6'],
+          ['7', '8', '9'],
+          ['', '0', '⌫'],
+        ])
+          ButtonBar(
+            buttonPadding: const EdgeInsets.symmetric(vertical: 15),
+            alignment: MainAxisAlignment.spaceAround,
+            children: [
+              for (var value in row)
+                TextButton(
+                  onPressed: () => value == '⌫' ? rightButtonFn() : onKeyboardTap(value),
+                  child: Text(
+                    value,
+                    style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w800),
+                  ),
+                ),
+            ],
+          ),
       ],
     );
   }
-
-  Widget calcButton(String value) => MaterialButton(
-    onPressed: () => onKeyboardTap(value),
-    child: Text(
-      value,
-      style: const TextStyle(color: Colors.white)
-    )
-  );
 }
