@@ -172,10 +172,10 @@ class _BodyFormFormState extends State<BodyForm> {
   Widget indicator(UserProvider userProvider) => loading
       ? const CircularProgressIndicator()
       : SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        child: const Text('Continue'),
-        onPressed: () async => await updateUser(userProvider),
-      )
+          width: double.infinity,
+          child: ElevatedButton(
+            child: const Text('Continue'),
+            onPressed: () async => await updateUser(userProvider),
+          )
   );
 }

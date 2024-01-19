@@ -80,6 +80,11 @@ String getGenderString(GenderType gender) {
   return enumString[0].toUpperCase() + enumString.substring(1);
 }
 
+String getFoodTypeString(FoodType foodType) {
+  String enumString = foodType.toString().split('.').last;
+  return enumString[0].toUpperCase() + enumString.substring(1);
+}
+
 String getPhysicalActivityString(PhysicalActivity physicalActivity) {
   switch(physicalActivity){
     case PhysicalActivity.lessThanHour:
@@ -109,5 +114,20 @@ PhysicalActivity getPhysicalActivityType(String? physicalActivity){
       return PhysicalActivity.moreThanTwenty;
     default:
       return PhysicalActivity.lessThanHour;
+  }
+}
+
+String getMealTime(int index) {
+  switch (index) {
+    case 0:
+      return 'breakfast';
+    case 1:
+      return 'lunch';
+    case 2:
+      return 'snack';
+    case 3:
+      return 'dinner';
+    default:
+      return 'appetizer';
   }
 }

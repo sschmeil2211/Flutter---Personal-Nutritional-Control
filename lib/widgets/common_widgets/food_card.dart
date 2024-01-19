@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:personal_nutrition_control/models/models.dart';
 
 class FoodCard extends StatelessWidget {
-  final int? portions;
+  final double? portions;
   final bool editable;
   final Widget? child;
   final FoodModel foodModel;
@@ -18,21 +18,26 @@ class FoodCard extends StatelessWidget {
     super.key
   });
 
+  void showModal(BuildContext context){
+    if(editable)
+      showModalBottomSheet(
+        enableDrag: true,
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(15)
+          )
+        ),
+        builder: (context) => this.child!
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(15),
       child: InkWell(
-        onTap: editable ? () => showModalBottomSheet(
-          enableDrag: true,
-          context: context,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(15)
-            )
-          ),
-          builder: (context) => this.child == null ? Container() : this.child!
-        ) : null,
+        onTap: () => this.child != null ? showModal(context) : null,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
@@ -52,6 +57,13 @@ class FoodCard extends StatelessWidget {
                 children: [
                   const Divider(color: Colors.black45, thickness: 2),
                   CardBody(food: this.foodModel),
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child:Text(
+                      'x 100g',
+                      style: TextStyle(fontWeight: FontWeight.w800),
+                    )
+                  )
                 ],
               )
             ]

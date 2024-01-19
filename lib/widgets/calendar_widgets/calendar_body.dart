@@ -126,7 +126,7 @@ class _MealTimeCardState extends State<MealTimeCard> {
                 if(widget.dayToView == null)
                   return Container();
 
-                Map<String, int>? mealFoods = widget.dayToView?.meals[mealTypes[index]];
+                Map<String, double>? mealFoods = widget.dayToView?.meals[mealTypes[index]];
                 if (mealFoods == null)
                   return const NoData(label: "No consumiste nada en este horario");
 
@@ -134,7 +134,7 @@ class _MealTimeCardState extends State<MealTimeCard> {
                   shrinkWrap: true,
                   children: mealFoods.entries.map((entry) {
                     String foodId = entry.key;
-                    int portions = entry.value;
+                    double portions = entry.value;
 
                     FoodModel? food = Provider.of<FoodProvider>(context, listen: false).getFood(foodId);
                     return food != null ? FoodCard(foodModel: food, portions: portions) : Container();
