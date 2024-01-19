@@ -15,11 +15,10 @@ class SplashScreenProvider extends ChangeNotifier {
 
   void onAnimationEnd(BuildContext context) {
     if (_isLoading) {
-      Future.delayed(const Duration(milliseconds: 2000), () {
-        AuthService().currentUser != null
-            ? Navigator.pushReplacementNamed(context, 'homeScreen')
-            : Navigator.pushReplacementNamed(context, 'signScreen');
-      });
+      Future.delayed(const Duration(milliseconds: 2000), () => AuthService().currentUser != null
+          ? Navigator.pushReplacementNamed(context, 'homeScreen')
+          : Navigator.pushReplacementNamed(context, 'signScreen')
+      );
       _isLoading = false;
     }
   }

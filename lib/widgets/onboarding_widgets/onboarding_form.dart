@@ -39,8 +39,9 @@ class _PersonalFormFormState extends State<PersonalForm> {
     );
     setState(() => loading = true);
     bool successful = await userProvider.updateUser(newUser!);
+    if(!context.mounted) return;
     if(successful)
-      Navigator.pushReplacementNamed(context, 'bodyOnboardingScreen');
+      Navigator.pushNamedAndRemoveUntil(context, 'bodyOnboardingScreen', (route) => false,);
     setState(() => loading = false);
   }
 
@@ -137,8 +138,9 @@ class _BodyFormFormState extends State<BodyForm> {
     );
     setState(() => loading = true);
     bool successful = await userProvider.updateUser(newUser);
+    if(!context.mounted) return;
     if(successful)
-      Navigator.pushReplacementNamed(context, 'creationUserLoadingScreen');
+      Navigator.pushNamedAndRemoveUntil(context, 'creationUserLoadingScreen', (route) => false);
     setState(() => loading = false);
   }
 

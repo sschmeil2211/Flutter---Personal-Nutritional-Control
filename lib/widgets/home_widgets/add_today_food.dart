@@ -101,6 +101,7 @@ class FoodList extends StatelessWidget {
   Future<void> onPressed(BuildContext context, String mealType, FoodModel food, double grams) async {
     DayProvider dayProvider = Provider.of<DayProvider>(context, listen: false);
     await dayProvider.handleDay(mealType, food, grams);
+    if(!context.mounted) return;
     Navigator.pop(context);
   }
 
