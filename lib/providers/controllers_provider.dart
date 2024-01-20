@@ -57,8 +57,8 @@ class ControllersProvider with ChangeNotifier {
     _weightController.text = user.weight.toString();
     _wristController.text = user.wrist.toString();
     _waistController.text = user.waist.toString();
-    _genderController.text = getGenderString(user.genderType);
-    _physicalActivityController.text = getPhysicalActivityString(user.weeklyPhysicalActivity);
+    _genderController.text = formatEnumName(user.genderType);
+    _physicalActivityController.text = formatEnumName(user.weeklyPhysicalActivity);
     _birthdateController.text = DateFormat('d MMM y').format(stringToDateTime(user.birthdate));
     _selectedDate = stringToDateTime(user.birthdate);
   }
@@ -77,7 +77,7 @@ class ControllersProvider with ChangeNotifier {
     GenderType? result = await genderResult(context);
     if(result == null) return;
     _selectedGenderType = result;
-    genderController.text = getGenderString(_selectedGenderType!);
+    genderController.text = formatEnumName(_selectedGenderType!);
     notifyListeners();
   }
 
@@ -85,7 +85,7 @@ class ControllersProvider with ChangeNotifier {
     PhysicalActivity? result = await physicalActivityResult(context);
     if(result == null) return;
     _selectedPhysicalActivity = result;
-    _physicalActivityController.text = getPhysicalActivityString(selectedPhysicalActivity!);
+    _physicalActivityController.text = formatEnumName(selectedPhysicalActivity!);
     notifyListeners();
   }
 }

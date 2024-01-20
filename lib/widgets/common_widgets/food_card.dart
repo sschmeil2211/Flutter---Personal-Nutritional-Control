@@ -3,41 +3,26 @@
 import 'package:flutter/material.dart';
 
 import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/utils/constants.dart';
 
 class FoodCard extends StatelessWidget {
   final double? portions;
-  final bool editable;
-  final Widget? child;
   final FoodModel foodModel;
+  final Function()? onTap;
 
   const FoodCard({
-    this.editable = false,
-    this.child,
     required this.foodModel,
+    this.onTap,
     this.portions,
     super.key
   });
-
-  void showModal(BuildContext context){
-    if(editable)
-      showModalBottomSheet(
-        enableDrag: true,
-        context: context,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(15)
-          )
-        ),
-        builder: (context) => this.child!
-      );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(15),
       child: InkWell(
-        onTap: () => this.child != null ? showModal(context) : null,
+        onTap: this.onTap,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
@@ -50,17 +35,17 @@ class FoodCard extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.w800,fontSize: 18)
                   ),
                   if(this.portions != null)
-                    Text('x${this.portions}')
+                    Text('x ${this.portions?.toInt()}g')
                 ],
               ),
+              const Divider(color: Colors.black45, thickness: 2),
               Column(
                 children: [
-                  const Divider(color: Colors.black45, thickness: 2),
                   CardBody(food: this.foodModel),
                   const Align(
                     alignment: Alignment.centerRight,
                     child:Text(
-                      'x 100g',
+                      'Every 100g',
                       style: TextStyle(fontWeight: FontWeight.w800),
                     )
                   )
@@ -74,9 +59,7 @@ class FoodCard extends StatelessWidget {
   }
 }
 
-///CardBody components
 class CardBody extends StatelessWidget {
-
   final FoodModel food;
 
   const CardBody({
@@ -86,48 +69,81 @@ class CardBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String imagePath = 'assets/images/food_types/${this.food.foodType.toString().split('.').last}.png';
-
-    String foodCalories = this.food.calories % 1 == 0 ? this.food.calories.toInt().toString() : this.food.calories.toString();
-    String foodCarbs = this.food.carbs % 1 == 0 ? this.food.carbs.toInt().toString() : this.food.carbs.toString();
-    String foodProteins = this.food.proteins % 1 == 0 ? this.food.proteins.toInt().toString() : this.food.proteins.toString();
-    String foodFats = this.food.fats % 1 == 0 ? this.food.fats.toInt().toString() : this.food.fats.toString();
+    List<MacronutrientsData> macronutrients = [
+      MacronutrientsData(color: Colors.yellowAccent, value: this.food.carbs, label: 'Carbs'),
+      MacronutrientsData(color: Colors.lightBlue, value: this.food.proteins, label: 'Proteins'),
+      MacronutrientsData(color: Colors.lightGreen, value: this.food.fats, label: 'Fats')
+    ];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Image(height: 60, image: AssetImage(imagePath)),
-          Column(
-            children: [
-              const Text(
-                'Calories',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)
-              ),
-              Text(
-                foodCalories,
-                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 38, color: Colors.deepOrangeAccent)
-              ),
-            ],
+          Image(
+            height: 60, 
+            image: AssetImage(getImagePath(this.food.foodType))
           ),
+          CaloriesInfo(calories: this.food.calories),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              macronutrientInfo(Colors.lightGreen, "Carbs", foodCarbs),
-              macronutrientInfo(Colors.lightBlue, "Proteins", foodProteins),
-              macronutrientInfo(Colors.yellowAccent, "Fats", foodFats),
-            ],
+            children: macronutrients.map((e) => MacronutrientInfo(
+              macronutrient: e.label,
+              amount: e.value,
+              color: e.color,
+            )).toList(),
           )
         ],
       ),
     );
   }
-  Widget macronutrientInfo(Color color, String label, String value){
+}
+
+class CaloriesInfo extends StatelessWidget {
+  final double calories;
+
+  const CaloriesInfo({
+    required this.calories,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String foodCalories = this.calories % 1 == 0 ? this.calories.toInt().toString() : this.calories.toString();
+    return Column(
+      children: [
+        const Text(
+          'Calories',
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)
+        ),
+        Text(
+          foodCalories,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 38, color: Colors.deepOrangeAccent)
+        ),
+      ],
+    );
+  }
+}
+
+class MacronutrientInfo extends StatelessWidget {
+  final double amount;
+  final String macronutrient;
+  final Color color;
+
+  const MacronutrientInfo({
+    required this.color,
+    required this.amount,
+    required this.macronutrient,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String value = amount % 1 == 0 ? amount.toInt().toString() : amount.toString();
     return Row(
       children: [
-        Text('$label: '),
+        Text('$macronutrient: '),
         Text(
           value,
           style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: color)

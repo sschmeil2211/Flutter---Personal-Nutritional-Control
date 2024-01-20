@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:personal_nutrition_control/providers/providers.dart';
-import 'package:personal_nutrition_control/widgets/widgets.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
+
 
 class ProfileBody extends StatefulWidget {
   const ProfileBody({super.key});

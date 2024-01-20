@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:personal_nutrition_control/providers/providers.dart';
 import 'package:personal_nutrition_control/widgets/widgets.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
 
 class SignInForm extends StatefulWidget {
 
@@ -73,7 +74,8 @@ class _SignInFormState extends State<SignInForm> {
                 InputField(
                   prefixIcon: Icons.mail_outline,
                   labelText: "Email",
-                  textEditingController: email
+                  textEditingController: email,
+                  textInputType: TextInputType.emailAddress,
                 ),
                 InputField(
                   prefixIcon: Icons.fingerprint,

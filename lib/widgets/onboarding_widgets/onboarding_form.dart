@@ -59,7 +59,7 @@ class _PersonalFormFormState extends State<PersonalForm> {
     if(result == null) return;
     setState(() {
       selectedGenderType = result;
-      genderController.text = getGenderString(selectedGenderType!);
+      genderController.text = formatEnumName(selectedGenderType!);
     });
   }
 
@@ -68,7 +68,7 @@ class _PersonalFormFormState extends State<PersonalForm> {
     if(result == null) return;
     setState(() {
       selectedPhysicalActivity = result;
-      physicalActivityController.text = getPhysicalActivityString(selectedPhysicalActivity!);
+      physicalActivityController.text = formatEnumName(selectedPhysicalActivity!);
     });
   }
 

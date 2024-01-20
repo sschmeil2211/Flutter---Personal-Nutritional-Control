@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ArcProgressIndicatorData {
-  ArcProgressIndicatorData(this.x, this.y);
+class MacronutrientsData{
+  final Color color;
+  final double value;
+  final String label;
 
-  final String? x;
-  final double? y;
-}
-
-class MacronutrientsIndicatorData {
-  MacronutrientsIndicatorData(this.x, this.y, [this.color]);
-  final String x;
-  final double y;
-  final Color? color;
+  MacronutrientsData({
+    required this.color,
+    required this.value,
+    required this.label
+  });
 }

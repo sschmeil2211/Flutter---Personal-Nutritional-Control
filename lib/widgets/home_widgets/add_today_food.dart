@@ -128,7 +128,7 @@ class FoodList extends StatelessWidget {
             ),
             Center(
               child: Text(
-                getFoodTypeString(selectedFoodType),
+                formatEnumName(selectedFoodType),
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
               )
             ),
@@ -141,13 +141,15 @@ class FoodList extends StatelessWidget {
                   FoodModel food = filteredFoods[index];
 
                   return FoodCard(
-                    editable: true,
                     foodModel: food,
-                    child: FoodCardModal(
-                      buttonLabel: "Save",
-                      onKeyboardTap: (text) => keyboardText = text,
-                      onChangeMealTime: (value) => mealType = value,
-                      onPressed: () => onPressed(context, mealType, food, double.parse(keyboardText)),
+                    onTap: () => showModal(
+                      context: context,
+                      child: FoodCardModal(
+                        buttonLabel: "Save",
+                        onKeyboardTap: (text) => keyboardText = text,
+                        onChangeMealTime: (value) => mealType = value,
+                        onPressed: () => onPressed(context, mealType, food, double.parse(keyboardText)),
+                      )
                     ),
                   );
                 }),

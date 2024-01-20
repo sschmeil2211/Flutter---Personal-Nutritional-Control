@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 
+import 'package:personal_nutrition_control/extensions/extensions.dart';
 import 'package:personal_nutrition_control/models/models.dart';
 
 DateTime stringToDateTime(String dateString){
@@ -75,31 +76,6 @@ FoodType getFoodType(String? foodTypeString) {
   }
 }
 
-String getGenderString(GenderType gender) {
-  String enumString = gender.toString().split('.').last;
-  return enumString[0].toUpperCase() + enumString.substring(1);
-}
-
-String getFoodTypeString(FoodType foodType) {
-  String enumString = foodType.toString().split('.').last;
-  return enumString[0].toUpperCase() + enumString.substring(1);
-}
-
-String getPhysicalActivityString(PhysicalActivity physicalActivity) {
-  switch(physicalActivity){
-    case PhysicalActivity.lessThanHour:
-      return 'Less than 1 hs';
-    case PhysicalActivity.twoToFive:
-      return '2 to 5 hs';
-    case PhysicalActivity.sixToNine:
-      return '6 to 9 hs';
-    case PhysicalActivity.tenToTwenty:
-      return '10 to 20 hs';
-    case PhysicalActivity.moreThanTwenty:
-      return 'More than 20 hs';
-  }
-}
-
 PhysicalActivity getPhysicalActivityType(String? physicalActivity){
   switch(physicalActivity){
     case 'PhysicalActivity.lessThanHour':
@@ -130,4 +106,10 @@ String getMealTime(int index) {
     default:
       return 'appetizer';
   }
+}
+
+String formatEnumName<T>(T value) {
+  String enumName = value.toString().split('.')[1].capitalize();
+  RegExp regExp = RegExp(r'([a-z])([A-Z])');
+  return enumName.replaceAllMapped(regExp, (match) => '${match.group(1)} ${match.group(2)}');
 }

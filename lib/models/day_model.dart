@@ -67,3 +67,11 @@ class DayModel {
     meals: meals ?? Map<String, Map<String, double>>.from(this.meals),
   );
 }
+
+enum MealTime{
+  breakfast,
+  lunch,
+  snack,
+  dinner,
+  appetizer
+}
