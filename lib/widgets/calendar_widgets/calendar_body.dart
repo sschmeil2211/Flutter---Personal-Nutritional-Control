@@ -91,8 +91,6 @@ class MealTimeCard extends StatefulWidget {
 
 class _MealTimeCardState extends State<MealTimeCard> {
 
-  List<String> mealTypes = ['breakfast', 'lunch', 'snack', 'dinner', 'appetizer'];
-
   int currentPage = 0;
 
   @override
@@ -110,7 +108,7 @@ class _MealTimeCardState extends State<MealTimeCard> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Text(
-              mealTypes[currentPage].capitalize(),
+              formatEnumName(MealTime.values[currentPage]),
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
@@ -118,7 +116,7 @@ class _MealTimeCardState extends State<MealTimeCard> {
             height: MediaQuery.of(context).size.height * 0.5,
             child: PageView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: mealTypes.length,
+              itemCount: MealTime.values.length,
               controller: PageController(viewportFraction: 1),
               onPageChanged: (int page) => setState(() => currentPage = page),
               itemBuilder: (context, index) {
@@ -126,7 +124,7 @@ class _MealTimeCardState extends State<MealTimeCard> {
                 if(widget.dayToView == null)
                   return Container();
 
-                Map<String, double>? mealFoods = widget.dayToView?.meals[mealTypes[index]];
+                Map<String, double>? mealFoods = widget.dayToView?.meals[MealTime.values[index]];
                 if (mealFoods == null)
                   return const NoData(label: "You didn't consume anything during this time.");
 

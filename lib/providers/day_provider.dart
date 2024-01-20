@@ -66,17 +66,17 @@ class DayProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> handleDay(String mealType, FoodModel food, double portions) async {
+  Future<void> handleDay(MealTime mealTime, FoodModel food, double portions) async {
     DateTime now = DateTime.now();
     DayModel? day = await _dayRepository.getSpecificDay(userID, '${now.year}-${now.month}-${now.day}');
-    Map<String, double> mealMap = day?.meals[mealType] ?? {};
+    Map<String, double> mealMap = day?.meals[mealTime.toString()] ?? {};
 
     mealMap.containsKey(food.id) ? mealMap[food.id] = (mealMap[food.id] ?? 0) + portions : mealMap[food.id] = portions;
 
     // Actualiza el modelo DayModel
     if(day != null){
       DayModel updatedDay = day.copyFrom(
-        meals: {...day.meals, mealType: mealMap},
+        meals: {...day.meals, mealTime: mealMap},
       );
       // Actualiza el modelo en el proveedor
       await updateDay(updatedDay, food, portions);
@@ -89,7 +89,7 @@ class DayProvider with ChangeNotifier {
         proteinsConsumed: portions * food.proteins / 100,
         fatsConsumed: portions * food.fats / 100,
         date: '${now.year}-${now.month}-${now.day}',
-        meals: {mealType: mealMap},
+        meals: {mealTime: mealMap},
       );
       await addDay(day);
       _actualDay = day;

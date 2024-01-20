@@ -93,23 +93,8 @@ PhysicalActivity getPhysicalActivityType(String? physicalActivity){
   }
 }
 
-String getMealTime(int index) {
-  switch (index) {
-    case 0:
-      return 'breakfast';
-    case 1:
-      return 'lunch';
-    case 2:
-      return 'snack';
-    case 3:
-      return 'dinner';
-    default:
-      return 'appetizer';
-  }
-}
-
 String formatEnumName<T>(T value) {
   String enumName = value.toString().split('.')[1].capitalize();
-  RegExp regExp = RegExp(r'([a-z])([A-Z])');
+  RegExp regExp = RegExp('([a-z])([A-Z])');
   return enumName.replaceAllMapped(regExp, (match) => '${match.group(1)} ${match.group(2)}');
 }

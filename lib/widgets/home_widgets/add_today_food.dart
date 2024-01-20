@@ -98,16 +98,16 @@ class FoodList extends StatelessWidget {
     super.key
   });
 
-  Future<void> onPressed(BuildContext context, String mealType, FoodModel food, double grams) async {
+  Future<void> onPressed(BuildContext context, MealTime? mealTime, FoodModel food, double grams) async {
     DayProvider dayProvider = Provider.of<DayProvider>(context, listen: false);
-    await dayProvider.handleDay(mealType, food, grams);
+    await dayProvider.handleDay(mealTime ?? MealTime.appetizer, food, grams);
     if(!context.mounted) return;
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    String mealType = 'appetizer';
+    MealTime? mealTime;
     String keyboardText = '0';
 
     FoodProvider foodProvider = Provider.of<FoodProvider>(context, listen: false);
@@ -147,8 +147,8 @@ class FoodList extends StatelessWidget {
                       child: FoodCardModal(
                         buttonLabel: "Save",
                         onKeyboardTap: (text) => keyboardText = text,
-                        onChangeMealTime: (value) => mealType = value,
-                        onPressed: () => onPressed(context, mealType, food, double.parse(keyboardText)),
+                        onChangeMealTime: (value) => mealTime = value,
+                        onPressed: () => onPressed(context, mealTime, food, double.parse(keyboardText)),
                       )
                     ),
                   );

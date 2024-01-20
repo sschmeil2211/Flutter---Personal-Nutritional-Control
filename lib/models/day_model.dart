@@ -8,7 +8,7 @@ class DayModel {
   final double proteinsConsumed;
   final double fatsConsumed;
   final String date;
-  final Map<String, Map<String, double>> meals;
+  final Map<MealTime, Map<String, double>> meals;
 
   const DayModel({
     required this.id,
@@ -27,17 +27,12 @@ class DayModel {
     'proteinsConsumed': this.proteinsConsumed,
     'date': this.date,
     'fatsConsumed': this.fatsConsumed,
-    'meals': this.meals,
+    'meals': convertMealsToJson(),
   };
 
   factory DayModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
     final Map<String, dynamic>? data = document.data();
-    Map<String, Map<String, double>> mealsMap = {};
-    if (data?['meals'] != null)
-      data?['meals'].forEach((key, value) {
-        if (value is Map<String, dynamic>)
-          mealsMap[key] = Map<String, double>.from(value);
-      });
+    Map<MealTime, Map<String, double>> mealsMap = convertMealsFromJson(data?['meals']);
 
     return DayModel(
       id: data?['id'],
@@ -56,7 +51,7 @@ class DayModel {
     double? proteinsConsumed,
     double? fatsConsumed,
     String? date,
-    Map<String, Map<String, double>>? meals,
+    Map<MealTime, Map<String, double>>? meals,
   }) => DayModel(
     id: this.id,
     caloriesConsumed: caloriesConsumed ?? this.caloriesConsumed,
@@ -64,8 +59,27 @@ class DayModel {
     proteinsConsumed: proteinsConsumed ?? this.proteinsConsumed,
     fatsConsumed: fatsConsumed ?? this.fatsConsumed,
     date: date ?? this.date,
-    meals: meals ?? Map<String, Map<String, double>>.from(this.meals),
+    meals: meals ?? Map<MealTime, Map<String, double>>.from(this.meals),
   );
+
+  static Map<MealTime, Map<String, double>> convertMealsFromJson(Map<String, dynamic>? mealsData) {
+    Map<MealTime, Map<String, double>> mealsMap = {};
+    if (mealsData != null) {
+      mealsData.forEach((key, value) {
+        if (value is Map<String, dynamic>) {
+          MealTime mealTime = MealTime.values.firstWhere((time) => time.toString() == key, orElse: () => MealTime.appetizer);
+          mealsMap[mealTime] = Map<String, double>.from(value);
+        }
+      });
+    }
+    return mealsMap;
+  }
+
+  Map<String, dynamic> convertMealsToJson() {
+    Map<String, dynamic> mealsMap = {};
+    meals.forEach((time, value) => mealsMap[time.toString()] = value);
+    return mealsMap;
+  }
 }
 
 enum MealTime{
@@ -75,3 +89,23 @@ enum MealTime{
   dinner,
   appetizer
 }
+
+/*
+
+  factory DayModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
+    final Map<String, dynamic>? data = document.data();
+    Map<MealTime, Map<String, double>> mealsMap =
+        _convertMealsFromJson(data?['meals']);
+
+    return DayModel(
+      id: data?['id'],
+      caloriesConsumed: (data?['caloriesConsumed'] as num).toDouble(),
+      carbsConsumed: (data?['carbsConsumed'] as num).toDouble(),
+      proteinsConsumed: (data?['proteinsConsumed'] as num).toDouble(),
+      fatsConsumed: (data?['fatsConsumed'] as num).toDouble(),
+      date: data?['date'] ?? "",
+      meals: mealsMap,
+    );
+  }
+}
+* */
