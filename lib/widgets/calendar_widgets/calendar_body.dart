@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import 'package:personal_nutrition_control/models/models.dart';
 import 'package:personal_nutrition_control/providers/providers.dart';
-import 'package:personal_nutrition_control/extensions/extensions.dart';
 import 'package:personal_nutrition_control/utils/utils.dart';
 import 'package:personal_nutrition_control/widgets/widgets.dart';
 
@@ -29,14 +28,12 @@ class _CalendarBodyState extends State<CalendarBody> {
     DateTime now = DateTime.now();
     String? createdAt = Provider.of<UserProvider>(context, listen: false).user?.createdAt;
     DateTime firstDate = stringToDateTime(createdAt ?? '${now.year}-${now.month}-${now.day}');
-
     DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: firstDate,
       lastDate: DateTime.now(),
     );
-
     if (picked != null && picked != selectedDate)
       setState(() => selectedDate = picked);
   }
@@ -46,7 +43,6 @@ class _CalendarBodyState extends State<CalendarBody> {
     return Consumer<DayProvider>(
       builder: (context, dayProvider, child){
         DayModel? selectedDay = dayProvider.getSpecificDay(selectedDate ?? DateTime.now());
-
         String day = getFormattedDateTime(selectedDate ?? DateTime.now());
 
         return Column(
@@ -59,17 +55,16 @@ class _CalendarBodyState extends State<CalendarBody> {
                 style: const TextStyle(fontSize: 20),
               )
             ),
-            if(selectedDay == null)
-              const Expanded(
-                child: NoData(label: "You have no consumption this day")
-              )
-            else
-              Column(
-                children: [
-                  DiaryIndicators(dayToView: selectedDay),
-                  MealTimeCard(dayToView: selectedDay)
-                ]
-              )
+            selectedDay == null
+                ? const Expanded(
+                    child: NoData(label: "You have no consumption this day")
+                  )
+                : Column(
+                    children: [
+                      DiaryIndicators(dayToView: selectedDay),
+                      MealTimeCard(dayToView: selectedDay)
+                    ]
+                  )
           ],
         );
       }

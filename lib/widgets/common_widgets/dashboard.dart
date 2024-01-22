@@ -123,11 +123,7 @@ class MacronutrientsIndicator extends StatelessWidget {
     double proteins = this.totalProteins / totalMacros;
     double fats = this.totalFats / totalMacros;
 
-    List<MacronutrientsData> macronutrients = [
-      MacronutrientsData(color: Colors.yellowAccent, value: carbs, label: 'Carbs'),
-      MacronutrientsData(color: Colors.lightBlue, value: proteins, label: 'Proteins'),
-      MacronutrientsData(color: Colors.lightGreen, value: fats, label: 'Fats')
-    ];
+    List<MacronutrientsData> macronutrients = MacronutrientsData.data(carbs, proteins, fats);
 
     return TweenAnimationBuilder(
       tween: Tween<double>(begin: 0.0, end: 1.0),

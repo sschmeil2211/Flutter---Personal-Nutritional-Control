@@ -69,11 +69,7 @@ class CardBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<MacronutrientsData> macronutrients = [
-      MacronutrientsData(color: Colors.yellowAccent, value: this.food.carbs, label: 'Carbs'),
-      MacronutrientsData(color: Colors.lightBlue, value: this.food.proteins, label: 'Proteins'),
-      MacronutrientsData(color: Colors.lightGreen, value: this.food.fats, label: 'Fats')
-    ];
+    List<MacronutrientsData> macronutrients = MacronutrientsData.data(this.food.carbs, this.food.proteins, this.food.fats);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),

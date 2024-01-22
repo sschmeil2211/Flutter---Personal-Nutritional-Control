@@ -10,188 +10,97 @@ import 'package:personal_nutrition_control/providers/providers.dart';
 import 'package:personal_nutrition_control/utils/utils.dart';
 import 'package:personal_nutrition_control/widgets/widgets.dart';
 
-class UserInformation extends StatefulWidget {
+class InformationView extends StatefulWidget {
+  final int args;
   final UserProvider userProvider;
 
-  const UserInformation({
+  const InformationView({
+    required this.args,
     required this.userProvider,
     super.key
   });
 
   @override
-  State<UserInformation> createState() => _UserInformationFormState();
+  State<InformationView> createState() => _InformationViewState();
 }
 
-class _UserInformationFormState extends State<UserInformation> {
+class _InformationViewState extends State<InformationView> {
 
   bool loading = false;
 
-  Future<void> updateUser(UserProvider userProvider, ControllersProvider controllersProvider) async {
-    UserModel? newUser = userProvider.user?.copyFrom(
-      weeklyPhysicalActivity: controllersProvider.selectedPhysicalActivity,
-      genderType: controllersProvider.selectedGenderType,
-      birthdate: '${controllersProvider.selectedDate?.year}-${controllersProvider.selectedDate?.month}-${controllersProvider.selectedDate?.day}',
-    );
-    setState(() => loading = true);
-    if(userProvider.user == null) return;
-    bool successful = await userProvider.updateUser(newUser!);
-    if(!context.mounted) return;
-    if(successful)
-      Navigator.pop(context);
-    setState(() => loading = false);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
-
-    return Consumer<ControllersProvider>(
-      builder: (context, controllersProvider, child) => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          inputField(
-            Icons.person,
-            'Gender',
-            controllersProvider.genderController,
-            () async => await controllersProvider.onPressedGenderModal(context)
-          ),
-          inputField(
-            Icons.calendar_month,
-            'Birthdate',
-            controllersProvider.birthdateController,
-            () async => await controllersProvider.onPressedCalendarModal(context)
-          ),
-          inputField(
-            Icons.timer,
-            'Physical activity per week (hs)',
-            controllersProvider.physicalActivityController,
-            () async => await controllersProvider.onPressedPhysicalModal(context)
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
-            child: Indicator(
-              isLoading: loading,
-              onPressed: () async => await updateUser(userProvider, controllersProvider),
-            ),
+  Future<void> updateUser(ControllersProvider controllersProvider) async {
+    UserModel? newUser = widget.args == 0
+        ? widget.userProvider.user?.copyFrom(
+            weeklyPhysicalActivity: controllersProvider.selectedPhysicalActivity,
+            genderType: controllersProvider.selectedGenderType,
+            birthdate: '${controllersProvider.selectedDate?.year}-${controllersProvider.selectedDate?.month}-${controllersProvider.selectedDate?.day}',
           )
-        ],
-      )
-    );
-  }
-
-  Widget inputField(IconData icon, String label, TextEditingController controller, Function() onTap) => InputField(
-    prefixIcon: icon,
-    labelText: label,
-    textEditingController: controller,
-    readOnly: true,
-    textInputType: TextInputType.none,
-    onTap: onTap,
-  );
-}
-
-class UserBody extends StatefulWidget {
-  final UserProvider userProvider;
-
-  const UserBody({
-    required this.userProvider,
-    super.key
-  });
-
-  @override
-  State<UserBody> createState() => _UserBodyState();
-}
-
-class _UserBodyState extends State<UserBody> {
-  bool loading = false;
-
-  Future<void> updateUser(UserProvider userProvider, ControllersProvider controllersProvider) async {
-    UserModel? newUser = userProvider.user?.copyFrom(
-      height: int.parse(controllersProvider.heightController.text),
-      weight: int.parse(controllersProvider.weightController.text),
-      wrist: int.parse(controllersProvider.wristController.text),
-      waist: int.parse(controllersProvider.waistController.text),
-    );
+        : widget.userProvider.user?.copyFrom(
+            height: int.parse(controllersProvider.heightController.text),
+            weight: int.parse(controllersProvider.weightController.text),
+            wrist: int.parse(controllersProvider.wristController.text),
+            waist: int.parse(controllersProvider.waistController.text),
+          );
     setState(() => loading = true);
-    if(userProvider.user == null) return;
-    bool successful = await userProvider.updateUser(newUser!);
+    if(newUser == null) return;
+    bool successful = await widget.userProvider.updateUser(newUser);
     if(!context.mounted) return;
     if(successful)
       showCupertinoModalPopup(
         context: context,
-        builder: (context) => UpdateTargetCalories(userProvider: userProvider)
+        builder: (context) => RecalculateTargetCaloriesModal(userProvider: widget.userProvider)
       );
     setState(() => loading = false);
   }
 
   @override
   Widget build(BuildContext context) {
-    UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
     ControllersProvider controllersProvider = Provider.of<ControllersProvider>(context, listen: false);
+
+    List<InputFieldsData> inputs = widget.args == 0
+        ? InputFieldsData.personalInputs(context, controllersProvider)
+        : InputFieldsData.bodyInputs(controllersProvider);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        inputField(Icons.height, 'Height (cm)', controllersProvider.heightController),
-        inputField(Icons.scale, 'Weight (kg)', controllersProvider.weightController),
-        inputField(Icons.circle_outlined, 'Wrist circumference (cm)', controllersProvider.wristController),
-        inputField(Icons.circle, 'Waist circumference (cm)', controllersProvider.waistController),
+        Column(
+          children: inputs.map((input) => InputField(
+            prefixIcon: input.iconData,
+            labelText: input.label,
+            textEditingController: input.controller,
+            readOnly: input.readOnly,
+            textInputType: input.textInputType,
+            onTap: input.function,
+            inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9.]'))],
+          )).toList(),
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 30),
-          child: Indicator(
+          child: ButtonIndicator(
+            label: 'Update',
             isLoading: loading,
-            onPressed: () async => await updateUser(userProvider, controllersProvider),
+            onPressed: () async => await updateUser(controllersProvider),
           ),
         )
       ],
     );
   }
-
-  Widget inputField(IconData icon, String label, TextEditingController controller) => InputField(
-    prefixIcon: icon,
-    labelText: label,
-    textEditingController: controller,
-    inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9.]'))],
-    textInputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
-  );
 }
 
-class Indicator extends StatelessWidget {
-  final bool isLoading;
-  final Function() onPressed;
-
-  const Indicator({
-    required this.isLoading,
-    required this.onPressed,
-    super.key
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return this.isLoading
-        ? const CircularProgressIndicator()
-        : SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: this.onPressed,
-              child: const Text('Update'),
-            )
-          );
-  }
-}
-
-class UpdateTargetCalories extends StatefulWidget {
+class RecalculateTargetCaloriesModal extends StatefulWidget {
   final UserProvider userProvider;
 
-  const UpdateTargetCalories({
+  const RecalculateTargetCaloriesModal({
     required this.userProvider,
     super.key
   });
 
   @override
-  State<UpdateTargetCalories> createState() => _UpdateTargetCaloriesState();
+  State<RecalculateTargetCaloriesModal> createState() => _RecalculateTargetCaloriesModalState();
 }
 
-class _UpdateTargetCaloriesState extends State<UpdateTargetCalories> {
+class _RecalculateTargetCaloriesModalState extends State<RecalculateTargetCaloriesModal> {
   bool loading = false;
 
   Future<void> onPressed() async {
@@ -223,7 +132,11 @@ class _UpdateTargetCaloriesState extends State<UpdateTargetCalories> {
                 const Text('Your information has changed, we need to recalculate your target calories.'),
                 Padding(
                   padding: const EdgeInsets.all(10),
-                  child: updateButton(),
+                  child: ButtonIndicator(
+                    label: 'Update',
+                    isLoading: loading,
+                    onPressed: onPressed,
+                  ),
                 )
               ],
             ),
@@ -232,18 +145,4 @@ class _UpdateTargetCaloriesState extends State<UpdateTargetCalories> {
       ),
     );
   }
-
-  Widget updateButton() => loading
-      ? const CircularProgressIndicator()
-      : MaterialButton(
-          color: Colors.white12,
-          minWidth: double.infinity,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10)
-            )
-          ),
-          onPressed: onPressed,
-          child: const Text('Update'),
-        );
 }

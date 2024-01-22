@@ -26,13 +26,12 @@ class HomeScreen extends StatelessWidget {
             const Header(),
             Consumer<DayProvider>(
               builder: (context, dayProvider, child){
-
                 UserModel? user = Provider.of<UserProvider>(context, listen: false).user;
                 DayModel? actualDay = dayProvider.actualDay;
                 if(user == null || actualDay == null)
                   return Container();
 
-                final DayModel? day = dayProvider.getSpecificDay(DateTime.now());
+                DayModel? day = dayProvider.getSpecificDay(DateTime.now());
                 if(day == null)
                   return Container();
 

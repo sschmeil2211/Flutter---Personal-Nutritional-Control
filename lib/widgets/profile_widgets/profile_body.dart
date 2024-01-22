@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:personal_nutrition_control/providers/providers.dart';
 import 'package:personal_nutrition_control/utils/utils.dart';
-
+import 'package:personal_nutrition_control/models/widgets_models.dart';
 
 class ProfileBody extends StatefulWidget {
   const ProfileBody({super.key});
@@ -32,38 +32,26 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
-
     UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+    List<ProfileCardData> profileCards = ProfileCardData.bodyData(context);
 
     return Column(
       children: [
-        ProfileCard(
-          icon: Icons.person,
-          label: 'User Information',
-          onTap: () => Navigator.pushNamed(context, 'informationScreen', arguments: 0),
+        Column(
+          children: profileCards.map((card) => ProfileCard(
+            icon: card.iconData,
+            label: card.label,
+            onTap: card.function
+          )).toList(),
         ),
-        ProfileCard(
-          icon: Icons.scale,
-          label: 'Body Information',
-          onTap: () => Navigator.pushNamed(context, 'informationScreen', arguments: 1)
-        ),
-        ProfileCard(
-          icon: Icons.calculate_outlined,
-          label: 'Target Calories',
-          onTap: () => Navigator.pushNamed(context, 'targetCaloriesScreen'),
-        ),
-        signOutWidget(userProvider)
-      ],
-    );
-  }
-
-  Widget signOutWidget(UserProvider userProvider) => loading
-      ? const CircularProgressIndicator()
-      : ProfileCard(
+        loading ? const CircularProgressIndicator() : ProfileCard(
           icon: Icons.logout,
           label: 'Sign Out',
           onTap: () async => await signOut(userProvider),
-        );
+        ),
+      ],
+    );
+  }
 }
 
 class ProfileCard extends StatelessWidget {
@@ -83,22 +71,22 @@ class ProfileCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: InkWell(
-          onTap: this.onTap,
-          child: SizedBox(
-            height: 60,
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 10),
-                  child: Icon(this.icon),
-                ),
-                Text(
-                  this.label,
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-          )
+        onTap: this.onTap,
+        child: SizedBox(
+          height: 60,
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 10),
+                child: Icon(this.icon),
+              ),
+              Text(
+                this.label,
+                style: const TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
+        )
       ),
     );
   }

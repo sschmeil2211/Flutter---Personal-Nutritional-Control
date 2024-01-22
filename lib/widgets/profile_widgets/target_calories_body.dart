@@ -11,11 +11,6 @@ import 'package:personal_nutrition_control/widgets/widgets.dart';
 class TargetCaloriesBody extends StatelessWidget {
   const TargetCaloriesBody({super.key});
 
-  void onPressed(BuildContext context, ControllersProvider controllersProvider) => showCupertinoModalPopup(
-    context: context,
-    builder: (context) => TargetCaloriesModal(controllersProvider: controllersProvider)
-  );
-
   @override
   Widget build(BuildContext context) {
 
@@ -50,7 +45,10 @@ class TargetCaloriesBody extends StatelessWidget {
               )
             ),
             child: const Text('Edit Target calories'),
-            onPressed: () => onPressed(context, controllersProvider),
+            onPressed: () => showCupertinoModalPopup(
+                context: context,
+                builder: (context) => TargetCaloriesModal(controllersProvider: controllersProvider)
+            )
           ),
         )
       ],
@@ -75,7 +73,7 @@ class _TargetCaloriesModalState extends State<TargetCaloriesModal> {
 
   Future<void> onPressed(UserProvider userProvider) async {
     UserModel? newUser = userProvider.user?.copyFrom(
-      targetCalories: double.parse(this.widget.controllersProvider.targetCaloriesController.text),
+      targetCalories: double.parse(widget.controllersProvider.targetCaloriesController.text),
     );
     setState(() => loading = true);
     bool successful = await userProvider.updateUser(newUser);
@@ -102,11 +100,12 @@ class _TargetCaloriesModalState extends State<TargetCaloriesModal> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TargetCaloriesInput(
-                  targetCaloriesController: this.widget.controllersProvider.targetCaloriesController,
+                  targetCaloriesController: widget.controllersProvider.targetCaloriesController,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: updateButton(userProvider),
+                ButtonIndicator(
+                  label: 'Update',
+                  isLoading: loading,
+                  onPressed: () async => await onPressed(userProvider)
                 )
               ],
             ),
@@ -115,20 +114,6 @@ class _TargetCaloriesModalState extends State<TargetCaloriesModal> {
       ),
     );
   }
-
-  Widget updateButton(UserProvider userProvider) => loading
-      ? const CircularProgressIndicator()
-      : MaterialButton(
-          color: Colors.white12,
-          minWidth: double.infinity,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10)
-            )
-          ),
-          onPressed: () async => await onPressed(userProvider),
-          child: const Text('Update'),
-        );
 }
 
 class TargetCaloriesInput extends StatelessWidget {
@@ -154,4 +139,3 @@ class TargetCaloriesInput extends StatelessWidget {
     );
   }
 }
-

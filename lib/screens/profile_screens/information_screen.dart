@@ -15,6 +15,7 @@ class InformationScreen extends StatelessWidget {
     final int args = ModalRoute.of( context )!.settings.arguments as int;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
@@ -28,9 +29,10 @@ class InformationScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Consumer<UserProvider>(
-                  builder: (context, userProvider, child) => args == 0
-                      ? UserInformation(userProvider: userProvider)
-                      : UserBody(userProvider: userProvider)
+                builder: (context, userProvider, child) => InformationView(
+                  userProvider: userProvider,
+                  args: args,
+                )
               ),
             )
           ],
