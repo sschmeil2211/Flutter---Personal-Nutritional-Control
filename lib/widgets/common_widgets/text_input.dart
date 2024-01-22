@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:personal_nutrition_control/models/models.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
 
 class InputField extends StatelessWidget {
 
@@ -56,8 +56,15 @@ class InputField extends StatelessWidget {
       : null;
 }
 
-class GenderSelector extends StatelessWidget {
-  const GenderSelector({super.key});
+class EnumSelector<T> extends StatelessWidget {
+  final List<T> enumValues;
+  final String? title;
+
+  const EnumSelector({
+    required this.enumValues,
+    this.title,
+    super.key
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,57 +73,19 @@ class GenderSelector extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListTile(
-            title: const Text('Male'),
-            onTap: () => Navigator.pop(context, GenderType.male) ,
-          ),
-          ListTile(
-            title: const Text('Female'),
-            onTap: () => Navigator.pop(context, GenderType.female) ,
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 20, bottom: 10),
-            child: Text(
-              '* We need your biological gender for some calculations.',
-              style: TextStyle(fontSize: 12),
+          for (var value in enumValues)
+            ListTile(
+              title: Text(formatEnumName(value)), // Extracts the enum name
+              onTap: () => Navigator.pop(context, value),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class PhysicalTimeSelector extends StatelessWidget {
-  const PhysicalTimeSelector({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            title: const Text('Less than 1 hs'),
-            onTap: () => Navigator.pop(context,  PhysicalActivity.lessThanHour),
-          ),
-          ListTile(
-            title: const Text('2 to 5 hs'),
-            onTap: () => Navigator.pop(context, PhysicalActivity.twoToFive),
-          ),
-          ListTile(
-            title: const Text('6 to 9 hs'),
-            onTap: () => Navigator.pop(context, PhysicalActivity.sixToNine),
-          ),
-          ListTile(
-            title: const Text('10 to 20 hs'),
-            onTap: () => Navigator.pop(context, PhysicalActivity.tenToTwenty),
-          ),
-          ListTile(
-            title: const Text('More than 20 hs'),
-            onTap: () => Navigator.pop(context, PhysicalActivity.moreThanTwenty),
-          ),
+          if(this.title != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 10),
+              child: Text(
+                this.title!,
+                style: const TextStyle(fontSize: 12),
+              ),
+            ),
         ],
       ),
     );

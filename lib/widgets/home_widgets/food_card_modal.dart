@@ -2,14 +2,14 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:personal_nutrition_control/models/models.dart';
 import 'package:personal_nutrition_control/utils/utils.dart';
-import 'package:personal_nutrition_control/extensions/extensions.dart';
 
 class FoodCardModal extends StatefulWidget {
 
   final String buttonLabel;
   final Function() onPressed;
-  final Function(String) onChangeMealTime;
+  final Function(MealTime) onChangeMealTime;
   final Function(String) onKeyboardTap;
 
   const FoodCardModal({
@@ -25,10 +25,10 @@ class FoodCardModal extends StatefulWidget {
 }
 
 class _FoodCardModalState extends State<FoodCardModal> {
-  String mealTimeType = '';
+  MealTime? mealTimeType;
   String text = '';
 
-  void onChanged(String mealTime) => setState(() {
+  void onChanged(MealTime mealTime) => setState(() {
     mealTimeType = mealTime;
     widget.onChangeMealTime(mealTime);
   });
@@ -45,7 +45,7 @@ class _FoodCardModalState extends State<FoodCardModal> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          MealTimeGrid(selectedWord: mealTimeType, onPressed: onChanged),
+          MealTimeGrid(selectedMealTime: mealTimeType, onPressed: onChanged),
           Text(
             text.isEmpty ? '0 g' : '$text g',
             style: const TextStyle(fontSize: 18),
@@ -72,11 +72,11 @@ class _FoodCardModalState extends State<FoodCardModal> {
 }
 
 class MealTimeGrid extends StatelessWidget {
-  final String selectedWord;
-  final Function(String) onPressed;
+  final MealTime? selectedMealTime;
+  final Function(MealTime) onPressed;
 
   const MealTimeGrid({
-    required this.selectedWord,
+    this.selectedMealTime,
     required this.onPressed,
     super.key
   });
@@ -103,13 +103,13 @@ class MealTimeGrid extends StatelessWidget {
           itemCount: 5,
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            String word = getMealTime(index);
-            bool isSelected = word == selectedWord;
+            MealTime mealtime = MealTime.values[index];
+            bool isSelected = mealtime == selectedMealTime;
             return MaterialButton(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
               color: isSelected ? Colors.white24 : Colors.white12,
-              onPressed: () => onPressed(word),
-              child: Text(word.capitalize()),
+              onPressed: () => onPressed(mealtime),
+              child: Text(formatEnumName(mealtime)),
             );
           },
         ),

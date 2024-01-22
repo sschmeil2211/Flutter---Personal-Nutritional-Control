@@ -1,4 +1,4 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_this
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,7 +59,7 @@ class _PersonalFormFormState extends State<PersonalForm> {
     if(result == null) return;
     setState(() {
       selectedGenderType = result;
-      genderController.text = getGenderString(selectedGenderType!);
+      genderController.text = formatEnumName(selectedGenderType!);
     });
   }
 
@@ -68,7 +68,7 @@ class _PersonalFormFormState extends State<PersonalForm> {
     if(result == null) return;
     setState(() {
       selectedPhysicalActivity = result;
-      physicalActivityController.text = getPhysicalActivityString(selectedPhysicalActivity!);
+      physicalActivityController.text = formatEnumName(selectedPhysicalActivity!);
     });
   }
 
@@ -76,38 +76,36 @@ class _PersonalFormFormState extends State<PersonalForm> {
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
+    List<InputFieldsData> data = [
+      InputFieldsData(iconData: Icons.person, label: 'Gender', controller: genderController, function: onPressedGenderModal),
+      InputFieldsData(iconData: Icons.calendar_month, label: 'Birthdate', controller: birthdateController, function: onPressedCalendarModal),
+      InputFieldsData(iconData: Icons.timer, label: 'Physical activity per week (hs)', controller: physicalActivityController, function: onPressedPhysicalModal),
+    ];
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        inputField(Icons.person, 'Gender', genderController, onPressedGenderModal),
-        inputField(Icons.calendar_month, 'Birthdate', birthdateController, onPressedCalendarModal),
-        inputField(Icons.timer, 'Physical activity per week (hs)', physicalActivityController, onPressedPhysicalModal),
+        Column(
+          children: data.map((field) => InputField(
+            readOnly: true,
+            textInputType: TextInputType.none,
+            prefixIcon: field.iconData,
+            labelText: field.label,
+            textEditingController: field.controller,
+            onTap: field.function,
+          )).toList(),
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 30),
-          child: indicator(userProvider),
+          child: ButtonIndicator(
+            label: 'Continue',
+            isLoading: loading,
+            onPressed: () async => await updateUser(userProvider),
+          ),
         )
       ],
     );
   }
-
-  Widget inputField(IconData icon, String label, TextEditingController controller, Function() onTap) => InputField(
-    readOnly: true,
-    textInputType: TextInputType.none,
-    prefixIcon: icon,
-    labelText: label,
-    textEditingController: controller,
-    onTap: onTap,
-  );
-
-  Widget indicator(UserProvider userProvider) => loading
-      ? const CircularProgressIndicator()
-      : SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            child: const Text('Continue'),
-            onPressed: () async => await updateUser(userProvider),
-          )
-        );
 }
 
 class BodyForm extends StatefulWidget {
@@ -148,36 +146,34 @@ class _BodyFormFormState extends State<BodyForm> {
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
 
+    List<InputFieldsData> data = [
+      InputFieldsData(iconData: Icons.height, label: 'Height (cm)', controller: heightController),
+      InputFieldsData(iconData: Icons.scale, label: 'Weight (kg)', controller: weightController),
+      InputFieldsData(iconData: Icons.circle_outlined, label: 'Wrist circumference (cm)', controller: wristController),
+      InputFieldsData(iconData: Icons.circle, label: 'Waist circumference (cm)', controller: waistController),
+    ];
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        inputField(Icons.height, 'Height', heightController),
-        inputField(Icons.scale, 'Weight', weightController),
-        inputField(Icons.circle_outlined, 'Wrist circumference', wristController),
-        inputField(Icons.circle, 'Waist circumference', waistController),
+        Column(
+          children: data.map((field) => InputField(
+            prefixIcon: field.iconData,
+            labelText: field.label,
+            textEditingController: field.controller,
+            inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9.]'))],
+            textInputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
+          )).toList(),
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 30),
-          child: indicator(userProvider),
+          child: ButtonIndicator(
+            label: 'Continue',
+            isLoading: loading,
+            onPressed: () async => await updateUser(userProvider),
+          ),
         )
       ],
     );
   }
-
-  Widget inputField(IconData icon, String label, TextEditingController controller) => InputField(
-    prefixIcon: icon,
-    labelText: label,
-    textEditingController: controller,
-    inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9.]'))],
-    textInputType: const TextInputType.numberWithOptions(signed: false, decimal: true),
-  );
-
-  Widget indicator(UserProvider userProvider) => loading
-      ? const CircularProgressIndicator()
-      : SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            child: const Text('Continue'),
-            onPressed: () async => await updateUser(userProvider),
-          )
-  );
 }

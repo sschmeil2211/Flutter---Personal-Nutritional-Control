@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import 'package:personal_nutrition_control/models/models.dart';
 import 'package:personal_nutrition_control/providers/providers.dart';
-import 'package:personal_nutrition_control/extensions/extensions.dart';
 import 'package:personal_nutrition_control/utils/utils.dart';
 import 'package:personal_nutrition_control/widgets/widgets.dart';
 
@@ -29,14 +28,12 @@ class _CalendarBodyState extends State<CalendarBody> {
     DateTime now = DateTime.now();
     String? createdAt = Provider.of<UserProvider>(context, listen: false).user?.createdAt;
     DateTime firstDate = stringToDateTime(createdAt ?? '${now.year}-${now.month}-${now.day}');
-
     DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: firstDate,
       lastDate: DateTime.now(),
     );
-
     if (picked != null && picked != selectedDate)
       setState(() => selectedDate = picked);
   }
@@ -46,7 +43,6 @@ class _CalendarBodyState extends State<CalendarBody> {
     return Consumer<DayProvider>(
       builder: (context, dayProvider, child){
         DayModel? selectedDay = dayProvider.getSpecificDay(selectedDate ?? DateTime.now());
-
         String day = getFormattedDateTime(selectedDate ?? DateTime.now());
 
         return Column(
@@ -59,17 +55,16 @@ class _CalendarBodyState extends State<CalendarBody> {
                 style: const TextStyle(fontSize: 20),
               )
             ),
-            if(selectedDay == null)
-              const Expanded(
-                child: NoData(label: "You have no consumption this day")
-              )
-            else
-              Column(
-                children: [
-                  DiaryIndicators(dayToView: selectedDay),
-                  MealTimeCard(dayToView: selectedDay)
-                ]
-              )
+            selectedDay == null
+                ? const Expanded(
+                    child: NoData(label: "You have no consumption this day")
+                  )
+                : Column(
+                    children: [
+                      DiaryIndicators(dayToView: selectedDay),
+                      MealTimeCard(dayToView: selectedDay)
+                    ]
+                  )
           ],
         );
       }
@@ -91,8 +86,6 @@ class MealTimeCard extends StatefulWidget {
 
 class _MealTimeCardState extends State<MealTimeCard> {
 
-  List<String> mealTypes = ['breakfast', 'lunch', 'snack', 'dinner', 'appetizer'];
-
   int currentPage = 0;
 
   @override
@@ -110,7 +103,7 @@ class _MealTimeCardState extends State<MealTimeCard> {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Text(
-              mealTypes[currentPage].capitalize(),
+              formatEnumName(MealTime.values[currentPage]),
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
@@ -118,7 +111,7 @@ class _MealTimeCardState extends State<MealTimeCard> {
             height: MediaQuery.of(context).size.height * 0.5,
             child: PageView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: mealTypes.length,
+              itemCount: MealTime.values.length,
               controller: PageController(viewportFraction: 1),
               onPageChanged: (int page) => setState(() => currentPage = page),
               itemBuilder: (context, index) {
@@ -126,9 +119,9 @@ class _MealTimeCardState extends State<MealTimeCard> {
                 if(widget.dayToView == null)
                   return Container();
 
-                Map<String, double>? mealFoods = widget.dayToView?.meals[mealTypes[index]];
+                Map<String, double>? mealFoods = widget.dayToView?.meals[MealTime.values[index]];
                 if (mealFoods == null)
-                  return const NoData(label: "No consumiste nada en este horario");
+                  return const NoData(label: "You didn't consume anything during this time.");
 
                 return ListView(
                   shrinkWrap: true,
@@ -137,7 +130,9 @@ class _MealTimeCardState extends State<MealTimeCard> {
                     double portions = entry.value;
 
                     FoodModel? food = Provider.of<FoodProvider>(context, listen: false).getFood(foodId);
-                    return food != null ? FoodCard(foodModel: food, portions: portions) : Container();
+                    return food != null
+                        ? FoodCard(foodModel: food, portions: portions)
+                        : Container();
                   }).toList(),
                 );
               },

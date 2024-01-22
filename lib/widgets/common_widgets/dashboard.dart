@@ -119,43 +119,37 @@ class MacronutrientsIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double totalMacros = totalProteins + totalCarbs + totalFats;
+    double carbs = this.totalCarbs / totalMacros;
+    double proteins = this.totalProteins / totalMacros;
+    double fats = this.totalFats / totalMacros;
 
-    double proteinsPercentage = this.totalProteins / totalMacros;
-    double carbsPercentage = this.totalCarbs / totalMacros;
-    double fatsPercentage = this.totalFats / totalMacros;
+    List<MacronutrientsData> macronutrients = MacronutrientsData.data(carbs, proteins, fats);
 
     return TweenAnimationBuilder(
       tween: Tween<double>(begin: 0.0, end: 1.0),
       duration: const Duration(seconds: 1), // Ajusta según la velocidad deseada
       builder: (context, double value, child) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          macroPercentageIndicator(carbsPercentage, 'Carbs', Colors.yellowAccent),
-          macroPercentageIndicator(proteinsPercentage, 'Proteins', Colors.lightBlue),
-          macroPercentageIndicator(fatsPercentage, 'Fats', Colors.lightGreen),
-        ],
+        children: macronutrients.map((m) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                m.label,
+                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
+              ),
+              LinearProgressIndicator(
+                minHeight: 10,
+                borderRadius: BorderRadius.circular(10),
+                backgroundColor: Colors.white12,
+                value: m.value,
+                color: m.color,
+              ),
+            ],
+          ),
+        )).toList(),
       )
-    );
-  }
-  Widget macroPercentageIndicator(double value, String label, Color color){
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
-          ),
-          LinearProgressIndicator(
-            minHeight: 10,
-            borderRadius: BorderRadius.circular(10),
-            backgroundColor: Colors.white12,
-            value: value,
-            color: color,
-          ),
-        ],
-      ),
     );
   }
 }

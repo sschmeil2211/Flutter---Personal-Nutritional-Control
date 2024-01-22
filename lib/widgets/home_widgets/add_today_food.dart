@@ -39,7 +39,7 @@ class _AddTodayFoodState extends State<AddTodayFood>{
       child: SwitchAnimation(
         isPressed: changedWidget,
         originalWidget: FoodTypeGrid(paths: paths, onPressed: _filterFoodsByType),
-        newWidget: FoodList(onPressReturnIcon: _toggleChange, selectedFoodType: selectedFoodType)
+        newWidget: FilteredFoodList(onPressReturnIcon: _toggleChange, selectedFoodType: selectedFoodType)
       ),
     );
   }
@@ -87,27 +87,27 @@ class FoodTypeGrid extends StatelessWidget {
   }
 }
 
-class FoodList extends StatelessWidget {
+class FilteredFoodList extends StatelessWidget {
 
   final Function() onPressReturnIcon;
   final FoodType selectedFoodType;
 
-  const FoodList({
+  const FilteredFoodList({
     required this.onPressReturnIcon,
     required this.selectedFoodType,
     super.key
   });
 
-  Future<void> onPressed(BuildContext context, String mealType, FoodModel food, double grams) async {
+  Future<void> onPressed(BuildContext context, MealTime? mealTime, FoodModel food, double grams) async {
     DayProvider dayProvider = Provider.of<DayProvider>(context, listen: false);
-    await dayProvider.handleDay(mealType, food, grams);
+    await dayProvider.handleDay(mealTime ?? MealTime.appetizer, food, grams);
     if(!context.mounted) return;
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    String mealType = 'appetizer';
+    MealTime? mealTime;
     String keyboardText = '0';
 
     FoodProvider foodProvider = Provider.of<FoodProvider>(context, listen: false);
@@ -115,43 +115,63 @@ class FoodList extends StatelessWidget {
 
     return Column(
       children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              child: IconButton(
-                onPressed: onPressReturnIcon,
-                icon: const Icon(Icons.arrow_back_ios),
-              ),
-            ),
-            Center(
-              child: Text(
-                getFoodTypeString(selectedFoodType),
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-              )
-            ),
-          ],
+        FoodListHeader(
+          onPressReturnIcon: onPressReturnIcon,
+          selectedFoodType: selectedFoodType
         ),
         filteredFoods.isEmpty
             ? const NoData(label: 'No food found')
             : Column(
                 children: List.generate(filteredFoods.length, (index) {
                   FoodModel food = filteredFoods[index];
-
                   return FoodCard(
-                    editable: true,
                     foodModel: food,
-                    child: FoodCardModal(
-                      buttonLabel: "Save",
-                      onKeyboardTap: (text) => keyboardText = text,
-                      onChangeMealTime: (value) => mealType = value,
-                      onPressed: () => onPressed(context, mealType, food, double.parse(keyboardText)),
+                    onTap: () => showModal(
+                      context: context,
+                      child: FoodCardModal(
+                        buttonLabel: "Save",
+                        onKeyboardTap: (text) => keyboardText = text,
+                        onChangeMealTime: (value) => mealTime = value,
+                        onPressed: () => onPressed(context, mealTime, food, double.parse(keyboardText)),
+                      )
                     ),
                   );
                 }),
               )
+      ],
+    );
+  }
+}
+
+class FoodListHeader extends StatelessWidget {
+  final Function() onPressReturnIcon;
+  final FoodType selectedFoodType;
+
+  const FoodListHeader({
+    super.key,
+    required this.onPressReturnIcon,
+    required this.selectedFoodType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          child: IconButton(
+            onPressed: onPressReturnIcon,
+            icon: const Icon(Icons.arrow_back_ios),
+          ),
+        ),
+        Center(
+          child: Text(
+            formatEnumName(selectedFoodType),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+          )
+        ),
       ],
     );
   }

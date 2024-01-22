@@ -25,7 +25,7 @@ class SignScreen extends StatelessWidget {
                   image: const AssetImage(appLogo),
                   height: height * 0.3
                 ),
-                const SignInForm(),
+                const SignForm(),
               ],
             ),
           ),

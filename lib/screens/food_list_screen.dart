@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:personal_nutrition_control/providers/providers.dart';
 import 'package:personal_nutrition_control/widgets/widgets.dart';
-import 'package:provider/provider.dart';
 
 class FoodListScreen extends StatelessWidget {
   const FoodListScreen({super.key});
@@ -22,11 +23,6 @@ class FoodListScreen extends StatelessWidget {
             itemCount: foodProvider.foods.length,
             itemBuilder: (context, index) => FoodCard(
               foodModel: foodProvider.foods[index],
-              child: const SizedBox(
-                height: 200,
-                width: double.infinity,
-                child: Center(child: Text("Edicion de comidas")),
-              ),
             )
           ),
         ),
