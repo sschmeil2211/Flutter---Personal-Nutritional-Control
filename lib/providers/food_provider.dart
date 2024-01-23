@@ -44,5 +44,8 @@ class FoodProvider with ChangeNotifier {
     }
   }
 
+  List<FoodModel> filterFoodsByName(String name) => _foods
+      .where((food) => food.name.toLowerCase().contains(name.toLowerCase())).toList();
+
   List<FoodModel> getFoodsByType(FoodType foodType) => _foods.where((e) => e.foodType == foodType).toList();
 }

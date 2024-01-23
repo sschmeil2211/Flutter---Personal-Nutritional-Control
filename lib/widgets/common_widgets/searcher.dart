@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:personal_nutrition_control/delegates/search_delegate.dart';
+import 'package:personal_nutrition_control/providers/food_provider.dart';
 
 class Searcher extends StatelessWidget {
-  const Searcher({
-    super.key,
-  });
+
+  const Searcher({super.key});
 
   @override
   Widget build(BuildContext context) {
+    FoodProvider foodProvider = Provider.of<FoodProvider>(context, listen: false);
+
     return Expanded(
       child: Container(
         height: 35,
@@ -15,7 +20,10 @@ class Searcher extends StatelessWidget {
           borderRadius: BorderRadius.circular(25),
         ),
         child: InkWell(
-          onTap: (){},
+          onTap: () => showSearch(
+            context: context,
+            delegate: FoodSearchDelegate(foodProvider),
+          ),
           child: const Row(
             children: [
               Padding(
