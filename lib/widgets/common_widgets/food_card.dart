@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:personal_nutrition_control/models/models.dart';
 import 'package:personal_nutrition_control/utils/constants.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
 
 class FoodCard extends StatelessWidget {
   final double? portions;
@@ -19,6 +20,7 @@ class FoodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String measureType = formatEnumName(this.foodModel.measureType).toLowerCase();
     return Card(
       margin: const EdgeInsets.all(15),
       child: InkWell(
@@ -35,18 +37,18 @@ class FoodCard extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.w800,fontSize: 18)
                   ),
                   if(this.portions != null)
-                    Text('x ${this.portions?.toInt()}g')
+                    Text('x ${this.portions?.toInt()}$measureType')
                 ],
               ),
               const Divider(color: Colors.black45, thickness: 2),
               Column(
                 children: [
                   CardBody(food: this.foodModel),
-                  const Align(
+                  Align(
                     alignment: Alignment.centerRight,
                     child:Text(
-                      'Every 100g',
-                      style: TextStyle(fontWeight: FontWeight.w800),
+                      'Every 100$measureType',
+                      style: const TextStyle(fontWeight: FontWeight.w800),
                     )
                   )
                 ],
