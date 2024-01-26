@@ -76,6 +76,17 @@ FoodType getFoodType(String? foodTypeString) {
   }
 }
 
+MeasureType getMeasureType(String? measureTypeString){
+  switch(measureTypeString){
+    case 'MeasureType.ml':
+      return MeasureType.ml;
+    case 'MeasureType.g':
+      return MeasureType.g;
+    default:
+      return MeasureType.g;
+  }
+}
+
 PhysicalActivity getPhysicalActivityType(String? physicalActivity){
   switch(physicalActivity){
     case 'PhysicalActivity.lessThanHour':

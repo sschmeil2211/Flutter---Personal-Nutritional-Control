@@ -5,22 +5,24 @@ import 'package:personal_nutrition_control/utils/utils.dart';
 class FoodModel {
   final String id;
   final String name;
-  final FoodType foodType;
   final String addedBy;
   final double calories;
   final double proteins;
   final double carbs;
   final double fats;
+  final FoodType foodType;
+  final MeasureType measureType;
 
   const FoodModel({
     required this.id,
     required this.name,
-    required this.foodType,
     required this.addedBy,
     required this.calories,
     required this.proteins,
     required this.carbs,
     required this.fats,
+    required this.foodType,
+    required this.measureType,
   });
 
   Map<String, dynamic> toJson() => {
@@ -32,6 +34,7 @@ class FoodModel {
     'proteins': this.proteins,
     'carbs': this.carbs,
     'fats': this.fats,
+    'measureType': this.measureType
   };
 
   factory FoodModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
@@ -40,11 +43,12 @@ class FoodModel {
       id: data?['id'],
       name: data?['name'],
       addedBy: data?['addedBy'],
-      foodType: getFoodType(data?['foodType']),
       calories: (data?['calories'] as num).toDouble(),  // Conversión explícita a double
       proteins: (data?['proteins'] as num).toDouble(),
       carbs: (data?['carbs'] as num).toDouble(),
       fats: (data?['fats'] as num).toDouble(),
+      foodType: getFoodType(data?['foodType']),
+      measureType: getMeasureType(data?['measureType'])
     );
   }
 }
@@ -61,4 +65,9 @@ enum FoodType {
   sweet,
   vegetable,
   other
+}
+
+enum MeasureType{
+  ml,
+  g
 }
