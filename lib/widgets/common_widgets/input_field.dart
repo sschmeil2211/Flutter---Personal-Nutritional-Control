@@ -44,7 +44,9 @@ class InputField extends StatelessWidget {
         decoration: InputDecoration(
           prefixIcon: Icon(this.prefixIcon),
           labelText: this.labelText,
-          border: const OutlineInputBorder(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15)
+          ),
           suffixIcon: suffixIcon()
         ),
       ),

@@ -45,6 +45,17 @@ class AuthService {
     }
   }
 
+  Future<String?> recoveryPassword(String email) async {
+    try{
+      await _authInstance.sendPasswordResetEmail(email: email);
+      return null;
+    }on auth.FirebaseAuthException catch (e) {
+      return e.message;
+    } catch(e) {
+      return e.toString();
+    }
+  }
+
   // Obtener el usuario actual
   auth.User? get currentUser => _authInstance.currentUser;
 

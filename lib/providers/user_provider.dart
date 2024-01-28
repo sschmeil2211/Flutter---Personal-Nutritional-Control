@@ -39,6 +39,8 @@ class UserProvider with ChangeNotifier {
 
   Future<String?> signOut() async => await _authService.signOut();
 
+  Future<String?> recoveryPassword(String email) async => await _authService.recoveryPassword(email);
+
   Future<bool> updateUser(UserModel? newUser) async {
     if(AuthService().currentUser == null || newUser == null) return false;
     _user = newUser;

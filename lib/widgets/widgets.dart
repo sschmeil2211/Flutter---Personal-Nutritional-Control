@@ -13,7 +13,7 @@ export 'package:personal_nutrition_control/widgets/home_widgets/header.dart';
 export 'package:personal_nutrition_control/widgets/common_widgets/animations.dart';
 export 'package:personal_nutrition_control/widgets/common_widgets/food_card.dart';
 export 'package:personal_nutrition_control/widgets/common_widgets/no_data.dart';
-export 'package:personal_nutrition_control/widgets/common_widgets/text_input.dart';
+export 'package:personal_nutrition_control/widgets/common_widgets/input_field.dart';
 export 'package:personal_nutrition_control/widgets/common_widgets/user_profile.dart';
 export 'package:personal_nutrition_control/widgets/common_widgets/dashboard.dart';
 export 'package:personal_nutrition_control/widgets/common_widgets/searcher.dart';

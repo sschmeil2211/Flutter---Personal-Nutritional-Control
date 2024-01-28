@@ -19,11 +19,12 @@ class ButtonIndicator extends StatelessWidget {
     if(this.isLoading)
       return const CircularProgressIndicator();
     return SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: this.onPressed,
-          child: Text(this.label),
-        )
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: this.onPressed,
+        child: Text(this.label),
+      ),
+
     );
   }
 }

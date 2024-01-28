@@ -9,3 +9,4 @@ export 'package:personal_nutrition_control/screens/profile_screens/profile_scree
 export 'package:personal_nutrition_control/screens/profile_screens/target_calories_screen.dart';
 export 'package:personal_nutrition_control/screens/sign_screen.dart';
 export 'package:personal_nutrition_control/screens/splash_screen.dart';
+export 'package:personal_nutrition_control/screens/recovery_password_screen.dart';

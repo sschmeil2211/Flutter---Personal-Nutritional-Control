@@ -88,7 +88,7 @@ class _SignFormState extends State<SignForm> {
               : await singIn(userProvider),
         ),
         TextButton(
-          onPressed: (){},
+          onPressed: () => Navigator.pushNamed(context, 'recoveryPasswordScreen'),
           child: const Text("Forget password")
         ),
         TextButton(
