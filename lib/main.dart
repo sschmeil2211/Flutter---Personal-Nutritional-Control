@@ -62,6 +62,7 @@ class _MyAppState extends State<MyApp> {
               'informationScreen': (_) => const InformationScreen(),
               'calendarScreen': (_) => const CalendarScreen(),
               'foodListScreen': (_) => const FoodListScreen(),
+              'createFoodScreen': (_) => const CreateFoodScreen(),
               'recoveryPasswordScreen': (_) => const RecoveryPasswordScreen()
             },
           );

@@ -130,9 +130,9 @@ class _MealTimeCardState extends State<MealTimeCard> {
                     double portions = entry.value;
 
                     FoodModel? food = Provider.of<FoodProvider>(context, listen: false).getFood(foodId);
-                    return food != null
-                        ? FoodCard(foodModel: food, portions: portions)
-                        : Container();
+                    return food == null
+                        ? Container()
+                        : FoodCard(foodModel: food, portions: portions);
                   }).toList(),
                 );
               },

@@ -26,7 +26,7 @@ class FoodModel {
   });
 
   Map<String, dynamic> toJson() => {
-    'id': id,
+    'id': this.id,
     'name': this.name,
     'addedBy': this.addedBy,
     'foodType': this.foodType.toString(),
@@ -34,7 +34,7 @@ class FoodModel {
     'proteins': this.proteins,
     'carbs': this.carbs,
     'fats': this.fats,
-    'measureType': this.measureType
+    'measureType': this.measureType.toString()
   };
 
   factory FoodModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {

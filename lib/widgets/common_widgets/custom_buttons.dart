@@ -2,12 +2,12 @@
 
 import 'package:flutter/material.dart';
 
-class ButtonIndicator extends StatelessWidget {
+class ButtonWithLoading extends StatelessWidget {
   final bool isLoading;
   final String label;
   final Function() onPressed;
 
-  const ButtonIndicator({
+  const ButtonWithLoading({
     required this.isLoading,
     required this.onPressed,
     required this.label,
@@ -16,15 +16,20 @@ class ButtonIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(this.isLoading)
-      return const CircularProgressIndicator();
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: this.onPressed,
-        child: Text(this.label),
+        child: this.isLoading
+            ? ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 20, minWidth: 20,
+                  maxHeight: 20, minHeight: 20
+                ),
+                child: const CircularProgressIndicator()
+              )
+            : Text(this.label),
       ),
-
     );
   }
 }

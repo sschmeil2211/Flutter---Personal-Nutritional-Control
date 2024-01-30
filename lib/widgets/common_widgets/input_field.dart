@@ -93,3 +93,45 @@ class EnumSelector<T> extends StatelessWidget {
     );
   }
 }
+
+class FoodInput extends StatelessWidget {
+  final bool isNumberInput;
+  final TextEditingController controller;
+  final String? label;
+  final Color color;
+
+  const FoodInput({
+    this.isNumberInput = true,
+    required this.color,
+    required this.controller,
+    this.label,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+            minWidth: width, maxWidth: width,
+            minHeight: 40, maxHeight: 40
+        ),
+        child: TextFormField(
+          keyboardType: this.isNumberInput ? const TextInputType.numberWithOptions(signed: false, decimal: true) : TextInputType.text,
+          controller: this.controller,
+          style: TextStyle(color: this.color, fontWeight: FontWeight.w600),
+          inputFormatters: this.isNumberInput ? [FilteringTextInputFormatter.allow(RegExp('[0-9.]'))] : null,
+          decoration: InputDecoration(
+            labelText: this.label,
+            labelStyle: TextStyle(color: this.color),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15)
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -27,14 +27,16 @@ class InputFieldsData{
   final bool readOnly;
   final TextInputType textInputType;
   final Function()? function;
+  final Color labelColor;
 
   InputFieldsData({
-    required this.iconData,
+    this.iconData = Icons.input,
     required this.label,
     required this.controller,
     this.readOnly = false,
     this.textInputType = const TextInputType.numberWithOptions(signed: false, decimal: true),
-    this.function
+    this.function,
+    this.labelColor = Colors.white,
   });
 
   static List<InputFieldsData> bodyInputs(ControllersProvider controllersProvider) => [
@@ -88,6 +90,12 @@ class InputFieldsData{
     InputFieldsData(iconData: Icons.person_outline_outlined, label: "Username", controller: username),
     InputFieldsData(iconData: Icons.mail_outline, label: "Email", controller: email),
     InputFieldsData(iconData: Icons.fingerprint, label: "Password", controller: password)
+  ];
+
+  static List<InputFieldsData> foodInputs(TextEditingController carbs, TextEditingController proteins, TextEditingController fats) => [
+    InputFieldsData(label: 'Carbs', controller: carbs, labelColor: Colors.yellowAccent),
+    InputFieldsData(label: 'Proteins', controller: proteins, labelColor: Colors.lightBlue),
+    InputFieldsData(label: 'Fats', controller: fats, labelColor: Colors.lightGreen),
   ];
 }
 

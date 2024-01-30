@@ -80,7 +80,7 @@ class _SignFormState extends State<SignForm> {
             ],
           )
         ),
-        ButtonIndicator(
+        ButtonWithLoading(
           isLoading: loading,
           label: signTitle,
           onPressed: () async => signInView

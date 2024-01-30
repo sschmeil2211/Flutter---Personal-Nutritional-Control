@@ -19,7 +19,7 @@ class RecoveryPasswordScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
         ),
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: RecoveryPassword(),
       ),
     );
@@ -70,7 +70,7 @@ class _RecoveryPasswordState extends State<RecoveryPassword> {
             labelText: 'Email',
             textEditingController: email
           ),
-          ButtonIndicator(
+          ButtonWithLoading(
             isLoading: loading,
             onPressed: () async => await onPressed(userProvider),
             label: 'Send email'

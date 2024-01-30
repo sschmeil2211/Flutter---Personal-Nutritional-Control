@@ -14,16 +14,22 @@ class FoodListScreen extends StatelessWidget {
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
-        ),        
-      ),
+        ),
+        actions: [
+          MaterialButton(
+            shape: const CircleBorder(),
+            color: Colors.white24,
+            onPressed: () => Navigator.pushNamed(context, 'createFoodScreen'),
+            child: const Icon(Icons.add, color: Colors.white, size: 22)
+          )
+        ],
+      ), 
       body: SafeArea(
         child: Consumer<FoodProvider>(
           builder: (context, foodProvider, child) => ListView.builder(
             shrinkWrap: true,
             itemCount: foodProvider.foods.length,
-            itemBuilder: (context, index) => FoodCard(
-              foodModel: foodProvider.foods[index],
-            )
+            itemBuilder: (context, index) => FoodCard(foodModel: foodProvider.foods[index])
           ),
         ),
       ),
