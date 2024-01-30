@@ -102,7 +102,7 @@ class _TargetCaloriesModalState extends State<TargetCaloriesModal> {
                 TargetCaloriesInput(
                   targetCaloriesController: widget.controllersProvider.targetCaloriesController,
                 ),
-                ButtonIndicator(
+                ButtonWithLoading(
                   label: 'Update',
                   isLoading: loading,
                   onPressed: () async => await onPressed(userProvider)

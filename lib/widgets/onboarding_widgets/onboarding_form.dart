@@ -97,7 +97,7 @@ class _PersonalFormFormState extends State<PersonalForm> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 30),
-          child: ButtonIndicator(
+          child: ButtonWithLoading(
             label: 'Continue',
             isLoading: loading,
             onPressed: () async => await updateUser(userProvider),
@@ -167,7 +167,7 @@ class _BodyFormFormState extends State<BodyForm> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 30),
-          child: ButtonIndicator(
+          child: ButtonWithLoading(
             label: 'Continue',
             isLoading: loading,
             onPressed: () async => await updateUser(userProvider),

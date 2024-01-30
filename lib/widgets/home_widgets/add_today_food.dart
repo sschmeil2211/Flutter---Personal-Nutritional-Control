@@ -69,7 +69,7 @@ class FoodTypeGrid extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           crossAxisCount: 3,
           childAspectRatio: 1.3,
-          children: List.generate(11, (index) {
+          children: List.generate(FoodType.values.length, (index) {
 
             final FoodType foodType = FoodType.values[index];
             return Padding(

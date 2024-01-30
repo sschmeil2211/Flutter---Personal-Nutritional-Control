@@ -77,7 +77,7 @@ class _InformationViewState extends State<InformationView> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 30),
-          child: ButtonIndicator(
+          child: ButtonWithLoading(
             label: 'Update',
             isLoading: loading,
             onPressed: () async => await updateUser(controllersProvider),
@@ -132,7 +132,7 @@ class _RecalculateTargetCaloriesModalState extends State<RecalculateTargetCalori
                 const Text('Your information has changed, we need to recalculate your target calories.'),
                 Padding(
                   padding: const EdgeInsets.all(10),
-                  child: ButtonIndicator(
+                  child: ButtonWithLoading(
                     label: 'Update',
                     isLoading: loading,
                     onPressed: onPressed,

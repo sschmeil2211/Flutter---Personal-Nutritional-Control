@@ -5,7 +5,14 @@ import 'package:personal_nutrition_control/models/models.dart';
 class FoodRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> addFood(FoodModel food) async => await _firestore.collection('foods').doc(food.id).set(food.toJson());
+  Future<bool> addFood(String foodID, FoodModel food) async {
+    try{
+      await _firestore.collection('foods').doc(foodID).set(food.toJson());
+      return true;
+    } catch(e){
+      return false;
+    }
+  }
 
   Future<List<FoodModel>> getFoods() async {
     final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore.collection('foods').get();

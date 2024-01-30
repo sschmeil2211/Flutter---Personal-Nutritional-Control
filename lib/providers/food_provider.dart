@@ -13,10 +13,15 @@ class FoodProvider with ChangeNotifier {
     loadFoods();
   }
 
-  Future<void> addFood(FoodModel food) async {
-    await _foodRepository.addFood(food);
-    _foods.add(food);
-    notifyListeners();
+  Future<bool> addFood(String foodID, FoodModel food) async {
+    try{
+      await _foodRepository.addFood(foodID, food);
+      _foods.add(food);
+      notifyListeners();
+      return true;
+    } catch(e) {
+      return false;
+    }
   }
 
   Future<void> loadFoods() async {
