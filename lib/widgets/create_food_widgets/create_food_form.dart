@@ -32,15 +32,15 @@ class _CreationFoodFormState extends State<CreationFoodForm> {
   Future<void> onPressed(FoodProvider foodProvider, String userID) async {
     String id = const Uuid().v4();
     FoodModel newFood = FoodModel(
-        id: id,
-        name: nameController.text,
-        addedBy: userID,
-        calories: double.parse(caloriesController.text),
-        proteins: double.parse(proteinsController.text),
-        carbs: double.parse(carbsController.text),
-        fats: double.parse(fatsController.text),
-        foodType: selectedFoodType ?? FoodType.other,
-        measureType: selectedMeasureType ?? MeasureType.g
+      id: id,
+      name: nameController.text,
+      addedBy: userID,
+      calories: double.parse(caloriesController.text),
+      proteins: double.parse(proteinsController.text),
+      carbs: double.parse(carbsController.text),
+      fats: double.parse(fatsController.text),
+      foodType: selectedFoodType ?? FoodType.other,
+      measureType: selectedMeasureType ?? MeasureType.g
     );
     setState(() => loading = true);
     bool success = await foodProvider.addFood(id, newFood);
