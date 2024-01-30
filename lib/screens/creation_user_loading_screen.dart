@@ -35,7 +35,7 @@ class CreationUserLoadingScreen extends StatelessWidget {
                   UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
             
                   splashScreenController.startAnimation();
-                  splashScreenController.endAnimationWhenCreatingUser(() => updateUser(userProvider, context));
+                  splashScreenController.onAnimationEnd(() => updateUser(userProvider, context));
             
                   return Lottie.asset('assets/lottie_animations/splash_animation.json');
                 },

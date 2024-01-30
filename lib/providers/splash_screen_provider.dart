@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:personal_nutrition_control/services/auth_service.dart';
-
 class SplashScreenProvider extends ChangeNotifier {
   late bool _isLoading;
 
@@ -13,17 +11,7 @@ class SplashScreenProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onAnimationEnd(BuildContext context) {
-    if (_isLoading) {
-      Future.delayed(const Duration(milliseconds: 2000), () => AuthService().currentUser != null
-          ? Navigator.pushReplacementNamed(context, 'homeScreen')
-          : Navigator.pushReplacementNamed(context, 'signScreen')
-      );
-      _isLoading = false;
-    }
-  }
-
-  void endAnimationWhenCreatingUser(Function() function){
+  void onAnimationEnd(Function() function){
     if(_isLoading)
       Future.delayed(const Duration(milliseconds: 2000), function);
     _isLoading = false;

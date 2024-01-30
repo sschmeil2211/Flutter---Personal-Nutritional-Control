@@ -26,20 +26,17 @@ class _SignFormState extends State<SignForm> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
-  void signStatusAction(String? message, String routeName){
-    if(message == null)
-      Navigator.pushNamedAndRemoveUntil(context, routeName, (route) => false);
-    else{
-      setState(() => loading = false);
-      ScaffoldMessenger.of(context).showSnackBar(customSnackBar(message, Colors.deepOrange));
-    }
-  }
-
   Future<void> singUp(UserProvider userProvider) async {
     if(email.text.isEmpty || password.text.isEmpty || username.text.isEmpty) return;
     setState(() => loading = true);
     String? message = await userProvider.signUp(email.text, password.text, username.text);
-    signStatusAction(message, 'personalOnboardingScreen');
+    if(!context.mounted) return;
+    if(message == null)
+      Navigator.pushNamedAndRemoveUntil(context, 'personalOnboardingScreen', (route) => false);
+    else{
+      setState(() => loading = false);
+      ScaffoldMessenger.of(context).showSnackBar(customSnackBar(message, Colors.deepOrange));
+    }
   }
 
   Future<void> singIn(UserProvider userProvider) async {
@@ -47,7 +44,19 @@ class _SignFormState extends State<SignForm> {
     setState(() => loading = true);
     String? message = await userProvider.signIn(email.text, password.text);
     await userProvider.loadUser();
-    signStatusAction(message, 'homeScreen');
+    if(!context.mounted) return;
+    if(message == null){
+      if(userProvider.user?.onBoardingStatus == OnBoardingStatus.finalized)
+        Navigator.pushReplacementNamed(context, 'homeScreen');
+      else if(userProvider.user?.onBoardingStatus == OnBoardingStatus.personal)
+        Navigator.pushReplacementNamed(context, 'personalOnboardingScreen');
+      else
+        Navigator.pushReplacementNamed(context, 'bodyOnboardingScreen');
+    }
+    else{
+      setState(() => loading = false);
+      ScaffoldMessenger.of(context).showSnackBar(customSnackBar(message, Colors.deepOrange));
+    }
   }
 
   @override

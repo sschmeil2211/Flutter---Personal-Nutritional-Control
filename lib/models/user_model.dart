@@ -82,7 +82,7 @@ class UserModel {
     email: email,
     createdAt: DateTime.now().toString(),
     updatedAt: DateTime.now().toString(),
-    onBoardingStatus: OnBoardingStatus.finalized,
+    onBoardingStatus: OnBoardingStatus.personal,
     targetCalories: 0,
     genderType: GenderType.male,
     birthdate: DateTime.now().toString(),
