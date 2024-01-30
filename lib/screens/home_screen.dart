@@ -21,7 +21,8 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(Icons.food_bank),
       ),
       body: SafeArea(
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
           children: [
             const Header(),
             Consumer<DayProvider>(

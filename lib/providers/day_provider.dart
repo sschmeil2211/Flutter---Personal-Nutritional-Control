@@ -69,7 +69,7 @@ class DayProvider with ChangeNotifier {
   Future<void> handleDay(MealTime mealTime, FoodModel food, double portions) async {
     DateTime now = DateTime.now();
     DayModel? day = await _dayRepository.getSpecificDay(userID, '${now.year}-${now.month}-${now.day}');
-    Map<String, double> mealMap = day?.meals[mealTime.toString()] ?? {};
+    Map<String, double> mealMap = day?.meals[mealTime] ?? {};
 
     mealMap.containsKey(food.id) ? mealMap[food.id] = (mealMap[food.id] ?? 0) + portions : mealMap[food.id] = portions;
 

@@ -32,9 +32,11 @@ class FoodCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: this.portions == null ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    this.foodModel.name,
-                    style: const TextStyle(fontWeight: FontWeight.w800,fontSize: 18)
+                  Expanded(
+                    child: Text(
+                      this.foodModel.name,
+                      style: const TextStyle(fontWeight: FontWeight.w800,fontSize: 18, overflow: TextOverflow.ellipsis)
+                    ),
                   ),
                   if(this.portions != null)
                     Text('x ${this.portions?.toInt()}$measureType')
