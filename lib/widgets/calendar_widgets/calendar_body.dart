@@ -98,7 +98,7 @@ class _MealTimeCardState extends State<MealTimeCard> {
         borderRadius: BorderRadius.circular(15)
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -108,7 +108,7 @@ class _MealTimeCardState extends State<MealTimeCard> {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: MediaQuery.of(context).size.height * 0.55,
             child: PageView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: MealTime.values.length,
