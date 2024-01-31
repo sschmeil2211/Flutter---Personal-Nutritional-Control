@@ -19,7 +19,14 @@ class FoodRepository {
     return snapshot.docs.map((DocumentSnapshot<Map<String, dynamic>> doc) => FoodModel.fromSnapshot(doc)).toList();
   }
 
-  Future<void> updateFood(FoodModel food) async => await _firestore.collection('foods').doc(food.id).update(food.toJson());
+  Future<bool> updateFood(FoodModel food) async {
+    try{
+      await _firestore.collection('foods').doc(food.id).update(food.toJson());
+      return true;
+    } catch(e){
+      return false;
+    }
+  }
 
   Future<void> deleteFood(String foodId) async => await _firestore.collection('foods').doc(foodId).delete();
 }

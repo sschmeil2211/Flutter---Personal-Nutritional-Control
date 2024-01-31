@@ -11,14 +11,18 @@ import 'package:personal_nutrition_control/widgets/common_widgets/custom_buttons
 import 'package:personal_nutrition_control/widgets/common_widgets/input_field.dart';
 
 class CreationFoodForm extends StatefulWidget {
-  const CreationFoodForm({super.key});
+  final FoodModel? food;
+
+  const CreationFoodForm({
+    this.food,
+    super.key
+  });
 
   @override
   State<CreationFoodForm> createState() => _CreationFoodFormState();
 }
 
 class _CreationFoodFormState extends State<CreationFoodForm> {
-
 
   TextEditingController nameController = TextEditingController();
   TextEditingController caloriesController = TextEditingController();
@@ -30,6 +34,37 @@ class _CreationFoodFormState extends State<CreationFoodForm> {
   bool loading = false;
 
   Future<void> onPressed(FoodProvider foodProvider, String userID) async {
+    if(nameController.text.isEmpty
+        || caloriesController.text.isEmpty
+        || carbsController.text.isEmpty
+        || proteinsController.text.isEmpty
+        || fatsController.text.isEmpty
+        || selectedFoodType == null
+        || selectedMeasureType == null
+    ) return;
+    setState(() => loading = true);
+    bool success = widget.food == null ? await createFood(foodProvider, userID) : await updateFood(foodProvider);
+    if(!context.mounted) return;
+    if(success)
+      Navigator.pop(context);
+    setState(() => loading = true);
+  }
+
+  Future<bool> updateFood(FoodProvider foodProvider) async {
+    FoodModel newFood = widget.food!.copyFrom(
+      name: nameController.text,
+      calories: double.parse(caloriesController.text),
+      proteins: double.parse(proteinsController.text),
+      carbs: double.parse(carbsController.text),
+      fats: double.parse(fatsController.text),
+      foodType: selectedFoodType ?? FoodType.other,
+      measureType: selectedMeasureType ?? MeasureType.g
+    );
+    setState(() => loading = true);
+    return await foodProvider.updateFood(newFood);
+  }
+
+  Future<bool> createFood(FoodProvider foodProvider, String userID) async {
     String id = const Uuid().v4();
     FoodModel newFood = FoodModel(
       id: id,
@@ -42,12 +77,21 @@ class _CreationFoodFormState extends State<CreationFoodForm> {
       foodType: selectedFoodType ?? FoodType.other,
       measureType: selectedMeasureType ?? MeasureType.g
     );
-    setState(() => loading = true);
-    bool success = await foodProvider.addFood(id, newFood);
-    if(!context.mounted) return;
-    if(success)
-      Navigator.pop(context);
-    setState(() => loading = true);
+    return await foodProvider.addFood(id, newFood);
+  }
+
+  @override
+  void initState() {
+    if(widget.food != null){
+      nameController.text = widget.food!.name;
+      caloriesController.text = widget.food!.calories.toString();
+      carbsController.text = widget.food!.carbs.toString();
+      proteinsController.text = widget.food!.proteins.toString();
+      fatsController.text = widget.food!.fats.toString();
+      selectedMeasureType = widget.food!.measureType;
+      selectedFoodType = widget.food!.foodType;
+    }
+    super.initState();
   }
 
   @override
@@ -60,12 +104,12 @@ class _CreationFoodFormState extends State<CreationFoodForm> {
     return Column(
       children: [
         SectionCard(
-            title: 'Food Name',
-            child: FoodInput(
-              color: Colors.white,
-              controller: nameController,
-              isNumberInput: false,
-            )
+          title: 'Food Name',
+          child: FoodInput(
+            color: Colors.white,
+            controller: nameController,
+            isNumberInput: false,
+          )
         ),
         FoodTypeGridSelector(
           color: (foodType) => selectedFoodType == foodType ? Colors.white24 : Colors.white10,
@@ -113,7 +157,7 @@ class _CreationFoodFormState extends State<CreationFoodForm> {
           padding: const EdgeInsets.all(15),
           child: ButtonWithLoading(
             isLoading: loading,
-            label: 'Create Food',
+            label: widget.food == null ? 'Create Food' : 'Update Food',
             onPressed: () async => await onPressed(foodProvider, userID),
           ),
         )

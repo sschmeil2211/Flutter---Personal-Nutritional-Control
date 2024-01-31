@@ -1,6 +1,7 @@
 // ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_this, sort_child_properties_last
 
 import 'package:flutter/material.dart';
+import 'package:personal_nutrition_control/models/models.dart';
 
 import 'package:personal_nutrition_control/widgets/widgets.dart';
 
@@ -10,6 +11,8 @@ class CreateFoodScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FoodModel? args = ModalRoute.of( context )?.settings.arguments as FoodModel?;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -20,18 +23,18 @@ class CreateFoodScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          children: const [
+          children: [
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Text(
-                  "Create your food",
-                  style: TextStyle(fontWeight: FontWeight.w800,fontSize: 18)
+                  args == null ? "Create your food" : 'Modify your food',
+                  style: const TextStyle(fontWeight: FontWeight.w800,fontSize: 18)
                 ),
               ),
             ),
-            CreationFoodForm()
+            CreationFoodForm(food: args)
           ]
         ),
       ),

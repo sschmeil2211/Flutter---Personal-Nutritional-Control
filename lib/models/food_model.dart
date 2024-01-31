@@ -51,6 +51,26 @@ class FoodModel {
       measureType: getMeasureType(data?['measureType'])
     );
   }
+
+  FoodModel copyFrom({
+    String? name,
+    double? calories,
+    double? proteins,
+    double? carbs,
+    double? fats,
+    FoodType? foodType,
+    MeasureType? measureType
+  }) => FoodModel(
+    id: this.id,
+    name: name ?? this.name,
+    addedBy: this.addedBy,
+    calories: calories ?? this.calories,
+    proteins: proteins ?? this.proteins,
+    carbs: carbs ?? this.carbs,
+    fats: fats ?? this.fats,
+    foodType: foodType ?? this.foodType,
+    measureType: measureType ?? this.measureType
+  );
 }
 
 enum FoodType {
