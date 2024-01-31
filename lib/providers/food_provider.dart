@@ -29,10 +29,15 @@ class FoodProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateFood(FoodModel food) async {
-    await _foodRepository.updateFood(food);
-    _foods = await _foodRepository.getFoods();
-    notifyListeners();
+  Future<bool> updateFood(FoodModel food) async {
+    try{
+      await _foodRepository.updateFood(food);
+      _foods = await _foodRepository.getFoods();
+      notifyListeners();
+      return true;
+    } catch(e) {
+      return false;
+    }
   }
 
   Future<void> deleteFood(String foodId) async {
