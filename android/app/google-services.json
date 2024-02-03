@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "797970486297",
+    "firebase_url": "https://personal-nutrition-control-default-rtdb.firebaseio.com",
     "project_id": "personal-nutrition-control",
     "storage_bucket": "personal-nutrition-control.appspot.com"
   },
