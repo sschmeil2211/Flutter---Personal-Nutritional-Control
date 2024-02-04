@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final auth.FirebaseAuth _authInstance = auth.FirebaseAuth.instance;
@@ -15,7 +16,7 @@ class AuthService {
       await _authInstance.createUserWithEmailAndPassword(email: email, password: password);
       return null;
     } on auth.FirebaseAuthException catch (e) {
-      return e.message.toString();
+      return e.message;
     } catch(e){
       return e.toString();
     }
@@ -29,6 +30,26 @@ class AuthService {
     } on auth.FirebaseAuthException catch (e) {
       return e.message;
     } catch(e) {
+      return e.toString();
+    }
+  }
+
+  Future<String?> signInWithCredential() async {
+    try {
+      GoogleSignInAccount? googleAccount = await GoogleSignIn(scopes: [
+        'email',
+        'https://www.googleapis.com/auth/fitness.activity.read',
+      ]).signIn();
+      GoogleSignInAuthentication? googleAuth = await googleAccount?.authentication;
+      auth.AuthCredential credential = auth.GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken
+      );
+      await _authInstance.signInWithCredential(credential);
+      return null;
+    } on auth.FirebaseAuthException catch (e) {
+      return e.message;
+    } catch (e) {
       return e.toString();
     }
   }

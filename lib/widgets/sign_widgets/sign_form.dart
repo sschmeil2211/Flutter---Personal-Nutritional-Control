@@ -1,12 +1,13 @@
 // ignore_for_file: curly_braces_in_flow_control_structures, unnecessary_this
 
 import 'package:flutter/material.dart';
-import 'package:personal_nutrition_control/models/models.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:personal_nutrition_control/providers/providers.dart';
 import 'package:personal_nutrition_control/widgets/widgets.dart';
 import 'package:personal_nutrition_control/utils/utils.dart';
+import 'package:personal_nutrition_control/models/models.dart';
 
 class SignForm extends StatefulWidget {
 
@@ -43,7 +44,24 @@ class _SignFormState extends State<SignForm> {
     if(email.text.isEmpty || password.text.isEmpty) return;
     setState(() => loading = true);
     String? message = await userProvider.signIn(email.text, password.text);
-    await userProvider.loadUser();
+    if(!context.mounted) return;
+    if(message == null){
+      if(userProvider.user?.onBoardingStatus == OnBoardingStatus.finalized)
+        Navigator.pushReplacementNamed(context, 'homeScreen');
+      else if(userProvider.user?.onBoardingStatus == OnBoardingStatus.personal)
+        Navigator.pushReplacementNamed(context, 'personalOnboardingScreen');
+      else
+        Navigator.pushReplacementNamed(context, 'bodyOnboardingScreen');
+    }
+    else{
+      setState(() => loading = false);
+      ScaffoldMessenger.of(context).showSnackBar(customSnackBar(message, Colors.deepOrange));
+    }
+  }
+
+  Future<void> signInWithGoogle(UserProvider userProvider) async {
+    setState(() => loading = true);
+    String? message = await userProvider.signInWithCredential();
     if(!context.mounted) return;
     if(message == null){
       if(userProvider.user?.onBoardingStatus == OnBoardingStatus.finalized)
@@ -96,6 +114,16 @@ class _SignFormState extends State<SignForm> {
               ? await singUp(userProvider)
               : await singIn(userProvider),
         ),
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: MaterialButton(
+            color: Colors.blue,
+            shape: const CircleBorder(),
+            padding: const EdgeInsets.all(10),
+            onPressed: () async => await signInWithGoogle(userProvider),
+            child: const Icon(FontAwesomeIcons.google),
+          ),
+        ),
         TextButton(
           onPressed: () => Navigator.pushNamed(context, 'recoveryPasswordScreen'),
           child: const Text("Forget password")
@@ -108,3 +136,4 @@ class _SignFormState extends State<SignForm> {
     );
   }
 }
+

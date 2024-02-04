@@ -22,19 +22,38 @@ class UserProvider with ChangeNotifier {
   // Obtener el estado de autenticación del usuario
   Stream<User?> get authStateChanges => _authService.authStateChanges;
 
-  Future<String?> signIn(String email, String password) async => await _authService.signInWithEmailAndPassword(email, password);
+  Future<String?> signIn(String email, String password) async {
+    String? message = await _authService.signInWithEmailAndPassword(email, password);
+    if(message != null) return message;
+    await loadUser();
+    if(user == null) return "error";
+    return null;
+  }
+
+  Future<String?> signInWithCredential() async {
+    String? message = await _authService.signInWithCredential();
+    if(message != null) return message;
+    await loadUser();
+    if(user == null)
+      await createUser(_authService.currentUser?.email ?? '', _authService.currentUser?.email ?? '');
+    return null;
+  }
 
   // Registro con correo electrónico y contraseña
   Future<String?> signUp(String email, String password, String username) async {
     String? signUpMessage = await _authService.signUpWithEmailAndPassword(email, password);
     if(signUpMessage != null) return signUpMessage;
+    await createUser(email, username);
+    return null;
+  }
+
+  Future<void> createUser(String email, String username) async {
     final User? currentUser = _authService.currentUser;
     if (currentUser != null) {
       _user = UserModel.newUser( id: currentUser.uid, username: username, email: email);
       await _userRepository.createUser(_user!);
       notifyListeners();
     }
-    return null;
   }
 
   Future<String?> signOut() async => await _authService.signOut();
