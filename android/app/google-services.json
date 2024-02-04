@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "797970486297",
+    "firebase_url": "https://personal-nutrition-control-default-rtdb.firebaseio.com",
     "project_id": "personal-nutrition-control",
     "storage_bucket": "personal-nutrition-control.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.personal_nutrition_control"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "797970486297-6t8fqnb1r995lnl4rb583u65hnlpgbop.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.personal_nutrition_control",
+            "certificate_hash": "e26c117237e757783eae4218aad8ccd3db57755f"
+          }
+        },
+        {
+          "client_id": "797970486297-1ilbokl757m5bplu2b9cmqnddb0f7a5s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCsZfzVITMuLp5n7Z98ea7t50taGmYyhEE"
@@ -20,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112338421231670328112",
+              "client_type": 3
+            },
+            {
+              "client_id": "797970486297-dt89t1f0t24gdsulis9r7lapdlo8qqed.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.personalNutritionControl.RunnerTests"
+              }
+            }
+          ]
         }
       }
     }

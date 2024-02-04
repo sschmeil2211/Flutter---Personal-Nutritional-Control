@@ -23,14 +23,14 @@ class SplashScreen extends StatelessWidget {
             
               splashScreenController.startAnimation();
               splashScreenController.onAnimationEnd(() {
-                if(AuthService().currentUser == null || userProvider.user == null)
+                if(AuthService().currentUser == null)
                   Navigator.pushReplacementNamed(context, 'signScreen');
                 else{
                   if(userProvider.user?.onBoardingStatus == OnBoardingStatus.finalized)
                     Navigator.pushReplacementNamed(context, 'homeScreen');
                   else if(userProvider.user?.onBoardingStatus == OnBoardingStatus.personal)
                     Navigator.pushReplacementNamed(context, 'personalOnboardingScreen');
-                  else
+                  else if(userProvider.user?.onBoardingStatus == OnBoardingStatus.body)
                     Navigator.pushReplacementNamed(context, 'bodyOnboardingScreen');
                 }
               });

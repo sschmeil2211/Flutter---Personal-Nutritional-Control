@@ -28,7 +28,15 @@ class AuthExceptions{
       case 'invalid-continue-uri':
         return const AuthExceptions('The continue URL provided in the request is invalid.');
       case 'unauthorized-continue-uri':
-        return const AuthExceptions('The domain of the continue URL is not whitelisted. Whitelist the domain in the Firebase console.'); 
+        return const AuthExceptions('The domain of the continue URL is not whitelisted. Whitelist the domain in the Firebase console.');
+      case 'account-exists-with-different-credential':
+        return const AuthExceptions('There already exists an account with the email address asserted by the credential. Resolve this by calling fetchSignInMethodsForEmail and then asking the user to sign in using one of the returned providers. Once the user is signed in, the original credential can be linked to the user with linkWithCredential.');
+      case 'invalid-credential':
+        return const AuthExceptions('The credential is malformed or has expired');
+      case 'invalid-verification-code':
+        return const AuthExceptions('The credential is a PhoneAuthProvider.credential and the verification code of the credential is not valid.');
+      case 'invalid-verification-id':
+        return const AuthExceptions('The credential is a PhoneAuthProvider.credential and the verification ID of the credential is not valid.id.');
       default:
         return const AuthExceptions();
     }

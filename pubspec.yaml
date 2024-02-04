@@ -48,6 +48,8 @@ dependencies:
   syncfusion_flutter_core: ^23.2.6
   rive: ^0.12.3
   intl: ^0.18.1
+  google_sign_in: ^6.2.1
+  font_awesome_flutter: ^10.7.0
 
 dev_dependencies:
   flutter_test:
