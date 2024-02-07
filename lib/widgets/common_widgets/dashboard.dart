@@ -1,10 +1,13 @@
 // ignore_for_file: unnecessary_this, curly_braces_in_flow_control_structures
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:personal_nutrition_control/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'package:personal_nutrition_control/models/models.dart';
 import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:personal_nutrition_control/services/services.dart';
 
 class DiaryIndicators extends StatelessWidget {
   final DayModel dayToView;
@@ -23,31 +26,36 @@ class DiaryIndicators extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
         children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: size * 0.15, minWidth: size * 0.15,
-              maxHeight: size * 0.15, minHeight: size * 0.15,
-            ),
-            child: CaloriesIndicator(
-              actualValue: caloriesConsumed,
-              actualValuePercent: actualValue,
-              totalCalories: targetCalories,
-            )
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: size * 0.15, minWidth: size * 0.15,
+                  maxHeight: size * 0.15, minHeight: size * 0.15,
+                ),
+                child: CaloriesIndicator(
+                  actualValue: caloriesConsumed,
+                  actualValuePercent: actualValue,
+                  totalCalories: targetCalories,
+                )
+              ),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: size * 0.15, minWidth: size * 0.15,
+                  maxHeight: size * 0.15, minHeight: size * 0.15,
+                ),
+                child: MacronutrientsIndicator(
+                  totalProteins: dayToView.proteinsConsumed,
+                  totalCarbs: dayToView.carbsConsumed,
+                  totalFats: dayToView.fatsConsumed,
+                ),
+              ),
+            ],
           ),
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: size * 0.15, minWidth: size * 0.15,
-              maxHeight: size * 0.15, minHeight: size * 0.15,
-            ),
-            child: MacronutrientsIndicator(
-              totalProteins: dayToView.proteinsConsumed,
-              totalCarbs: dayToView.carbsConsumed,
-              totalFats: dayToView.fatsConsumed,
-            ),
-          )
+          HealthIndicators(timeToTrack: stringToDateTime(dayToView.date))
         ],
       ),
     );
@@ -150,6 +158,56 @@ class MacronutrientsIndicator extends StatelessWidget {
           ),
         )).toList(),
       )
+    );
+  }
+}
+
+class HealthIndicators extends StatelessWidget {
+  final DateTime timeToTrack;
+
+  const HealthIndicators({
+    required this.timeToTrack,
+    super.key
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: SharedPreferencesService().getHasPermission(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return const CircularProgressIndicator();
+        else {
+          bool hasPermission = snapshot.data ?? false;
+
+          if(!hasPermission)
+            return Container();
+
+          HealthProvider healthProvider = Provider.of<HealthProvider>(context, listen: false);
+          healthProvider.getStepsData(this.timeToTrack);
+          healthProvider.getCaloriesData(this.timeToTrack);
+
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              indicator(FontAwesomeIcons.shoePrints, healthProvider.stepsModel.toString()),
+              indicator(FontAwesomeIcons.fireFlameCurved, healthProvider.calories.toString())
+            ],
+          );
+        }
+      },
+    );
+  }
+
+  Widget indicator(IconData icon, String label){
+    return Row(
+      children: [
+        Icon(icon),
+        Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Text(label),
+        ),
+      ],
     );
   }
 }

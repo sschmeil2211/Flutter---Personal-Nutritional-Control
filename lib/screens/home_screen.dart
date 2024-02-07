@@ -21,12 +21,12 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(Icons.food_bank),
       ),
       body: SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            const Header(),
-            Consumer<DayProvider>(
-              builder: (context, dayProvider, child){
+          child:  ListView(
+            shrinkWrap: true,
+            children: [
+              const Header(),
+              Consumer<DayProvider>(
+                builder: (context, dayProvider, child){
                 UserModel? user = Provider.of<UserProvider>(context, listen: false).user;
                 DayModel? actualDay = dayProvider.actualDay;
                 if(user == null || actualDay == null)

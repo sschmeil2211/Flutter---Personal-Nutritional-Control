@@ -17,7 +17,7 @@ DateTime stringToDateTime(String dateString){
   }
 
   int day = int.parse(dateParts[2]);
-  DateTime dateTime = DateTime(year, month, day);
+  DateTime dateTime = DateTime(year, month, day, 23, 59, 59);
   return dateTime;
 }
 

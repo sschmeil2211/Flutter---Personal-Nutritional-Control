@@ -3,15 +3,23 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:personal_nutrition_control/providers/providers.dart';
 import 'package:personal_nutrition_control/screens/screens.dart';
 import 'package:personal_nutrition_control/firebase_options.dart';
+import 'package:personal_nutrition_control/services/services.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase
-      .initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  SharedPreferencesService sharedPreferencesService = SharedPreferencesService();
+  bool hasPermission = await sharedPreferencesService.getHasPermission();
+  if (!hasPermission) {
+    PermissionStatus status = await Permission.activityRecognition.request();
+    if (status.isGranted)
+      await sharedPreferencesService.setHasPermission(true);
+  }
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -29,6 +37,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => HealthProvider()),
         ChangeNotifierProvider(create: (_) => SplashScreenProvider()),
         ChangeNotifierProvider(create: (_) => FoodProvider()),
         ChangeNotifierProvider(create: (_) => DayProvider()),
