@@ -90,7 +90,7 @@ class UserModel {
     waist: 0,
     wrist: 0,
     height: 0,
-    weight: 0
+    weight: 0,
   );
 
   UserModel copyFrom({

@@ -2,14 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:personal_nutrition_control/models/models.dart';
 import 'package:personal_nutrition_control/providers/providers.dart';
 
-class DiaryIndicators extends StatelessWidget {
+class FoodDashboard extends StatelessWidget {
   final DayModel dayToView;
 
-  const DiaryIndicators({
+  const FoodDashboard({
     required this.dayToView,
     super.key
   });
@@ -23,31 +24,35 @@ class DiaryIndicators extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
         children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: size * 0.15, minWidth: size * 0.15,
-              maxHeight: size * 0.15, minHeight: size * 0.15,
-            ),
-            child: CaloriesIndicator(
-              actualValue: caloriesConsumed,
-              actualValuePercent: actualValue,
-              totalCalories: targetCalories,
-            )
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: size * 0.15, minWidth: size * 0.15,
+                  maxHeight: size * 0.15, minHeight: size * 0.15,
+                ),
+                child: CaloriesIndicator(
+                  actualValue: caloriesConsumed,
+                  actualValuePercent: actualValue,
+                  totalCalories: targetCalories,
+                )
+              ),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: size * 0.15, minWidth: size * 0.15,
+                  maxHeight: size * 0.15, minHeight: size * 0.15,
+                ),
+                child: MacronutrientsIndicator(
+                  totalProteins: dayToView.proteinsConsumed,
+                  totalCarbs: dayToView.carbsConsumed,
+                  totalFats: dayToView.fatsConsumed,
+                ),
+              ),
+            ],
           ),
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: size * 0.15, minWidth: size * 0.15,
-              maxHeight: size * 0.15, minHeight: size * 0.15,
-            ),
-            child: MacronutrientsIndicator(
-              totalProteins: dayToView.proteinsConsumed,
-              totalCarbs: dayToView.carbsConsumed,
-              totalFats: dayToView.fatsConsumed,
-            ),
-          )
         ],
       ),
     );
@@ -150,6 +155,56 @@ class MacronutrientsIndicator extends StatelessWidget {
           ),
         )).toList(),
       )
+    );
+  }
+}
+
+class HealthIndicators extends StatefulWidget {
+  final DateTime timeToTrack;
+
+  const HealthIndicators({
+    required this.timeToTrack,
+    super.key
+  });
+
+  @override
+  State<HealthIndicators> createState() => _HealthIndicatorsState();
+}
+
+class _HealthIndicatorsState extends State<HealthIndicators> {
+  @override
+  void dispose() {
+    Provider.of<HealthProvider>(context, listen: false).dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<HealthProvider>(
+      builder: (context, health, child){
+        return Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              indicator(FontAwesomeIcons.shoePrints, '${health.steps}'),
+              indicator(FontAwesomeIcons.fire, '${health.caloriesBurned}'),
+            ],
+          ),
+        );
+      }
+    );
+  }
+
+  Widget indicator(IconData icon, String label){
+    return Row(
+      children: [
+        Icon(icon, size: 18),
+        Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Text(label, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+        ),
+      ],
     );
   }
 }

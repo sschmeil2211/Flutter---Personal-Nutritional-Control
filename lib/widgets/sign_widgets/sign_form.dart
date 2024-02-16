@@ -61,7 +61,7 @@ class _SignFormState extends State<SignForm> {
 
   Future<void> signInWithGoogle(UserProvider userProvider) async {
     setState(() => loading = true);
-    String? message = await userProvider.signInWithCredential();
+    String? message = await userProvider.googleSign();
     if(!context.mounted) return;
     if(message == null){
       if(userProvider.user?.onBoardingStatus == OnBoardingStatus.finalized)
