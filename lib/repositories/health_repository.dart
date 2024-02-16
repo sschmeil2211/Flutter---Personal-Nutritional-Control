@@ -1,41 +1,43 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
+import 'dart:async';
 
-import 'package:health/health.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:personal_nutrition_control/models/models.dart';
 
 class HealthRepository {
-  final health = HealthFactory();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final StreamController<List<HealthModel>> _healthController = StreamController<List<HealthModel>>();
 
-  Future<int> getTotalStepsToday(DateTime timeToTrack) async {
-    //bool requested = await health.requestAuthorization([HealthDataType.STEPS]);
-
-    // if (requested) {
-      DateTime startOfDay = DateTime(timeToTrack.year, timeToTrack.month, timeToTrack.day, 0, 0, 0);
-      List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(startOfDay, timeToTrack, [HealthDataType.STEPS]);
-      int totalSteps = 0;
-      for (HealthDataPoint dataPoint in healthData)
-        totalSteps += int.parse(dataPoint.value.toJson()['numericValue']);
-      return totalSteps;
-    //}
-
-    // Manejar caso en el que la autorización fue rechazada
-    //return 0;
+  Stream<List<HealthModel>> getHealthStream(String userId) {
+    _firestore.collection('users').doc(userId).collection('health').snapshots().listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
+      List<HealthModel> health = snapshot.docs.map((DocumentSnapshot<Map<String, dynamic>> doc) => HealthModel.fromSnapshot(doc)).toList();
+      _healthController.add(health);
+    });
+    return _healthController.stream;
   }
 
-  Future<int> getCaloriesConsumed(DateTime timeToTrack) async {
-    //bool requested = await health.requestAuthorization([HealthDataType.STEPS]);
-
-    // if (requested) {
-    DateTime startOfDay = DateTime(timeToTrack.year, timeToTrack.month, timeToTrack.day, 0, 0, 0);
-    List<HealthDataPoint> healthData = await health.getHealthDataFromTypes(startOfDay, timeToTrack, [HealthDataType.ACTIVE_ENERGY_BURNED]);
-    int totalSteps = 0;
-    for (HealthDataPoint dataPoint in healthData)
-      totalSteps += double.parse(dataPoint.value.toJson()['numericValue']).toInt();
-     return totalSteps;
-    //}
-
-    // Manejar caso en el que la autorización fue rechazada
-    //return 0;
+  Future<HealthModel?> getSpecificHealth(String userId, DateTime specificDate) async {
+    String date = '${specificDate.year}-${specificDate.month}-${specificDate.day}';
+    final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('health')
+        .where('date', isEqualTo: date)
+        .limit(1) // Limitar a un solo documento
+        .get();
+    return snapshot.docs.isNotEmpty ? HealthModel.fromSnapshot(snapshot.docs.first) : null;
   }
+
+  Future<void> updateHealth(String userId, String docId, HealthModel health) async => await _firestore
+      .collection('users')
+      .doc(userId)
+      .collection('health')
+      .doc(docId)
+      .update(health.toJson());
+
+  Future<void> addHealth(String userId, String docId, HealthModel health) async => await _firestore
+      .collection('users')
+      .doc(userId)
+      .collection('health')
+      .doc(docId)
+      .set(health.toJson());
 }

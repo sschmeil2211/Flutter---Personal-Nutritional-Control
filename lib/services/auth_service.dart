@@ -7,9 +7,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthService {
   final auth.FirebaseAuth _authInstance = auth.FirebaseAuth.instance;
 
-  // Obtener el estado de autenticación del usuario
-  Stream<auth.User?> get authStateChanges => _authInstance.authStateChanges();
-
   // Registro con correo electrónico y contraseña
   Future<String?> signUpWithEmailAndPassword(String email, String password) async {
     try {
@@ -34,7 +31,19 @@ class AuthService {
     }
   }
 
-  Future<String?> signInWithCredential() async {
+  // Cerrar sesión
+  Future<String?> signOut() async {
+    try{
+      await _authInstance.signOut();
+      return null;
+    } on auth.FirebaseAuthException catch (e) {
+      return e.message;
+    } catch(e) {
+      return e.toString();
+    }
+  }
+
+  Future<String?> googleSign() async {
     try {
       GoogleSignInAccount? googleAccount = await GoogleSignIn(scopes: [
         'email',
@@ -54,10 +63,19 @@ class AuthService {
     }
   }
 
-  // Cerrar sesión
-  Future<String?> signOut() async {
+  Future<bool> checkGoogleSign() async {
+    GoogleSignIn googleSignIn = GoogleSignIn();
+    try {
+      GoogleSignInAccount? googleSignInAccount = await googleSignIn.signInSilently();
+      return googleSignInAccount != null; //if var == null, not signed in with google
+    } catch (error) {
+      return false;
+    }
+  }
+
+  Future<String?> recoveryPassword(String email) async {
     try{
-      await _authInstance.signOut();
+      await _authInstance.sendPasswordResetEmail(email: email);
       return null;
     } on auth.FirebaseAuthException catch (e) {
       return e.message;
@@ -66,26 +84,7 @@ class AuthService {
     }
   }
 
-  Future<String?> recoveryPassword(String email) async {
-    try{
-      await _authInstance.sendPasswordResetEmail(email: email);
-      return null;
-    }on auth.FirebaseAuthException catch (e) {
-      return e.message;
-    } catch(e) {
-      return e.toString();
-    }
-  }
-
   // Obtener el usuario actual
   auth.User? get currentUser => _authInstance.currentUser;
-
-  bool isSignedIn() => _authInstance.currentUser != null;
-
-  void authStateChange(auth.User? user){
-    if (user == null)
-      print('User is currently signed out!');
-    else
-      print('User is signed in!');
-  }
+  String get userID => _authInstance.currentUser?.uid ?? '';
 }

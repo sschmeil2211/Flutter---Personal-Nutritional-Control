@@ -13,7 +13,6 @@ class UserModel {
   final int height;
   final int waist;
   final int wrist;
-  final bool permissionsGranted;
   final double targetCalories;
   final OnBoardingStatus onBoardingStatus;
   final PhysicalActivity weeklyPhysicalActivity;
@@ -23,7 +22,6 @@ class UserModel {
     required this.id,
     required this.username,
     required this.email,
-    required this.permissionsGranted,
     required this.targetCalories,
     required this.createdAt,
     required this.updatedAt,
@@ -41,7 +39,6 @@ class UserModel {
     'id': id,
     'username': this.username,
     'email': this.email,
-    'permissionsGranted': this.permissionsGranted,
     'genreType': this.genderType.toString(),
     'onBoardingStatus': this.onBoardingStatus.toString(),
     'birthdate': this.birthdate,
@@ -61,7 +58,6 @@ class UserModel {
       id: data?['id'],
       username: data?['username'],
       email: data?['email'],
-      permissionsGranted: data?['permissionsGranted'],
       genderType: getGenderType(data?['genderType']),
       onBoardingStatus: getOnBoardingStatus(data?['onBoardingStatus']),
       birthdate: data?['birthdate'],
@@ -95,7 +91,6 @@ class UserModel {
     wrist: 0,
     height: 0,
     weight: 0,
-    permissionsGranted: false
   );
 
   UserModel copyFrom({
@@ -109,7 +104,6 @@ class UserModel {
     int? height,
     int? waist,
     int? wrist,
-    bool? permissionsGranted,
     PhysicalActivity? weeklyPhysicalActivity
   }) => UserModel(
     id: this.id,
@@ -125,7 +119,6 @@ class UserModel {
     height: height ?? this.height,
     waist: waist ?? this.waist,
     wrist: wrist ?? this.wrist,
-    permissionsGranted: permissionsGranted ?? this.permissionsGranted,
     weeklyPhysicalActivity: weeklyPhysicalActivity ?? this.weeklyPhysicalActivity
   );
 }

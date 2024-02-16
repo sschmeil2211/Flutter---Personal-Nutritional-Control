@@ -12,6 +12,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool permissionsGranted = Provider.of<UserProvider>(context, listen: true).permissionsGranted;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
@@ -21,23 +22,29 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(Icons.food_bank),
       ),
       body: SafeArea(
-          child:  ListView(
-            shrinkWrap: true,
-            children: [
-              const Header(),
-              Consumer<DayProvider>(
-                builder: (context, dayProvider, child){
-                UserModel? user = Provider.of<UserProvider>(context, listen: false).user;
-                DayModel? actualDay = dayProvider.actualDay;
-                if(user == null || actualDay == null)
-                  return Container();
+        child:  ListView(
+          shrinkWrap: true,
+          children: [
+            const Header(),
+            Column(
+              children: [
+                Consumer<DayProvider>(
+                  builder: (context, dayProvider, child){
+                    UserModel? user = Provider.of<UserProvider>(context, listen: false).user;
+                    DayModel? actualDay = dayProvider.actualDay;
+                    if(user == null || actualDay == null)
+                      return Container();
 
-                DayModel? day = dayProvider.getSpecificDay(DateTime.now());
-                if(day == null)
-                  return Container();
+                    DayModel? day = dayProvider.getSpecificDay(DateTime.now());
+                    if(day == null)
+                      return Container();
 
-                return DiaryIndicators(dayToView: day);
-              }
+                    return FoodDashboard(dayToView: day);
+                  }
+                ),
+                if(permissionsGranted)
+                  HealthIndicators(timeToTrack: DateTime.now())
+              ],
             ),
             const AddTodayFood(),
           ],

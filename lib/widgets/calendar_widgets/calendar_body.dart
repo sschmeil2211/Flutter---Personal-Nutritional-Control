@@ -61,7 +61,7 @@ class _CalendarBodyState extends State<CalendarBody> {
                   )
                 : Column(
                     children: [
-                      DiaryIndicators(dayToView: selectedDay),
+                      FoodDashboard(dayToView: selectedDay),
                       MealTimeCard(dayToView: selectedDay)
                     ]
                   )

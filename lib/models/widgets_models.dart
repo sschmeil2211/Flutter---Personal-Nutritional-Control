@@ -1,6 +1,10 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: curly_braces_in_flow_control_structures
 
-import 'package:personal_nutrition_control/providers/controllers_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:personal_nutrition_control/providers/providers.dart';
+import 'package:provider/provider.dart';
 
 class MacronutrientsData{
   final Color color;
@@ -110,9 +114,12 @@ class ProfileCardData{
     required this.function,
   });
 
-  static List<ProfileCardData> bodyData(BuildContext context) => [
-    ProfileCardData(iconData: Icons.person, label: 'User Information', function: () => Navigator.pushNamed(context, 'informationScreen', arguments: 0)),
-    ProfileCardData(iconData: Icons.scale, label: 'Body Information', function: () => Navigator.pushNamed(context, 'informationScreen', arguments: 1)),
-    ProfileCardData(iconData: Icons.calculate_outlined, label: 'Target Calories', function: () => Navigator.pushNamed(context, 'targetCaloriesScreen')),
-  ];
+  static List<ProfileCardData> bodyData(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+    return [
+      ProfileCardData(iconData: FontAwesomeIcons.user, label: 'User Information', function: () => Navigator.pushNamed(context, 'informationScreen', arguments: 0)),
+      ProfileCardData(iconData: FontAwesomeIcons.weightScale, label: 'Body Information', function: () => Navigator.pushNamed(context, 'informationScreen', arguments: 1)),
+      ProfileCardData(iconData: FontAwesomeIcons.calculator, label: 'Calculate Calories', function: () => Navigator.pushNamed(context, 'targetCaloriesScreen')),
+    ];
+  }
 }

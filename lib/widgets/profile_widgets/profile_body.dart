@@ -1,6 +1,9 @@
 // ignore_for_file: unnecessary_this, curly_braces_in_flow_control_structures
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:personal_nutrition_control/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 import 'package:personal_nutrition_control/providers/providers.dart';
@@ -30,10 +33,40 @@ class _ProfileBodyState extends State<ProfileBody> {
     }
   }
 
+  Future<void> requestPermissions(UserProvider userProvider) async {
+    bool signedWithGoogle = await userProvider.checkGoogleSignIn();
+    if(!signedWithGoogle){
+      if(!context.mounted) return;
+      showCupertinoModalPopup(
+        context: context,
+        builder: (context) => CustomModal(
+          onPressed: () async {
+            await userProvider.googleSign();
+            await userProvider.grantPermissions();
+            if(!context.mounted) return;
+            Navigator.pop(context);
+          },
+        )
+      );
+    }
+    else{
+      await userProvider.checkPermissions();
+      if(userProvider.permissionsGranted)
+        await userProvider.revokePermissions();
+      else
+        await userProvider.grantPermissions();
+      if(!context.mounted) return;
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
     List<ProfileCardData> profileCards = ProfileCardData.bodyData(context);
+    String label = userProvider.permissionsGranted ? 'Revoke' : 'Get';
+
+    profileCards.add(ProfileCardData(iconData: FontAwesomeIcons.heart, label: '$label Health Permissions', function: () => requestPermissions(userProvider)));
 
     return Column(
       children: [
@@ -77,7 +110,7 @@ class ProfileCard extends StatelessWidget {
           child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 20, right: 10),
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Icon(this.icon),
               ),
               Text(

@@ -21,7 +21,7 @@ class DayModel {
   });
 
   Map<String, dynamic> toJson() => {
-    'id': id,
+    'id': this.id,
     'caloriesConsumed': this.caloriesConsumed,
     'carbsConsumed': this.carbsConsumed,
     'proteinsConsumed': this.proteinsConsumed,

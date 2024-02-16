@@ -1,3 +1,4 @@
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesService {
@@ -11,5 +12,11 @@ class SharedPreferencesService {
   Future<void> setHasPermission(bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(_keyHasPermission, value);
+  }
+
+  Future<void> revokePermission() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await openAppSettings();
+    prefs.remove(_keyHasPermission);
   }
 }

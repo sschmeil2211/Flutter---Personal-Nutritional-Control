@@ -18,6 +18,7 @@ export 'package:personal_nutrition_control/widgets/common_widgets/dashboard.dart
 export 'package:personal_nutrition_control/widgets/common_widgets/searcher.dart';
 export 'package:personal_nutrition_control/widgets/common_widgets/custom_buttons.dart';
 export 'package:personal_nutrition_control/widgets/common_widgets/modals/food_card_modal.dart';
+export 'package:personal_nutrition_control/widgets/common_widgets/modals/custom_modal.dart';
 
 export 'package:personal_nutrition_control/widgets/calendar_widgets/calendar_body.dart';
 
