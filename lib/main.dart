@@ -1,17 +1,32 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'package:personal_nutrition_control/providers/providers.dart';
 import 'package:personal_nutrition_control/screens/screens.dart';
 import 'package:personal_nutrition_control/firebase_options.dart';
 
 Future<void> main() async {
+  CatcherOptions catcherOptions = CatcherOptions(
+    SilentReportMode(), [
+    SentryHandler(
+      SentryClient(
+        SentryOptions(dsn: "https://b5ac8ef1ddad4dc2960a183946bea15e@o1131984.ingest.sentry.io/4506758535118848")
+      )
+    )
+  ]);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  Catcher(
+    rootWidget: const MyApp(),
+    releaseConfig: catcherOptions,
+    debugConfig: catcherOptions,
+  );
+  //runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -33,13 +48,13 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => FoodProvider()),
         ChangeNotifierProvider(create: (_) => DayProvider()),
         ChangeNotifierProxyProvider<UserProvider, ControllersProvider>(
-            create: ( context ) => ControllersProvider(),
-            update: ( context, userProvider, controller ) {
-              if(controller != null)
-                return controller..setUserProvider(userProvider);
-              else
-                return ControllersProvider()..setUserProvider(userProvider);
-            }
+          create: ( context ) => ControllersProvider(),
+          update: ( context, userProvider, controller ) {
+            if(controller != null)
+              return controller..setUserProvider(userProvider);
+            else
+              return ControllersProvider()..setUserProvider(userProvider);
+          }
         ),
       ],
       child: Builder(

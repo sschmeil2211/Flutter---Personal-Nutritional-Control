@@ -3,6 +3,8 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  catcher
+  sentry_flutter
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
