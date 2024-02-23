@@ -17,8 +17,9 @@ class FoodDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int caloriesBurned = Provider.of<HealthProvider>(context, listen: true).caloriesBurned;
     double size = MediaQuery.of(context).size.height;
-    double targetCalories = Provider.of<UserProvider>(context, listen: false).user?.targetCalories ?? 2000;
+    double targetCalories = (Provider.of<UserProvider>(context, listen: false).user?.targetCalories ?? 2000) + caloriesBurned;
     double caloriesConsumed = dayToView.caloriesConsumed;
     double actualValue = dayToView.caloriesConsumed / targetCalories;
 
@@ -180,6 +181,8 @@ class _HealthIndicatorsState extends State<HealthIndicators> {
 
   @override
   Widget build(BuildContext context) {
+    bool permissionsGranted = Provider.of<UserProvider>(context, listen: true).permissionsGranted;
+
     return Consumer<HealthProvider>(
       builder: (context, health, child){
         return Padding(
@@ -187,7 +190,8 @@ class _HealthIndicatorsState extends State<HealthIndicators> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              indicator(FontAwesomeIcons.shoePrints, '${health.steps}'),
+              if(permissionsGranted)
+                indicator(FontAwesomeIcons.shoePrints, '${health.steps}'),
               indicator(FontAwesomeIcons.fire, '${health.caloriesBurned}'),
             ],
           ),

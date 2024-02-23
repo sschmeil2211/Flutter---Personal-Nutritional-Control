@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:personal_nutrition_control/services/services.dart';
 import 'package:personal_nutrition_control/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -51,8 +52,10 @@ class _ProfileBodyState extends State<ProfileBody> {
     }
     else{
       await userProvider.checkPermissions();
-      if(userProvider.permissionsGranted)
+      if(userProvider.permissionsGranted) {
         await userProvider.revokePermissions();
+        await HealthService().getStepsInInterval(DateTime.now());
+      }
       else
         await userProvider.grantPermissions();
       if(!context.mounted) return;

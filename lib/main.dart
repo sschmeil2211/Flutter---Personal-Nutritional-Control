@@ -47,6 +47,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => SplashScreenProvider()),
         ChangeNotifierProvider(create: (_) => FoodProvider()),
         ChangeNotifierProvider(create: (_) => DayProvider()),
+        ChangeNotifierProvider(create: (_) => ActivityProvider()),
         ChangeNotifierProxyProvider<UserProvider, ControllersProvider>(
           create: ( context ) => ControllersProvider(),
           update: ( context, userProvider, controller ) {
@@ -78,7 +79,7 @@ class _MyAppState extends State<MyApp> {
               'calendarScreen': (_) => const CalendarScreen(),
               'foodListScreen': (_) => const FoodListScreen(),
               'createFoodScreen': (_) => const CreateFoodScreen(),
-              'recoveryPasswordScreen': (_) => const RecoveryPasswordScreen()
+              'recoveryPasswordScreen': (_) => const RecoveryPasswordScreen(),
             },
           );
         },
