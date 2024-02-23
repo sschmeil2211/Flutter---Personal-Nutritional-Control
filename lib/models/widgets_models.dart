@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:personal_nutrition_control/providers/providers.dart';
-import 'package:provider/provider.dart';
 
 class MacronutrientsData{
   final Color color;
@@ -115,7 +114,6 @@ class ProfileCardData{
   });
 
   static List<ProfileCardData> bodyData(BuildContext context) {
-    UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
     return [
       ProfileCardData(iconData: FontAwesomeIcons.user, label: 'User Information', function: () => Navigator.pushNamed(context, 'informationScreen', arguments: 0)),
       ProfileCardData(iconData: FontAwesomeIcons.weightScale, label: 'Body Information', function: () => Navigator.pushNamed(context, 'informationScreen', arguments: 1)),

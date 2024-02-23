@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_this
 
 import 'package:flutter/material.dart';
+import 'package:personal_nutrition_control/extensions/extensions.dart';
 import 'package:provider/provider.dart';
 
 import 'package:personal_nutrition_control/models/models.dart';
@@ -90,6 +91,89 @@ class FoodSearchDelegate extends SearchDelegate<void> {
                 Navigator.pop(context);
               },
             )
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ActivitySearchDelegate extends SearchDelegate<ActivityModel?> {
+  final ActivityProvider activityProvider;
+
+  ActivitySearchDelegate(this.activityProvider);
+
+  String keyboardText = '0';
+
+  @override
+  ThemeData appBarTheme( BuildContext context ) {
+    OutlineInputBorder outlineInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(15),
+      borderSide: const BorderSide(width: 1.5, color: Colors.deepOrange),
+    );
+    return Theme.of(context).copyWith(
+      appBarTheme: const AppBarTheme(
+        titleSpacing: 15,
+        iconTheme: IconThemeData(color: Colors.grey),
+      ),
+      textTheme: const TextTheme(
+        bodyLarge: TextStyle(color: Colors.white),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        constraints: const BoxConstraints(maxHeight: 35),
+        hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+        contentPadding: const EdgeInsets.all(15),
+        enabledBorder: outlineInputBorder,
+        focusedBorder: outlineInputBorder,
+      ),
+    );
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: const Icon(Icons.clear),
+        onPressed: () => query = '',
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () => close(context, null)
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<ActivityModel> searchResults = activityProvider.filterActivitiesByName(query);
+    return buildSearchResults(searchResults);
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<ActivityModel> searchResults = activityProvider.filterActivitiesByName(query);
+    return buildSearchResults(searchResults);
+  }
+
+  Widget buildSearchResults(List<ActivityModel> searchResults) {
+    return ListView.builder(
+      itemCount: searchResults.length,
+      itemBuilder: (context, index) {
+        ActivityModel activity = searchResults[index];
+        return InkWell(
+          onTap: () => close(context, activity),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                activity.activity.capitalize(),
+                style: const TextStyle(fontSize: 18, overflow: TextOverflow.ellipsis),
+              ),
+            ),
           ),
         );
       },

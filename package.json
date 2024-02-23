@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "firestore-export-import": "^1.4.0"
+  }
+}
